@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive"
+    tools:showIn="@layout/app_bar_wifi_direct_receive"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="461dp"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_weight="0.34"
+        android:weightSum="1">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:layout_weight="0.03"
+            android:weightSum="1">
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/report"
+                android:id="@+id/report"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:layout_gravity="top"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:id="@+id/tv1"
+                android:layout_gravity="center"
+                android:textSize="30dp"/>
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/ic_refresh_black_24dp"
+                android:layout_weight="0"
+                android:layout_gravity="top"
+                android:id="@+id/btnRefresh"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="183dp"
+            android:orientation="vertical"
+            android:padding="5dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/scrollView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <!--<ScrollView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+            <fragment
+                class="com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/frag_list"/>
+
+            <fragment
+                    class="com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/frag_detals">
+                </fragment>
+
+            <!--</ScrollView>-->
+
+        </LinearLayout>
+
+        </ScrollView>
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/layoutstyle">
+
+            <LinearLayout
+                android:layout_width="154dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="18dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:padding="0dip"
+                    android:text="Points given"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="20dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="0"
+                    android:padding="3dip"
+                    android:id="@+id/pointsgiven" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/points"
+                    android:id="@+id/imageView3"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/layoutstyle">
+
+            <LinearLayout
+                android:layout_width="154dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="18dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:padding="0dip"
+                    android:text="Total Sale"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="20dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="0"
+                    android:padding="3dip"
+                    android:id="@+id/totalsale" />
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    app:srcCompat="@drawable/rupee"
+                    android:id="@+id/imageView4"/>
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/layoutstyle">
+
+            <LinearLayout
+                android:layout_width="154dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="18dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:padding="0dip"
+                    android:text="Discount given"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="#000"
+                    android:textSize="20dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="0"
+                    android:padding="3dip"
+                    android:id="@+id/discountgiven" />
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    app:srcCompat="@drawable/rupee"
+                    android:id="@+id/imageView5"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

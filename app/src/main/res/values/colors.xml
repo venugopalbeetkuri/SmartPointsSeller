@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#E91E63</color>
+    <color name="colorPrimaryDark">#880E4F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="windowBackground">#BEBEBE</color>
+    <color name="edittext">#00ff00</color>
+    <color name="bgcolor">#FFFFFF</color>
+    <color name="littlethickgray">#d4d4d4</color>
+    <color name="lightgrey">#e8e8e8</color>
+    <color name="butcolor">#272829</color>
+    <color name="thickgray">#b7b7b7</color>
+    <color name="thickgray1">#b7b7b7</color>
+    <color name="btncolor">#FF0AAE9F</color>
+    <color name="card">#5cbfb7</color>
+    <color name="cardview_dark_background">#4572cc</color>
+
+    <color name="button_edit_profile">#FF0AAE9F</color>
+
+
+</resources>
