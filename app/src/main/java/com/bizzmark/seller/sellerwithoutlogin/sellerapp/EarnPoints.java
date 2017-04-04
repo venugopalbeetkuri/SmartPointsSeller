@@ -44,9 +44,7 @@ public class EarnPoints extends AppCompatActivity {
 
     Button savetoDB;
 
- //   String ep;
     final static String log = "Seller app";
-//    WifiP2pInfo info;
 
     int discountpoints;
 
@@ -54,6 +52,7 @@ public class EarnPoints extends AppCompatActivity {
 
     String device_id,store_name,bill_amount,points_earn,date_time,earn_type;
 
+    String device_Id,store_Name,bill_Amount,points_Earn,date_Time,earn_Type;
 
     String deviceid,storename,billamount,points,time,type;
 
@@ -69,28 +68,31 @@ public class EarnPoints extends AppCompatActivity {
         setContentView(R.layout.activity_earn_points);
 
         savetoDB=(Button)findViewById(R.id.savetoDB);
+
+        /*save button to save data to database*/
         savetoDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 savetoDatabase();
-      //          finish();
             }
         });
 
 
-        //info=WifiP2pInfo;
         Intent intent = getIntent();
         earnString = intent.getStringExtra("earnRedeemString");
-     //   remoteMacAddress = intent.getStringExtra("GroupOwnerAddress");
 
-//        Gson gson = new Gson();
-//        pointsBO = gson.fromJson(earnString,PointsBO.class);
-//        bill_amount = pointsBO.getBillAmount();
-//        device_id = pointsBO.getDeviceId();
-//        store_name = pointsBO.getStoreName();
-//        points_earn = pointsBO.getPoints();
-//        date_time = pointsBO.getTime();
-//        earn_type=pointsBO.setType("earn");
+        /* Creating Gson for External Use*/
+
+        Gson gson = new Gson();
+        pointsBO = gson.fromJson(earnString,PointsBO.class);
+        bill_Amount = pointsBO.getBillAmount();
+        device_Id = pointsBO.getDeviceId();
+        store_Name = pointsBO.getStoreName();
+        points_Earn = pointsBO.getPoints();
+        date_Time = pointsBO.getTime();
+        earn_Type=pointsBO.setType("earn");
+
+        /*creating Json object for converting bundle to individual strings*/
 
         try{
             JSONObject obj= new JSONObject(earnString);
@@ -104,27 +106,17 @@ public class EarnPoints extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
-//        Toast.makeText(this, "Json :" +device_id+store_name+bill_amount+points_earn+date_time, Toast.LENGTH_SHORT).show();
-
-
-  //      String storeName = pointsBO.getStoreName();
-
         earnPoints=(TextView)findViewById(R.id.earnPoints);
         billAmount = (TextView) findViewById(R.id.billamount);
 
         billAmount.setText(bill_amount);
-        //calPoints();
-       // ep=Integer.toString(discountpoints);
-     //   earnPoints.setText(pointsBO.getPoints());
-    //    billAmount.setText(pointsBO.getBillAmount());
 
         addListenerOnAcceptButton();
         addListenerOnCancelButton();
-      //  addListenerOnsaveToDBButton();
+
     }
 
+/*enbling button function to cancel the transaction*/
 
     private void addListenerOnCancelButton() {
 
@@ -144,13 +136,15 @@ public class EarnPoints extends AppCompatActivity {
 
     }
 
-    //calculating points to billamount
+    /*calculating points to billamount*/
 
     public void calPoints(){
 
         int i=Integer.parseInt(earnString);
         discountpoints=(i*10/100);
     }
+
+/* Enabling button fuction to accept the the transaction*/
 
     private void addListenerOnAcceptButton() {
 
@@ -160,9 +154,7 @@ public class EarnPoints extends AppCompatActivity {
             public void onClick(View arg0) {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
 
-   //             savetoDatabase();
-
-           // Send acknowledgement to client.
+         // Send acknowledgement to client.
                 sendAcknowledgement(true);
 
                 finish();
@@ -171,13 +163,10 @@ public class EarnPoints extends AppCompatActivity {
 
     }
 
-    String jsonACK = null;
 
     private void sendAcknowledgement(boolean success){
 
           AcknowledgePoints ack = null;
-
-  //      String sendText="hai";
 
         if(success) {
 
@@ -187,10 +176,6 @@ public class EarnPoints extends AppCompatActivity {
 
             ack = new AcknowledgePoints("failure", earnString);
         }
-
-       // Gson gson = Util
-
-      //  sendMessage();
     }
     private void sendMessage(){
 
@@ -201,15 +186,11 @@ public class EarnPoints extends AppCompatActivity {
                  serviceIntent = new Intent(EarnPoints.this,FileTransferService.class);
              }
 
-         //   Intent serviceIntent = new Intent(EarnPoints.this,FileTransferService.class);
-
                 // Send msg to customer.
                 serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
                 serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS, remoteMacAddress);
 
-           String sendText="hai";
-
-                serviceIntent.putExtra(FileTransferService.MESSAGE,  sendText);
+                serviceIntent.putExtra(FileTransferService.MESSAGE,  earnString);
 
                 Log.i("bizzmark", "Customer Address: " + remoteMacAddress);
                 serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 9999);
@@ -231,12 +212,9 @@ public class EarnPoints extends AppCompatActivity {
         billamount = bill_amount;
         points = "0";
         time = date_time;
-    //    type=earn_type;
-
 
         DataBaseBackgroundTask dataBaseBackgroundTask=new DataBaseBackgroundTask(this);
         dataBaseBackgroundTask.execute(deviceid,storename,billamount,points,time);
-     //   finish();
 
     }
 }
