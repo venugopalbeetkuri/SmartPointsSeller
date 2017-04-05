@@ -47,12 +47,13 @@ public class EarnPoints extends AppCompatActivity {
     final static String log = "Seller app";
 
     int discountpoints;
+    String earn_Points;
 
     PointsBO pointsBO=null;
 
     String device_id,store_name,bill_amount,points_earn,date_time,earn_type;
 
-    String device_Id,store_Name,bill_Amount,points_Earn,date_Time,earn_Type;
+//    String device_Id,store_Name,bill_Amount,points_Earn,date_Time,earn_Type;
 
     String deviceid,storename,billamount,points,time,type;
 
@@ -83,14 +84,14 @@ public class EarnPoints extends AppCompatActivity {
 
         /* Creating Gson for External Use*/
 
-        Gson gson = new Gson();
-        pointsBO = gson.fromJson(earnString,PointsBO.class);
-        bill_Amount = pointsBO.getBillAmount();
-        device_Id = pointsBO.getDeviceId();
-        store_Name = pointsBO.getStoreName();
-        points_Earn = pointsBO.getPoints();
-        date_Time = pointsBO.getTime();
-        earn_Type=pointsBO.setType("earn");
+//        Gson gson = new Gson();
+//        pointsBO = gson.fromJson(earnString,PointsBO.class);
+//        bill_Amount = pointsBO.getBillAmount();
+//        device_Id = pointsBO.getDeviceId();
+//        store_Name = pointsBO.getStoreName();
+//        points_Earn = pointsBO.getPoints();
+//        date_Time = pointsBO.getTime();
+//        earn_Type=pointsBO.setType("earn");
 
         /*creating Json object for converting bundle to individual strings*/
 
@@ -109,7 +110,10 @@ public class EarnPoints extends AppCompatActivity {
         earnPoints=(TextView)findViewById(R.id.earnPoints);
         billAmount = (TextView) findViewById(R.id.billamount);
 
+        calPoints();
+
         billAmount.setText(bill_amount);
+        earnPoints.setText(earn_Points);
 
         addListenerOnAcceptButton();
         addListenerOnCancelButton();
@@ -140,8 +144,9 @@ public class EarnPoints extends AppCompatActivity {
 
     public void calPoints(){
 
-        int i=Integer.parseInt(earnString);
+        int i=Integer.parseInt(bill_amount);
         discountpoints=(i*10/100);
+        earn_Points=Integer.toString(discountpoints);
     }
 
 /* Enabling button fuction to accept the the transaction*/
@@ -153,6 +158,8 @@ public class EarnPoints extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
+                /*saving to database*/
+                savetoDatabase();
 
          // Send acknowledgement to client.
                 sendAcknowledgement(true);
@@ -210,11 +217,12 @@ public class EarnPoints extends AppCompatActivity {
         deviceid =device_id ;
         storename = store_name;
         billamount = bill_amount;
-        points = "0";
+        points = earn_Points;
         time = date_time;
+        type=earn_type;
 
         DataBaseBackgroundTask dataBaseBackgroundTask=new DataBaseBackgroundTask(this);
-        dataBaseBackgroundTask.execute(deviceid,storename,billamount,points,time);
+        dataBaseBackgroundTask.execute(deviceid,storename,billamount,points,type,time);
 
     }
 }

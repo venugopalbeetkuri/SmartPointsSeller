@@ -262,8 +262,10 @@ public class WifiDirectReceive extends AppCompatActivity
 
     }
 
+    /*clearing remembered groups */
+
     private void deletePersistentGroups(){
-        //WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
         try {
             Method[] methods = WifiP2pManager.class.getMethods();
             for (int i = 0; i < methods.length; i++) {

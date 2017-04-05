@@ -51,8 +51,6 @@ public class FileTransferService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-//        Context context = getApplicationContext();
-
         if (intent.getAction().equals(ACTION_SEND_FILE)) {
 
             String host = intent.getExtras().getString(EXTRAS_GROUP_OWNER_ADDRESS);

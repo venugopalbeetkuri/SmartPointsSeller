@@ -35,19 +35,20 @@ public class DataBaseBackgroundTask extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPreExecute() {
-        add_points_url="https://wwwbizzmarkin.000webhostapp.com/add_points.php";
+        add_points_url="https://wwwbizzmarkin.000webhostapp.com/add_store_points.php";
     }
 
     @Override
     protected String doInBackground(String... args) {
 
-        String deviceid,storename,billamount,points,time;
+        String deviceid,storename,billamount,points,type,time;
 
         deviceid=args[0];
         storename=args[1];
         billamount=args[2];
         points=args[3];
-        time=args[4];
+        type=args[4];
+        time=args[5];
 
 
         try {
@@ -59,6 +60,7 @@ public class DataBaseBackgroundTask extends AsyncTask<String,Void,String> {
             obj.put("storename",storename);
             obj.put("billamount",billamount);
             obj.put("points",points);
+            obj.put("type",type);
             obj.put("time",time);
             Log.e("data",obj.toString());
 
