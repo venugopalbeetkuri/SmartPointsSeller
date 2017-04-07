@@ -1,4 +1,4 @@
-package com.bizzmark.seller.sellerwithoutlogin.db;
+package com.bizzmark.seller.sellerwithoutlogin.db.AsyncTask;
 
 import android.content.Context;
 import android.os.AsyncTask;

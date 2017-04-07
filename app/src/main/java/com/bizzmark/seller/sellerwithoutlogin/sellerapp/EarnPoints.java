@@ -1,12 +1,8 @@
 package com.bizzmark.seller.sellerwithoutlogin.sellerapp;
 
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pInfo;
-import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -16,26 +12,23 @@ import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.db.AcknowledgePoints;
-import com.bizzmark.seller.sellerwithoutlogin.db.DataBaseBackgroundTask;
+import com.bizzmark.seller.sellerwithoutlogin.db.AsyncTask.DataBaseBackgroundTask;
 import com.bizzmark.seller.sellerwithoutlogin.db.PointsBO;
-import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
+import com.bizzmark.seller.sellerwithoutlogin.db.Retrofit.InsertData;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.service.FileTransferService;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
-import java.io.BufferedWriter;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class EarnPoints extends AppCompatActivity {
 
@@ -51,11 +44,15 @@ public class EarnPoints extends AppCompatActivity {
 
     PointsBO pointsBO=null;
 
+    public int i=0;
+
     String device_id,store_name,bill_amount,points_earn,date_time,earn_type;
 
 //    String device_Id,store_Name,bill_Amount,points_Earn,date_Time,earn_Type;
 
     String deviceid,storename,billamount,points,time,type;
+
+    public static final String ROOT_URL="https://wwwbizzmarkin.000webhostapp.com/";
 
     Calendar c = Calendar.getInstance();
     SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
@@ -74,7 +71,9 @@ public class EarnPoints extends AppCompatActivity {
         savetoDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                savetoDatabase();
+                v.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
+
+                saveData();
             }
         });
 
@@ -144,7 +143,7 @@ public class EarnPoints extends AppCompatActivity {
 
     public void calPoints(){
 
-        int i=Integer.parseInt(bill_amount);
+        i=Integer.parseInt(bill_amount);
         discountpoints=(i*10/100);
         earn_Points=Integer.toString(discountpoints);
     }
@@ -212,6 +211,8 @@ public class EarnPoints extends AppCompatActivity {
 
     }
 
+    //saving data using AsyncTask
+
     private void savetoDatabase(){
 
         deviceid =device_id ;
@@ -223,6 +224,72 @@ public class EarnPoints extends AppCompatActivity {
 
         DataBaseBackgroundTask dataBaseBackgroundTask=new DataBaseBackgroundTask(this);
         dataBaseBackgroundTask.execute(deviceid,storename,billamount,points,type,time);
+
+    }
+
+    //saving data to mysql using retrofit
+
+    private void saveData(){
+        //here we will handle the Http request to insert user to mysql db
+        //creating RestAdapter
+        deviceid =device_id ;
+        storename = store_name;
+        billamount = bill_amount;
+        points = earn_Points;
+        time = date_time;
+        type=earn_type;
+
+        RestAdapter adapter=new RestAdapter.Builder()
+                .setEndpoint(ROOT_URL)//setting the Root URL
+                .build(); //Finally building the adapter
+
+        //creating object for our interface
+
+        InsertData data=adapter.create(InsertData.class);
+
+        //Defing the method insertdata of our interface
+
+        data.saveData(
+                //passing values by getting it from edittext
+                deviceid, storename, billamount, points, type, time,
+
+                //creating ananymous callback
+                new Callback<Response>() {
+                    @Override
+                    public void success(Response result, Response response) {
+
+                        //on success we will read the servers output using bufferedreader
+                        //creating a bufferedreader object
+
+                        BufferedReader reader=null;
+
+                        //An string to store output from the server
+
+                        String output="";
+
+                        try {
+                            //initialize buffered reader
+
+                            reader=new BufferedReader(new InputStreamReader(result.getBody().in()));
+
+                            //reading output in the string
+                            output=reader.readLine();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        //Displaying the output as a toast
+
+                        Toast.makeText(EarnPoints.this,output,Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        //If any error occured displaying the error toast
+                        Toast.makeText(EarnPoints.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
 
     }
 }
