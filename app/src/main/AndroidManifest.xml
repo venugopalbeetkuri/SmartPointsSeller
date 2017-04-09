@@ -31,13 +31,17 @@
         <activity android:name=".FAQ" />
         <activity android:name=".Terms" />
         <activity android:name=".PrivacyPolicy" />
-        <activity android:name=".login.Login" ></activity>
+        <activity android:name=".login.Login" />
         <activity android:name=".sellerapp.EarnPoints" />
-        <activity android:name=".sellerapp.RedeemPoints"></activity>
+        <activity android:name=".sellerapp.RedeemPoints" />
 
-        <service android:name=".wifidirect_new.service.FileTransferService"
+        <service
+            android:name=".wifidirect_new.service.FileTransferService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
+
+        <activity android:name=".sellerapp.ReportActivity" />
+        <activity android:name=".login.Seller_Basic_Information"></activity>
     </application>
 
 </manifest>

@@ -4,6 +4,8 @@ package com.bizzmark.seller.sellerwithoutlogin.db.Retrofit;
  * Created by Tharun on 06-04-2017.
  */
 
+import android.widget.EditText;
+
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.Field;

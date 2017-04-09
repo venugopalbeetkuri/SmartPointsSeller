@@ -32,7 +32,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
 import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
+import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
+import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
@@ -46,7 +49,7 @@ public class WifiDirectReceive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, WifiP2pManager.ChannelListener, DeviceListFragment.DeviceActionListener {
 
     final Context context = this;
-    public ImageView imgmenu;
+    public ImageView imgmenu,sellerimg;
 
     public static final String TAG = "smartpointseller";
     private boolean isWifiP2pEnabled = false;
@@ -56,7 +59,7 @@ public class WifiDirectReceive extends AppCompatActivity
     private WifiP2pManager.Channel channel;
     private BroadcastReceiver receiver = null;
 
-    private Button btnRefresh;
+    private Button btnRefresh,report;
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled){
         this.isWifiP2pEnabled = isWifiP2pEnabled;
     }
@@ -85,12 +88,20 @@ public class WifiDirectReceive extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View v = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
+
         imgmenu=(ImageView)findViewById(R.id.imgmenu);
         imgmenu.setOnClickListener(this);
 
+        sellerimg=(ImageView)v.findViewById(R.id.sellerimg);
+        sellerimg.setOnClickListener(this);
+
         btnRefresh=(Button)findViewById(R.id.btnRefresh);
         btnRefresh.setOnClickListener(this);
+
+        report=(Button)findViewById(R.id.report);
+        report.setOnClickListener(this);
 
       // add necessary intent values to be matched.
 
@@ -375,6 +386,14 @@ public void onBackPressed() {
         }
         if (v == imgmenu){
             slidemenu();
+        }
+        if (v == sellerimg){
+            Intent i=new Intent(WifiDirectReceive.this, Seller_Basic_Information.class);
+            startActivity(i);
+        }
+        if(v == report){
+            Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
+            startActivity(i);
         }
 
     }
