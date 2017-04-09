@@ -250,7 +250,7 @@ public class EarnPoints extends AppCompatActivity {
         //Defing the method insertdata of our interface
 
         data.saveData(
-                //passing values by getting it from edittext
+                //passing values
                 deviceid, storename, billamount, points, type, time,
 
                 //creating ananymous callback
