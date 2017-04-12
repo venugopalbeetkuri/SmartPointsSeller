@@ -14,18 +14,15 @@
             android:id="@+id/nav_privacy_policy"
             android:icon="@drawable/ic_announcement_black_24dp"
             android:title="Privacy Policy" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+
     </group>
 
     <item android:title="Communicate">
         <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="Share" />-->
             <item
                 android:id="@+id/nav_contact_us"
                 android:icon="@drawable/ic_smartphone_black_24dp"

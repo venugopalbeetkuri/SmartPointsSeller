@@ -72,15 +72,6 @@ public class WifiDirectReceive extends AppCompatActivity
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifi.setWifiEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -358,11 +349,14 @@ public void onBackPressed() {
         } else if (id == R.id.nav_privacy_policy) {
             Intent i=new Intent(getApplicationContext(),PrivacyPolicy.class);
             startActivity(i);
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-            shareButtionFunctionality();
-        } else if (id == R.id.nav_contact_us) {
+        }
+//        else if (id == R.id.nav_manage) {
+//
+//        }
+// else if (id == R.id.nav_share) {
+//            shareButtionFunctionality();
+//        }
+        else if (id == R.id.nav_contact_us) {
             contactus();
         }else if (id == R.id.nav_exit){
             exit();
@@ -398,23 +392,25 @@ public void onBackPressed() {
 
     }
 
-    public  void shareButtionFunctionality(){
+    /*Share button functionality*/
 
-        try {
-
-            ApplicationInfo app=getApplicationContext().getApplicationInfo();
-            String filepath = app.sourceDir;
-            Intent intent=new Intent(Intent.ACTION_SEND);
-            intent.setType("*/*");
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filepath)));
-            startActivity(Intent.createChooser(intent,"Share app"));
-            Toast.makeText(getApplicationContext(),"Share the Seller App . . .", Toast.LENGTH_LONG).show();
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-        }
-    }
+//    public  void shareButtionFunctionality(){
+//
+//        try {
+//
+//            ApplicationInfo app=getApplicationContext().getApplicationInfo();
+//            String filepath = app.sourceDir;
+//            Intent intent=new Intent(Intent.ACTION_SEND);
+//            intent.setType("*/*");
+//            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filepath)));
+//            startActivity(Intent.createChooser(intent,"Share app"));
+//            Toast.makeText(getApplicationContext(),"Share the Seller App . . .", Toast.LENGTH_LONG).show();
+//
+//        }catch (Exception e){
+//
+//            e.printStackTrace();
+//        }
+//    }
     //method for slide menu button
     public void slidemenu(){
         DrawerLayout slider=(DrawerLayout)findViewById(R.id.drawer_layout);
