@@ -35,7 +35,7 @@ import android.widget.Toast;
 import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
 import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
 import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
-import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
+//import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
@@ -392,8 +392,8 @@ public void onBackPressed() {
             startActivity(i);
         }
         if(v == report){
-            Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
-            startActivity(i);
+           // Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
+            //startActivity(i);
         }
 
     }
