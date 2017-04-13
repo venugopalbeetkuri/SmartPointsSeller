@@ -6,6 +6,8 @@
 
     <string name="action_logout">Logout</string>
 
+    <string name="from_date"><u>From Date</u></string>
+    <string name="to_date"><u>To Date</u></string>
 
     <string name="policy"><u>Privacy Policy</u> and </string>
     <string name="terms"><u>Terms &amp; Conditions</u></string>

@@ -12,7 +12,10 @@
     <color name="thickgray">#b7b7b7</color>
     <color name="thickgray1">#b7b7b7</color>
     <color name="btncolor">#FF0AAE9F</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorRipple">#dad3d6</color>
     <color name="card">#5cbfb7</color>
+    <color name="colorGrey">#dadada</color>
     <color name="cardview_dark_background">#4572cc</color>
 
     <color name="button_edit_profile">#FF0AAE9F</color>

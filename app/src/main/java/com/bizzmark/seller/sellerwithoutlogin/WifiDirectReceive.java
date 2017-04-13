@@ -370,7 +370,6 @@ public void onBackPressed() {
     @Override
     public void onClick(View v) {
 
-
         if (v == btnRefresh){
             Animation rotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.buttonrotate);
             rotation.start();
@@ -393,7 +392,6 @@ public void onBackPressed() {
     }
 
     /*Share button functionality*/
-
 //    public  void shareButtionFunctionality(){
 //
 //        try {
@@ -411,13 +409,14 @@ public void onBackPressed() {
 //            e.printStackTrace();
 //        }
 //    }
-    //method for slide menu button
+
+    /*method for slide menu button*/
     public void slidemenu(){
         DrawerLayout slider=(DrawerLayout)findViewById(R.id.drawer_layout);
         slider.openDrawer(Gravity.LEFT);
     }
 
-    // method for exit the app
+    /* method for exit the app*/
     public void exit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to exit?")
@@ -436,7 +435,8 @@ public void onBackPressed() {
         AlertDialog alert = builder.create();
         alert.show();
     }
-    // method for contactus
+
+    /* method for contactus*/
     private void contactus() {
 
         try {
