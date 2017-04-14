@@ -13,8 +13,8 @@ import com.bizzmark.seller.sellerwithoutlogin.db.Retrofit.SellerProfile;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnPoints;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.IOException;
