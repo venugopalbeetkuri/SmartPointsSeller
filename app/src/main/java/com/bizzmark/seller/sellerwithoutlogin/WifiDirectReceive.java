@@ -35,7 +35,7 @@ import android.widget.Toast;
 import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
 import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
 import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
-//import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
+import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
@@ -71,15 +71,6 @@ public class WifiDirectReceive extends AppCompatActivity
         // for enable wifi
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifi.setWifiEnabled(true);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -358,11 +349,14 @@ public void onBackPressed() {
         } else if (id == R.id.nav_privacy_policy) {
             Intent i=new Intent(getApplicationContext(),PrivacyPolicy.class);
             startActivity(i);
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-            shareButtionFunctionality();
-        } else if (id == R.id.nav_contact_us) {
+        }
+//        else if (id == R.id.nav_manage) {
+//
+//        }
+// else if (id == R.id.nav_share) {
+//            shareButtionFunctionality();
+//        }
+        else if (id == R.id.nav_contact_us) {
             contactus();
         }else if (id == R.id.nav_exit){
             exit();
@@ -375,7 +369,6 @@ public void onBackPressed() {
 
     @Override
     public void onClick(View v) {
-
 
         if (v == btnRefresh){
             Animation rotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.buttonrotate);
@@ -392,36 +385,38 @@ public void onBackPressed() {
             startActivity(i);
         }
         if(v == report){
-           // Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
-            //startActivity(i);
+            Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
+            startActivity(i);
         }
 
     }
 
-    public  void shareButtionFunctionality(){
+    /*Share button functionality*/
+//    public  void shareButtionFunctionality(){
+//
+//        try {
+//
+//            ApplicationInfo app=getApplicationContext().getApplicationInfo();
+//            String filepath = app.sourceDir;
+//            Intent intent=new Intent(Intent.ACTION_SEND);
+//            intent.setType("*/*");
+//            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filepath)));
+//            startActivity(Intent.createChooser(intent,"Share app"));
+//            Toast.makeText(getApplicationContext(),"Share the Seller App . . .", Toast.LENGTH_LONG).show();
+//
+//        }catch (Exception e){
+//
+//            e.printStackTrace();
+//        }
+//    }
 
-        try {
-
-            ApplicationInfo app=getApplicationContext().getApplicationInfo();
-            String filepath = app.sourceDir;
-            Intent intent=new Intent(Intent.ACTION_SEND);
-            intent.setType("*/*");
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filepath)));
-            startActivity(Intent.createChooser(intent,"Share app"));
-            Toast.makeText(getApplicationContext(),"Share the Seller App . . .", Toast.LENGTH_LONG).show();
-
-        }catch (Exception e){
-
-            e.printStackTrace();
-        }
-    }
-    //method for slide menu button
+    /*method for slide menu button*/
     public void slidemenu(){
         DrawerLayout slider=(DrawerLayout)findViewById(R.id.drawer_layout);
         slider.openDrawer(Gravity.LEFT);
     }
 
-    // method for exit the app
+    /* method for exit the app*/
     public void exit(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to exit?")
@@ -440,7 +435,8 @@ public void onBackPressed() {
         AlertDialog alert = builder.create();
         alert.show();
     }
-    // method for contactus
+
+    /* method for contactus*/
     private void contactus() {
 
         try {

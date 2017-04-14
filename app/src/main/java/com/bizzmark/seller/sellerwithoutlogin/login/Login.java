@@ -3,16 +3,25 @@ package com.bizzmark.seller.sellerwithoutlogin.login;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,138 +32,168 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
 
-public class Login extends AppCompatActivity implements View.OnClickListener {
+public class Login extends AppCompatActivity implements View.OnClickListener{
 
-    private Button buttonSignIn;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private TextView textViewSignup;
-    private TextView policy,terms;
-    //   private ImageView backbut;
-    FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
-    DatabaseReference database= FirebaseDatabase.getInstance().getReference();
+   // public static final String TAG = "";
+    private EditText ETUSERNAME;
+    private EditText ETPASSWORD;
+    private TextView TVSIGNUP;
+    private TextView TVFORGET;
+    private Button BTLOGIN;
+
+    private CheckBox CBPASS;
+
+    private ProgressDialog progressDialog;
+
+    private FirebaseAuth firebaseAuth;
+
+    ConnectivityManager cm;
+    NetworkInfo info;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        editTextEmail=(EditText)findViewById(R.id.editTextEmail);
-        editTextPassword=(EditText)findViewById(R.id.editTextPassword);
-        buttonSignIn=(Button)findViewById(R.id.buttonSignin);
-        textViewSignup=(TextView)findViewById(R.id.textViewSignUp);
-        policy=(TextView)findViewById(R.id.policy);
-        terms=(TextView)findViewById(R.id.terms);
-        if (firebaseAuth.getCurrentUser() != null){
-            finish();
-            Intent i=new Intent(Login.this,WifiDirectReceive.class);
-            startActivity(i);
-        }
 
-        buttonSignIn.setOnClickListener(this);
-        textViewSignup.setOnClickListener(this);
-        policy.setOnClickListener(this);
-        terms.setOnClickListener(this);
+        ETUSERNAME=(EditText)findViewById(R.id.etusername);
 
-    }
+        ETPASSWORD=(EditText)findViewById(R.id.etpassword);
 
-    //method for user login
-    private void userLogin(){
-        final String email=editTextEmail.getText().toString().trim();
-        final String password=editTextPassword.getText().toString().trim();
+        TVSIGNUP=(TextView) findViewById(R.id.tvsignup);
 
-        //checking email id and password is empty or not
+        BTLOGIN=(Button)findViewById(R.id.btlogin);
 
-        if(TextUtils.isEmpty(email)){
+        TVFORGET=(TextView)findViewById(R.id.tvforget);
 
-            Vibrator v=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-            v.vibrate(300);
-            Toast.makeText(this,"Please enter Login Id",Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (TextUtils.isEmpty(password)){
-            Vibrator v=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-            v.vibrate(300);
-            Toast.makeText(this,"Please enter Password", Toast.LENGTH_LONG).show();
-            return;
-        }
+        CBPASS=(CheckBox)findViewById(R.id.cbpassword);
 
-        //If email id and password is not empty
+        BTLOGIN.setOnClickListener(this);
 
-        final ProgressDialog progressDialog=ProgressDialog.show(Login.this,"Please wait","Processing",true);
-        (firebaseAuth.signInWithEmailAndPassword(email,password)).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        TVSIGNUP.setOnClickListener(this);
+
+        TVFORGET.setOnClickListener(this);
+
+
+        //password hiding
+        CBPASS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                progressDialog.dismiss();
-                if (task.isSuccessful()){
-                    Toast.makeText(Login.this,"SUCCESS",Toast.LENGTH_LONG).show();
-                    editTextEmail.setText("");
-                    editTextPassword.setText("");
-                    finish();
-                    Intent i=new Intent(Login.this,WifiDirectReceive.class);
-                    startActivity(i);
-                }
-                else {
-
-                    Log.e("ERROR",task.getException().toString());
-                    Vibrator v=(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-                    v.vibrate(300);
-                    Toast.makeText(Login.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked){
+                    ETPASSWORD.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    ETPASSWORD.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
             }
         });
+
+        progressDialog = new ProgressDialog(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        if(firebaseAuth.getCurrentUser() != null){
+            //Will open Wifi direct Recive activity here
+            startActivity(new Intent(this, WifiDirectReceive.class));
+        }
+        checkInternet();
     }
 
-    // moving to Signup page
-    private void userSignup(){
-//        Intent i=new Intent(Login.this,SellerRegistration.class);
-//        startActivity(i);
+    private void checkInternet() {
+        cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+        info = cm.getActiveNetworkInfo();
+        if (info == null){
+            alertDialog();
+            // setContentView(R.layout.internet_layout);
+            // finish();
+        }else {
+            if (firebaseAuth.getCurrentUser() != null){
+                startActivity(new Intent(this,WifiDirectReceive.class));
+                finish();
+            }
+        }
     }
 
-    //method for dispalying terms
-
-    public void terms(){
-        final Dialog custom=new Dialog(Login.this);
-        custom.setTitle("CUSTOM DIALOG");
-        custom.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        custom.setContentView(R.layout.activity_terms);
-        custom.setCanceledOnTouchOutside(true);
-        custom.show();
+    private void alertDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("No Internet")
+                .setMessage("oops! no internet connection!")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        finish();
+                    }
+                }).setCancelable(false).create().show();
     }
 
-    //method for dispalying terms
+    private void userLogin() {
+        String email = ETUSERNAME.getText().toString().trim();
+        String password = ETPASSWORD.getText().toString().trim();
 
-    public void policy(){
-        final Dialog custom=new Dialog(Login.this);
-        custom.setTitle("CUSTOM DIALOG");
-        custom.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        custom.setContentView(R.layout.activity_privacy_policy);
-        custom.setCanceledOnTouchOutside(true);
-        custom.show();
+        //Checking if email and password are empty
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Please Enter Username", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please Enter Password", Toast.LENGTH_LONG).show();
+            return;
+        }
+        //if the email and password are not empty
+        //displaying progress dialog
+        progressDialog.setMessage("LogIn Please Wait....");
+        progressDialog.show();
+
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if (task.isSuccessful()) {
+                            //start Wifi direct recive activity
+                            finish();
+                            startActivity(new Intent(getApplicationContext(), WifiDirectReceive.class));
+
+                        }else {
+                            Toast.makeText(Login.this, "Invalid Username or Password",Toast.LENGTH_LONG ).show();
+                            ETUSERNAME.setText("");
+                            ETPASSWORD.setText("");
+                        }
+                    }
+                });
+
+
     }
-
-
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
 
-        if (v==buttonSignIn){
-            userLogin();
+        if(view == BTLOGIN){
+            //Calling userLogin()method
+            if (info != null) {
+                userLogin();
+            }else {
+                alertDialog();
+            }
+        }
+
+        if(view == TVSIGNUP){
+            //Closing Current task
+            finish();
+            //Goto RegisterActivity class
+            startActivity(new Intent(this,RegisterActivity.class));
 
         }
-        if (v==textViewSignup){
-            userSignup();
-        }
-        if(v==terms){
-            terms();
-            // backbut();
-        }
-        if(v==policy){
-            policy();
-            //  backbut();
+
+
+        if(view == TVFORGET){
+            //Closing Current Task
+            finish();
+            //Goto Forget password class
+            startActivity(new Intent(this, ForgetPassword.class));
+
         }
 
     }

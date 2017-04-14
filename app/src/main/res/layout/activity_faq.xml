@@ -5,7 +5,8 @@
     android:id="@+id/activity_faq"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bizzmark.seller.newseller.FAQ">
+    tools:context="com.bizzmark.seller.sellerwithoutlogin.FAQ"
+    android:background="#4DB6AC">
 
     <!--Header aligned at top-->
 
