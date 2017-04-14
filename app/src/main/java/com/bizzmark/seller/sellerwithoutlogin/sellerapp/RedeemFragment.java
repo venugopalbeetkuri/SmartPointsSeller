@@ -44,24 +44,20 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-//        DialogFragment newFragment = new DatePickerFragment();
-//
-//        //newFragment.show(getActivity(), "datePicker");
-//        newFragment.show(newFragment,"TAG");
 
-//        final Calendar c = Calendar.getInstance();
-//        int year = c.get(Calendar.YEAR);
-//        int month = c.get(Calendar.MONTH);
-//        int day = c.get(Calendar.DAY_OF_MONTH);
-//
-//        // Create a new instance of DatePickerDialog and return it
-//        DatePickerDialog dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-//            @Override
-//            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-//
-//            }
-//        }, year, month, day);
-//        dialog.show();
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        // Create a new instance of DatePickerDialog and return it
+        DatePickerDialog dialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+            }
+        }, year, month, day);
+        dialog.show();
 
     }
 
