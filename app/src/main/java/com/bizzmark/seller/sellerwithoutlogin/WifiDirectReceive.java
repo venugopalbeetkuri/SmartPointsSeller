@@ -29,19 +29,16 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
 import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
-import com.bizzmark.seller.sellerwithoutlogin.login.Login;
 import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
-//import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
+import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -53,11 +50,6 @@ public class WifiDirectReceive extends AppCompatActivity
 
     final Context context = this;
     public ImageView imgmenu,sellerimg;
-
-    public ImageButton buttonlogout;
-
-    private FirebaseAuth firebaseAuth;
-
 
     public static final String TAG = "smartpointseller";
     private boolean isWifiP2pEnabled = false;
@@ -76,17 +68,8 @@ public class WifiDirectReceive extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_direct_receive);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        if(firebaseAuth.getCurrentUser() == null){
-            finish();
-            startActivity(new Intent(this, Login.class));
-
-        }
-
         // for enable wifi
-        WifiManager wifi = (WifiManager)getApplicationContext() .getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifi.setWifiEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -110,9 +93,6 @@ public class WifiDirectReceive extends AppCompatActivity
 
         imgmenu=(ImageView)findViewById(R.id.imgmenu);
         imgmenu.setOnClickListener(this);
-
-        buttonlogout=(ImageButton) findViewById(R.id.action_logout);
-        buttonlogout.setOnClickListener(this);
 
         sellerimg=(ImageView)v.findViewById(R.id.sellerimg);
         sellerimg.setOnClickListener(this);
@@ -407,24 +387,13 @@ public void onBackPressed() {
         if (v == imgmenu){
             slidemenu();
         }
-
-        if(v == buttonlogout){
-            if (firebaseAuth.getCurrentUser() != null) {
-                firebaseAuth.signOut();
-                Toast.makeText(this, "LogOut Successfully", Toast.LENGTH_LONG).show();
-                finish();
-                startActivity(new Intent(this, Login.class));
-            }else {
-                Toast.makeText(this, "You don't signin yet", Toast.LENGTH_SHORT).show();
-            }
-        }
         if (v == sellerimg){
             Intent i=new Intent(WifiDirectReceive.this, Seller_Basic_Information.class);
             startActivity(i);
         }
         if(v == report){
-//            Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
-//            startActivity(i);
+            Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
+            startActivity(i);
         }
 
     }

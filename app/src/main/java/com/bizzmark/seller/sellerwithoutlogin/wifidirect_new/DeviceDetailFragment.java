@@ -57,7 +57,6 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
     private WifiP2pInfo info;
     ProgressDialog progressDialog = null;
 
-
     private WifiP2pManager manager;
     private Channel channel;
 
@@ -70,10 +69,9 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        mContentView = inflater.inflate(R.layout.device_details,null);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        mContentView = inflater.inflate(R.layout.device_details, null);
         mContentView.findViewById(R.id.btn_connect).setVisibility(View.GONE);
         mContentView.findViewById(R.id.btn_disconnect).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +80,7 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
                 mContentView.setVisibility(View.GONE);
             }
         });
+
         return mContentView;
     }
 
@@ -128,9 +127,7 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
 
         if (info.groupFormed && info.isGroupOwner) {
 
-            new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text))
-                    .execute();
-
+            new FileServerAsyncTask(getActivity(), mContentView.findViewById(R.id.status_text)).execute();
             mDataTask = new FileServerAsyncTask(DeviceDetailFragment.this);
             mDataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }else if (info.groupFormed) {
@@ -158,13 +155,16 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
         view.setText(R.string.empty);
     }
 
+
+    ServerSocket serverSocket = null;
+
     private class FileServerAsyncTask extends AsyncTask<Void,Void,String> {
-        int ep=0;
+
+        int ep = 0;
         String remoteAddress=null;
 
         private Context context;
         private TextView statusText;
-
 
         private DeviceDetailFragment activity;
 
@@ -172,7 +172,6 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
             this.context = context;
             this.statusText = (TextView) statusText;
         }
-
 
         public FileServerAsyncTask(DeviceDetailFragment activity) {
             this.activity = activity;
@@ -183,15 +182,16 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
             super.onPreExecute();
         }
 
-
         @Override
         protected String doInBackground(Void... params) {
 
             try{
 
-                Log.i("bizzmark", "data doing back");
-                ServerSocket serverSocket = new ServerSocket(8888);
-                serverSocket.setReuseAddress(true);
+                if(null == serverSocket) {
+                    Log.i("bizzmark", "data doing back");
+                    serverSocket = new ServerSocket(8888);
+                    serverSocket.setReuseAddress(true);
+                }
 
                 Log.i("bizzmark","Opening socket on 8888.");
                 Socket client = serverSocket.accept();
@@ -217,15 +217,19 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
 
                 while ((i = inputStream.read()) != -1){
                     baos.write(i);
-
                 }
 
                 String str = baos.toString();
 
-                serverSocket.close();
                 return str;
-            }catch (Throwable e){
+            }catch (Exception e){
                 e.printStackTrace();
+                try {
+                    serverSocket.close();
+                    serverSocket = null;
+                }catch (Throwable th){
+                    th.printStackTrace();
+                }
                 return null;
             }
         }
