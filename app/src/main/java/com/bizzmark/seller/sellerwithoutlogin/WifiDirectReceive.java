@@ -1,20 +1,27 @@
 package com.bizzmark.seller.sellerwithoutlogin;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuInflater;
@@ -30,6 +37,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
@@ -51,6 +59,9 @@ public class WifiDirectReceive extends AppCompatActivity
     final Context context = this;
     public ImageView imgmenu,sellerimg;
 
+    public static final int REQUEST_READ_PERMISSION = 1;
+
+
     public static final String TAG = "smartpointseller";
     private boolean isWifiP2pEnabled = false;
     private WifiP2pManager manager;
@@ -60,6 +71,9 @@ public class WifiDirectReceive extends AppCompatActivity
     private BroadcastReceiver receiver = null;
 
     private Button btnRefresh,report;
+    //Textview variable  for displaying device id
+    TextView device_id;
+    String deviceId;
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled){
         this.isWifiP2pEnabled = isWifiP2pEnabled;
     }
@@ -94,7 +108,9 @@ public class WifiDirectReceive extends AppCompatActivity
         report=(Button)findViewById(R.id.report);
         report.setOnClickListener(this);
 
-      // add necessary intent values to be matched.
+        device_id=(TextView)v.findViewById(R.id.device_id);
+
+        /* add necessary intent values to be matched.*/
 
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -105,10 +121,60 @@ public class WifiDirectReceive extends AppCompatActivity
         channel =  manager.initialize(this,getMainLooper(),null);
         discoverPeers();
 
+        runTimePermission();
+        getIMEIstring();
 
+        device_id.setText(deviceId);
     }
 
-    //peers discovery
+    private void runTimePermission() {
+            // runtime permission getting imi-string
+            boolean hasPermissionLocation = (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
+            if (!hasPermissionLocation) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        REQUEST_READ_PERMISSION);
+            } else {
+                // getting device id
+                deviceId = getIMEIstring();
+            }
+    }
+
+    /*getting device Id*/
+
+    private String getIMEIstring() {
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) this
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            deviceId = telephonyManager.getDeviceId();
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+        }
+        return deviceId;
+    }
+
+        /*getting run time permission*/
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_READ_PERMISSION:{
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                    Toast.makeText(context,"Permission granted.",Toast.LENGTH_LONG).show();
+//                    runTimePermission();
+                    getIMEIstring();
+                    discoverPeers();
+                }else {
+                    Toast.makeText(context,"The app was not allowed to get your phone state. Hence, it cannot function properly. Please consider granting it this permission",Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    /*peers discovery*/
 
     public void discoverPeers(){
         if (!isWifiP2pEnabled){
