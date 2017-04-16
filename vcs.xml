@@ -12,10 +12,18 @@
         </UrlAndUserName>
         <UrlAndUserName>
           <option name="url" value="http://github.com" />
-          <option name="userName" value="saisriram.p.rao@gmail.com" />
+          <option name="userName" value="tharun.prakash2@gmail.com" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/TharunPrakash/Seller_updated.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/TharunPrakash/Seller_updated/tree/sharing" />
+          <option name="userName" value="" />
         </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="C:\Users\Admin\Desktop\Sai Sriram" />
+    <option name="cloneParentDir" value="C:\Users\Admin\Desktop\NewSeller" />
   </component>
 </application>
