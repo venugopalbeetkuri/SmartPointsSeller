@@ -225,8 +225,10 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
             }catch (Exception e){
                 e.printStackTrace();
                 try {
-                    serverSocket.close();
-                    serverSocket = null;
+                    if(null != serverSocket) {
+                        //serverSocket.close();
+                        //serverSocket = null;
+                    }
                 }catch (Throwable th){
                     th.printStackTrace();
                 }
@@ -249,8 +251,9 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
 
 //                    intent.putExtra("remoteaddress", remoteAddress);
 
-                    intent.putExtra("GroupOwnerAddress", info.groupOwnerAddress.getHostAddress());
+                   // intent.putExtra("GroupOwnerAddress", info.groupOwnerAddress.getHostAddress());
 
+                intent.putExtra("GroupOwnerAddress", remoteAddress);
       //          intent.putExtra("port", port);
 
                     getActivity().startActivity(intent);

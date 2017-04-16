@@ -188,9 +188,12 @@ public class EarnPoints extends AppCompatActivity {
         try {
 
             boolean instance=FileTransferService.isInstanceCreated();
-             if (instance=false){
+             if (instance==false){
                  serviceIntent = new Intent(EarnPoints.this,FileTransferService.class);
              }
+
+
+            remoteMacAddress = getIntent().getStringExtra("GroupOwnerAddress");
 
                 // Send msg to customer.
                 serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
