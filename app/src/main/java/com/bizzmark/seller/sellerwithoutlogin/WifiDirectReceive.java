@@ -48,9 +48,11 @@ import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
 import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
 import com.bizzmark.seller.sellerwithoutlogin.login.Login;
 import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
+import com.bizzmark.seller.sellerwithoutlogin.sellerapp.LastTenTransactions;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
+import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.Settings;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -444,14 +446,24 @@ public class WifiDirectReceive extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_faq) {
-            Intent i = new Intent(getApplicationContext(), FAQ.class);
+//        if (id == R.id.nav_faq) {
+//            Intent i = new Intent(getApplicationContext(), FAQ.class);
+//            startActivity(i);
+//        }
+        if (id == R.id.nav_report){
+            Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
             startActivity(i);
-        } else if (id == R.id.nav_terms_conditions) {
+        }
+        else if (id == R.id.nav_terms_conditions) {
             Intent i = new Intent(getApplication(), Terms.class);
             startActivity(i);
         } else if (id == R.id.nav_privacy_policy) {
             Intent i=new Intent(getApplicationContext(),PrivacyPolicy.class);
+            startActivity(i);
+        }
+
+        else if (id == R.id.nav_setting){
+            Intent i = new Intent(getApplicationContext(), Settings.class);
             startActivity(i);
         }
 
@@ -491,8 +503,9 @@ public class WifiDirectReceive extends AppCompatActivity
             startActivity(i);
         }
         if(v == report){
-            Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
-            startActivity(i);
+
+            Intent intent = new Intent(this,LastTenTransactions.class);
+            startActivity(intent);
         }
 
     }
