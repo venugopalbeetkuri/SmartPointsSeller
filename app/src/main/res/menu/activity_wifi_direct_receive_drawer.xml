@@ -3,10 +3,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_faq"
-            android:icon="@drawable/ic_help_black_24dp"
-            android:title="FAQ" />
-        <item
             android:id="@+id/nav_terms_conditions"
             android:icon="@drawable/ic_announcement_black_24dp"
             android:title="Terms and Conditions" />
@@ -14,6 +10,16 @@
             android:id="@+id/nav_privacy_policy"
             android:icon="@drawable/ic_announcement_black_24dp"
             android:title="Privacy Policy" />
+
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings"/>
+
+        <item
+            android:id="@+id/nav_report"
+            android:icon="@drawable/report"
+            android:title="Total Transaction Report"/>
 
     </group>
 
