@@ -46,9 +46,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     private CheckBox CBPASS;
 
-    private ProgressDialog progressDialog;
+    //private ProgressDialog progressDialog;
 
-    private FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     ConnectivityManager cm;
     NetworkInfo info;
@@ -77,6 +77,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
         TVFORGET.setOnClickListener(this);
 
+//        if(firebaseAuth.getCurrentUser() != null){
+//            //Will open Wifi direct Recive activity here
+//            finish();
+//            Intent i = new Intent(Login.this,WifiDirectReceive.class);
+//            startActivity(i);
+//        }
 
         //password hiding
         CBPASS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -90,13 +96,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             }
         });
 
-        progressDialog = new ProgressDialog(this);
+      //  progressDialog = new ProgressDialog(this);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        if(firebaseAuth.getCurrentUser() != null){
-            //Will open Wifi direct Recive activity here
-            startActivity(new Intent(this, WifiDirectReceive.class));
-        }
+//        firebaseAuth = FirebaseAuth.getInstance();
+
         checkInternet();
     }
 
@@ -109,8 +112,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             // finish();
         }else {
             if (firebaseAuth.getCurrentUser() != null){
-                startActivity(new Intent(this,WifiDirectReceive.class));
                 finish();
+                Intent i = new Intent(this,WifiDirectReceive.class);
+                startActivity(i);
             }
         }
     }
@@ -129,8 +133,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void userLogin() {
-        String email = ETUSERNAME.getText().toString().trim();
-        String password = ETPASSWORD.getText().toString().trim();
+        final String email = ETUSERNAME.getText().toString().trim();
+        final String password = ETPASSWORD.getText().toString().trim();
 
         //Checking if email and password are empty
         if (TextUtils.isEmpty(email)) {
@@ -143,19 +147,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         }
         //if the email and password are not empty
         //displaying progress dialog
-        progressDialog.setMessage("LogIn Please Wait....");
-        progressDialog.show();
+//        progressDialog.setMessage("LogIn Please Wait....");
+//        progressDialog.show();
+        final ProgressDialog progressDialog=ProgressDialog.show(Login.this,"Please wait","Processing",true);
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             //start Wifi direct recive activity
+                            Toast.makeText(Login.this,"SUCCESS",Toast.LENGTH_LONG).show();
+                            ETUSERNAME.setText("");
+                            ETPASSWORD.setText("");
                             finish();
-                            startActivity(new Intent(getApplicationContext(), WifiDirectReceive.class));
-
+                            Intent i = new Intent(Login.this,WifiDirectReceive.class);
+                            startActivity(i);
                         }else {
                             Toast.makeText(Login.this, "Invalid Username or Password",Toast.LENGTH_LONG ).show();
                             ETUSERNAME.setText("");
@@ -163,7 +171,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                         }
                     }
                 });
-
 
     }
 

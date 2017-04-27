@@ -3,43 +3,93 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    app:cardBackgroundColor="@color/cardview_dark_background"
     android:layout_height="wrap_content">
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:background="?android:attr/activatedBackgroundIndicator"
-    android:padding="6dip">
-    <ImageView
-        android:id="@+id/iv_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_marginRight="2dip"
-        android:src="@mipmap/ic_launcher" />
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dip"
-        android:layout_weight="1"
-        android:layout_height="fill_parent">
-        <TextView
-            android:id="@+id/tv_device_name"
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:textColor="#ffffff"
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:padding="2dp"
+        android:weightSum="1">
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_icon"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:layout_marginRight="2dip"-->
+            <!--android:src="@mipmap/ic_launcher" />-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dip"
             android:layout_weight="1"
-            android:text="Device name"
-            android:gravity="center_vertical" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:text="Status"
-            android:textColor="#ffffff"
-            android:layout_weight="1"
-            android:id="@+id/tv_device_details"
-            android:singleLine="true"
-            android:ellipsize="marquee" />
+            android:layout_height="fill_parent"
+            android:id="@+id/card_bg"
+            android:weightSum="1">
+            <TextView
+                android:id="@+id/tv_device_name"
+                android:layout_width="fill_parent"
+                android:layout_height="0dip"
+                android:textColor="#000"
+                android:layout_weight="0.5"
+                android:text="Device name"
+                android:textSize="19dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="0dip"
+                android:text="Status"
+                android:textSize="16dp"
+                android:textColor="#000"
+                android:layout_weight="0.5"
+                android:id="@+id/tv_device_details"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:paddingLeft="5dp"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:gravity="center_vertical"
+        android:background="#fff" />
 </android.support.v7.widget.CardView>
+<!--<LinearLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:id="@+id/row_device_ll"-->
+    <!--android:layout_height="?android:attr/listPreferredItemHeight"-->
+    <!--android:background="@drawable/custom_drawable">-->
+    <!--&lt;!&ndash;<ImageView&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/icon"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_width="47dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_height="43dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_marginRight="2dip"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:layout_marginTop="2dp"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:visibility="gone"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:src="@drawable/android" />&ndash;&gt;-->
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_marginLeft="3dp"-->
+        <!--android:layout_marginRight="2dp"-->
+        <!--android:layout_height="fill_parent">-->
+        <!--<TextView-->
+            <!--android:id="@+id/tv_device_name"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textColor="#000"-->
+            <!--android:textSize="19dp"-->
+            <!--android:text="Device name"-->
+            <!--android:gravity="center_vertical"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textColor="#000"-->
+            <!--android:text="Device status"-->
+            <!--android:id="@+id/tv_device_details"-->
+            <!--android:singleLine="true"-->
+            <!--android:ellipsize="marquee" />-->
+    <!--</LinearLayout>-->
+<!--</LinearLayout>-->

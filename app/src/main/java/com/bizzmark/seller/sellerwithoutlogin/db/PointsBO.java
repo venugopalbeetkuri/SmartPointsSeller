@@ -15,6 +15,10 @@ public class PointsBO {
     String disCountAmount;
     String time;
 
+    public PointsBO(){
+
+    }
+
     public PointsBO(String type,
                     String billAmount,
                     String storeName,

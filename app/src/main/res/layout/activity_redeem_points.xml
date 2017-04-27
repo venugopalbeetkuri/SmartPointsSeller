@@ -4,7 +4,7 @@
     android:id="@+id/activity_redeem_points"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bizzmark.seller.newseller.seller.RedeemPoints">
+    tools:context="com.bizzmark.seller.sellerwithoutlogin.sellerapp.RedeemPoints">
 
     <!--Header aligned at top-->
 
@@ -47,7 +47,7 @@
             android:text="REEDEEM POINTS"
             android:textColor="#3F51B5"
             android:textStyle="bold"
-            android:textSize="35dp" />
+            android:textSize="25dp" />
 
 
         <LinearLayout
@@ -81,6 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
                     android:textColor="#000"
                     android:textSize="20dp"
                     android:gravity="left"
@@ -110,6 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1">
+
                 <TextView
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
@@ -120,7 +122,8 @@
                     android:textSize="20dp"
                     android:gravity="left"
                     android:padding="3dip"
-                    android:text="Redeem Points " />
+                    android:text="Redeem Points "
+                    android:id="@+id/textView2" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -131,6 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
                     android:textColor="#000"
                     android:textSize="20dp"
                     android:gravity="left"
@@ -180,6 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
                     android:textColor="#000"
                     android:textSize="20dp"
                     android:gravity="left"
@@ -230,6 +235,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginLeft="40dp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="20dp"
                     android:gravity="left"
@@ -283,6 +289,72 @@
 
     </LinearLayout>
 
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@+id/header"-->
+        <!--android:orientation="vertical"-->
+        <!--android:weightSum="6">-->
 
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1">-->
+            <!--<TextView-->
+                <!--android:layout_margin="20dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:padding="3dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="REEDEEM POINTS"-->
+                <!--android:textColor="#3F51B5"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textSize="25dp" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:weightSum="1"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:textColor="#000"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:textSize="20dp"-->
+                <!--android:gravity="left"-->
+                <!--android:text="Bill Amount " />-->
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:text=":"/>-->
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:textColor="#000"-->
+                <!--android:textSize="20dp"-->
+                <!--android:gravity="left"-->
+                <!--android:padding="3dip"-->
+                <!--android:text="00"-->
+                <!--android:id="@+id/billAmount" />-->
+
+            <!--<ImageView-->
+                <!--android:layout_height="30dp" -->
+                <!--android:layout_width="20dp"-->
+                <!--android:gravity="left"-->
+                <!--android:padding="3dip"-->
+                <!--app:srcCompat="@drawable/rupee"-->
+                <!--android:id="@+id/imageView5"/>-->
+            <!--</LinearLayout>-->
+            <!---->
+        <!--</LinearLayout>-->
+
+    <!--</LinearLayout>-->
 
 </RelativeLayout>

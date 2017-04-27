@@ -1,20 +1,29 @@
 package com.bizzmark.seller.sellerwithoutlogin;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuInflater;
@@ -29,27 +38,46 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
 import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
+import com.bizzmark.seller.sellerwithoutlogin.login.Login;
 import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static android.graphics.Color.GREEN;
+
 public class WifiDirectReceive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, WifiP2pManager.ChannelListener, DeviceListFragment.DeviceActionListener {
 
     final Context context = this;
     public ImageView imgmenu,sellerimg;
+    public ImageButton action_logout;
+
+    String header_storeName;
+    TextView headerStoreName;
+
+//    LinearLayout card_bg;
+
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    public static final int REQUEST_READ_PERMISSION = 1;
+
 
     public static final String TAG = "smartpointseller";
     private boolean isWifiP2pEnabled = false;
@@ -60,14 +88,26 @@ public class WifiDirectReceive extends AppCompatActivity
     private BroadcastReceiver receiver = null;
 
     private Button btnRefresh,report;
+    //Textview variable  for displaying device id
+    TextView device_id;
+    String deviceId;
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled){
         this.isWifiP2pEnabled = isWifiP2pEnabled;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_direct_receive);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null){
+            finish();
+            Intent i = new Intent(this,Login.class);
+            startActivity(i);
+        }
+
         // for enable wifi
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         wifi.setWifiEnabled(true);
@@ -85,16 +125,28 @@ public class WifiDirectReceive extends AppCompatActivity
         imgmenu=(ImageView)findViewById(R.id.imgmenu);
         imgmenu.setOnClickListener(this);
 
+//        Intent intent = getIntent();
+//        header_storeName = intent.getStringExtra("header_storeName");
+//
+//        headerStoreName = (TextView)findViewById(R.id.header_storeName);
+//        headerStoreName.setText(header_storeName);
+//        card_bg=(LinearLayout)findViewById(R.id.card_bg);
+
         sellerimg=(ImageView)v.findViewById(R.id.sellerimg);
         sellerimg.setOnClickListener(this);
 
         btnRefresh=(Button)findViewById(R.id.btnRefresh);
         btnRefresh.setOnClickListener(this);
 
+        action_logout=(ImageButton)findViewById(R.id.action_logout);
+        action_logout.setOnClickListener(this);
+
         report=(Button)findViewById(R.id.report);
         report.setOnClickListener(this);
 
-      // add necessary intent values to be matched.
+        device_id=(TextView)v.findViewById(R.id.device_id);
+
+        /* add necessary intent values to be matched.*/
 
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -105,10 +157,60 @@ public class WifiDirectReceive extends AppCompatActivity
         channel =  manager.initialize(this,getMainLooper(),null);
         discoverPeers();
 
+        runTimePermission();
+       // getIMEIstring();
 
+        device_id.setText(deviceId);
     }
 
-    //peers discovery
+    private void runTimePermission() {
+            // runtime permission getting imi-string
+            boolean hasPermissionLocation = (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
+            if (!hasPermissionLocation) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        REQUEST_READ_PERMISSION);
+            } else {
+                // getting device id
+                deviceId = getIMEIstring();
+            }
+    }
+
+    /*getting device Id*/
+
+    private String getIMEIstring() {
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) this
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            deviceId = telephonyManager.getDeviceId();
+        }catch (Throwable throwable){
+            throwable.printStackTrace();
+        }
+        return deviceId;
+    }
+
+        /*getting run time permission*/
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_READ_PERMISSION:{
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                    Toast.makeText(context,"Permission granted.",Toast.LENGTH_LONG).show();
+//                    runTimePermission();
+                    getIMEIstring();
+                    discoverPeers();
+                }else {
+                    Toast.makeText(context,"The app was not allowed to get your phone state. Hence, it cannot function properly. Please consider granting it this permission",Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    /*peers discovery*/
 
     public void discoverPeers(){
         if (!isWifiP2pEnabled){
@@ -177,6 +279,7 @@ public class WifiDirectReceive extends AppCompatActivity
             @Override
             public void onSuccess() {
                 // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
+//                card_bg.setBackgroundColor(GREEN);
             }
 
             @Override
@@ -285,14 +388,14 @@ public class WifiDirectReceive extends AppCompatActivity
         }
     }
 
-@Override
-public void onBackPressed() {
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    if (drawer.isDrawerOpen(GravityCompat.START)) {
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
         drawer.closeDrawer(GravityCompat.START);
-    } else {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to exit?")
+        }  else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -303,13 +406,13 @@ public void onBackPressed() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                         //StopConnect();
-                    }
+                     }
                 });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
 
-}
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -328,6 +431,7 @@ public void onBackPressed() {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
+         //   logout();
             return true;
         }
 
@@ -350,9 +454,7 @@ public void onBackPressed() {
             Intent i=new Intent(getApplicationContext(),PrivacyPolicy.class);
             startActivity(i);
         }
-//        else if (id == R.id.nav_manage) {
-//
-//        }
+
 // else if (id == R.id.nav_share) {
 //            shareButtionFunctionality();
 //        }
@@ -375,7 +477,11 @@ public void onBackPressed() {
             rotation.start();
             btnRefresh.startAnimation(rotation);
             deletePersistentGroups();
+            disconnect();
             discoverPeers();
+        }
+        if (v==action_logout){
+            logout();
         }
         if (v == imgmenu){
             slidemenu();
@@ -459,4 +565,27 @@ public void onBackPressed() {
             e.printStackTrace();
         }
     }
+
+    /* method for logout*/
+    public void logout(){
+        FirebaseUser user=firebaseAuth.getCurrentUser();
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure to logout")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        firebaseAuth.signOut();
+                        finish();
+                        Intent i=new Intent(WifiDirectReceive.this,Login.class);
+                        startActivity(i);
+                    }
+                }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
+    }
+
 }
