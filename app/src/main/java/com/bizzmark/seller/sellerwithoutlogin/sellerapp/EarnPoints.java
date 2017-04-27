@@ -15,8 +15,11 @@ import com.bizzmark.seller.sellerwithoutlogin.db.AcknowledgePoints;
 import com.bizzmark.seller.sellerwithoutlogin.db.AsyncTask.DataBaseBackgroundTask;
 import com.bizzmark.seller.sellerwithoutlogin.db.PointsBO;
 import com.bizzmark.seller.sellerwithoutlogin.db.Retrofit.InsertData;
+import com.bizzmark.seller.sellerwithoutlogin.util.Utility;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.service.FileTransferService;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -40,9 +43,10 @@ public class EarnPoints extends AppCompatActivity {
     final static String log = "Seller app";
 
     int discountpoints;
-    String earn_Points;
+    String earn_Points, failureString;
 
     PointsBO pointsBO=null;
+    String acknowledgePoints;
 
     public int i=0;
 
@@ -58,6 +62,7 @@ public class EarnPoints extends AppCompatActivity {
     SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
     String earnString = null;
+//    String ackString = null;
     String remoteMacAddress = null;
 
     @Override
@@ -80,11 +85,12 @@ public class EarnPoints extends AppCompatActivity {
 
         Intent intent = getIntent();
         earnString = intent.getStringExtra("earnRedeemString");
+        remoteMacAddress = intent.getStringExtra("remoteAddress");
 
         /* Creating Gson for External Use*/
 
-//        Gson gson = new Gson();
-//        pointsBO = gson.fromJson(earnString,PointsBO.class);
+        Gson gson = new Gson();
+        pointsBO = gson.fromJson(earnString, PointsBO.class);
 //        bill_Amount = pointsBO.getBillAmount();
 //        device_Id = pointsBO.getDeviceId();
 //        store_Name = pointsBO.getStoreName();
@@ -106,13 +112,16 @@ public class EarnPoints extends AppCompatActivity {
             e.printStackTrace();
         }
 
+//        PointsBO pointsBO = new PointsBO();
+//        pointsBO.setPoints(earn_Points);
+
         earnPoints=(TextView)findViewById(R.id.earnPoints);
         billAmount = (TextView) findViewById(R.id.billamount);
 
         calPoints();
 
-        billAmount.setText(bill_amount);
-        earnPoints.setText(earn_Points);
+        billAmount.setText(pointsBO.getBillAmount());
+        earnPoints.setText(pointsBO.getPoints());
 
         addListenerOnAcceptButton();
         addListenerOnCancelButton();
@@ -133,7 +142,6 @@ public class EarnPoints extends AppCompatActivity {
                 sendAcknowledgement(false);
 
                 finish();
-
             }
         });
 
@@ -169,19 +177,40 @@ public class EarnPoints extends AppCompatActivity {
 
     }
 
+//    String jsonACK = null;
 
     private void sendAcknowledgement(boolean success){
 
-          AcknowledgePoints ack = null;
-
+          AcknowledgePoints ack = new AcknowledgePoints();
         if(success) {
-
-            ack = new AcknowledgePoints("success", earnString);
-            sendMessage();
+            String status = "success";
+//            ack = new AcknowledgePoints(status, deviceid, storename, billamount, points, type, time);
+            ack.setStatus(status);
+            ack.setDeviceId(device_id);
+            ack.setStoreName(store_name);
+            ack.setBillAmount(bill_amount);
+            ack.setPoints(earn_Points);
+            ack.setType(earn_type);
+            ack.setTime(date_time);
         } else {
-
-            ack = new AcknowledgePoints("failure", earnString);
+            String status = "failure";
+//          ack = new AcknowledgePoints(status, deviceid, storename, billamount, points, type, time);
+            ack.setStatus(status);
+            ack.setDeviceId(deviceid);
+            ack.setStoreName(storename);
+            ack.setBillAmount(billamount);
+            ack.setPoints(points);
+            ack.setType(type);
+            ack.setTime(time);
         }
+
+        Gson gson = new Gson();
+        acknowledgePoints = gson.toJson(ack);
+//        Gson gson = Utility.getGsonObject();
+//        jsonACK = gson.toJson(ack);
+//        Gson gson = new Gson(ack,AcknowledgePoints);
+        sendMessage();
+
     }
     private void sendMessage(){
 
@@ -199,7 +228,7 @@ public class EarnPoints extends AppCompatActivity {
                 serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
                 serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS, remoteMacAddress);
 
-                serviceIntent.putExtra(FileTransferService.MESSAGE,  earnString);
+                serviceIntent.putExtra(FileTransferService.MESSAGE,  acknowledgePoints);
 
                 Log.i("bizzmark", "Customer Address: " + remoteMacAddress);
                 serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 9999);
@@ -213,6 +242,53 @@ public class EarnPoints extends AppCompatActivity {
         }
 
     }
+
+//    private void sendFailureMessage(){
+//
+//     //   device_id =obj.getString("deviceId");
+//        earn_type="Null";
+//        bill_amount="Null";
+//        store_name="Null";
+//        date_time="Null";
+//    try{
+//        JSONObject jsonObject = new JSONObject(failureString);
+//        jsonObject.put(device_id,"deviceId");
+//        jsonObject.put(earn_type,"type");
+//        jsonObject.put(bill_amount,"billAmount");
+//        jsonObject.put(store_name,"storeName");
+//        jsonObject.put(date_time,"date_time");
+//
+//    }catch(Exception e){
+//        e.printStackTrace();
+//    }
+//    try {
+//
+//            boolean instance=FileTransferService.isInstanceCreated();
+//            if (instance==false){
+//                serviceIntent = new Intent(EarnPoints.this,FileTransferService.class);
+//            }
+//
+//
+//            remoteMacAddress = getIntent().getStringExtra("GroupOwnerAddress");
+//
+//            // Send msg to customer.
+//            serviceIntent.setAction(FileTransferService.ACTION_SEND_FILE);
+//            serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_ADDRESS, remoteMacAddress);
+//
+//            serviceIntent.putExtra(FileTransferService.MESSAGE,  failureString);
+//
+//            Log.i("bizzmark", "Customer Address: " + remoteMacAddress);
+//            serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 9999);
+//
+//            // Start service.
+//            startService(serviceIntent);
+//
+//        }
+//        catch (Throwable th){
+//            th.printStackTrace();
+//        }
+//
+//    }
 
     //saving data using AsyncTask
 
