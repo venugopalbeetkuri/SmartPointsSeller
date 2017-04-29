@@ -26,8 +26,12 @@
           <option name="url" value="https://github.com/spawrks/WifiDirectNameChanger" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/manasranjan931/SmartPointSnew2017-Update" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="C:\Users\Tharun\Desktop\Bizzmark Projects" />
+    <option name="cloneParentDir" value="C:\Users\Admin\Desktop\NewCustomer" />
   </component>
 </application>

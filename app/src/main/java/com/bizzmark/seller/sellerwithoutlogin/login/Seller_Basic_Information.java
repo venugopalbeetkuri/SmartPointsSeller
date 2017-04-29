@@ -1,5 +1,6 @@
 package com.bizzmark.seller.sellerwithoutlogin.login;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
+import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
 import com.bizzmark.seller.sellerwithoutlogin.db.Retrofit.SellerProfile;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnPoints;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +33,7 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
     private EditText storename,email,brid,brname,brmgrname,braddress,brdiscount;
     private Button seller_infosave;
     private ImageView backbut;
+    String store_name;
 
     public static final String ROOT_URL="https://wwwbizzmarkin.000webhostapp.com/";
 
@@ -53,6 +56,9 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
         backbut.setOnClickListener(this);
 
         seller_infosave.setOnClickListener(this);
+
+        store_name = storename.getText().toString();
+
 
     }
 
@@ -127,6 +133,9 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
         }
         if (v== seller_infosave){
             saveInfo();
+//            Intent intent = new Intent(getApplicationContext(), WifiDirectReceive.class);
+//            intent.putExtra("header_storeName", store_name);
+//            getApplicationContext().startActivity(intent);
             finish();
         }
 

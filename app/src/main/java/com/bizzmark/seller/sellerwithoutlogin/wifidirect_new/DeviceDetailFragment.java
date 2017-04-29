@@ -25,7 +25,11 @@ import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
 import com.bizzmark.seller.sellerwithoutlogin.db.PointsBO;
 import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnPoints;
+import com.bizzmark.seller.sellerwithoutlogin.sellerapp.RedeemPoints;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.service.FileTransferService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -145,20 +149,22 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
 
     public void resetViews() {
 
-        TextView view = (TextView) mContentView.findViewById(R.id.tv_device_address);
-        view.setText(R.string.empty);
-        view = (TextView) mContentView.findViewById(R.id.tv_device_info);
-        view.setText(R.string.empty);
-        view = (TextView) mContentView.findViewById(R.id.tv_group_owner);
-        view.setText(R.string.empty);
-        view = (TextView) mContentView.findViewById(R.id.status_text);
-        view.setText(R.string.empty);
+//        TextView view = (TextView) mContentView.findViewById(R.id.tv_device_address);
+//        view.setText(R.string.empty);
+//        view = (TextView) mContentView.findViewById(R.id.tv_device_info);
+//        view.setText(R.string.empty);
+//        view = (TextView) mContentView.findViewById(R.id.tv_group_owner);
+//        view.setText(R.string.empty);
+//        view = (TextView) mContentView.findViewById(R.id.status_text);
+//        view.setText(R.string.empty);
     }
 
 
     ServerSocket serverSocket = null;
 
     private class FileServerAsyncTask extends AsyncTask<Void,Void,String> {
+
+        String device_id,store_name,bill_amount,points_earn,date_time,earn_type;
 
         int ep = 0;
         String remoteAddress=null;
@@ -197,16 +203,6 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
                 Socket client = serverSocket.accept();
 
                 remoteAddress=((InetSocketAddress)client.getRemoteSocketAddress()).getAddress().getHostName();
-//                InetSocketAddress sockaddr = (InetSocketAddress)client.getRemoteSocketAddress();
-               // Then you can use the methods of InetSocketAddress to get the information you need, e.g.:
-
-//                InetAddress inaddr = sockaddr.getAddress();
-               //  Then, you can cast that to an Inet4Address or Inet6Address depending on the address type (if you don't know, use instanceof to find out), e.g. if you know it is IPv4:
-
-//                Inet4Address in4addr = (Inet4Address)inaddr;
-//                byte[] ip4bytes = in4addr.getAddress(); // returns byte[4]
-//                remoteAddress = in4addr.toString();
-//                remoteAddress=remoteAddress.replace("/","");
 
                 Log.i("bizzmark","Client connected.");
                 InputStream inputStream = client.getInputStream();
@@ -244,20 +240,27 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
             Toast.makeText(getActivity(), "From customer: " + result, Toast.LENGTH_SHORT).show();
 
             Log.i("bizzmark","data on post executr.Result: "+result);
-            if(result != null){
-                 Intent intent=new Intent(getActivity(), EarnPoints.class);
+            if(result != null) {
 
+                try {
+                    JSONObject obj = new JSONObject(result);
+                    earn_type = obj.getString("type");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                if (earn_type.equals("earn")) {
+                    Intent intent = new Intent(getActivity(), EarnPoints.class);
                     intent.putExtra("earnRedeemString", result);
-
-//                    intent.putExtra("remoteaddress", remoteAddress);
-
-                   // intent.putExtra("GroupOwnerAddress", info.groupOwnerAddress.getHostAddress());
-
-                intent.putExtra("GroupOwnerAddress", remoteAddress);
-      //          intent.putExtra("port", port);
-
+                    intent.putExtra("GroupOwnerAddress", remoteAddress);
                     getActivity().startActivity(intent);
+                } else if (earn_type.equals("redeem")) {
+                    Intent intent = new Intent(getActivity(),RedeemPoints.class);
+                    intent.putExtra("earnRedeemString", result);
+                    intent.putExtra("GroupOwnerAddress", remoteAddress);
+                    getActivity().startActivity(intent);
+                }
             }
+
         }
     }
 

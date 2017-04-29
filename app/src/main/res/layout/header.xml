@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:textSize="22dp"
-            android:id="@+id/textView3"
+            android:id="@+id/header_storeName"
             android:textColor="#000"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/imgmenu"
@@ -44,7 +44,7 @@
             android:background="@drawable/ic_power_settings_new_black_24dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/textView3" />
+            android:layout_alignTop="@+id/header_storeName" />
 
 
     </RelativeLayout>

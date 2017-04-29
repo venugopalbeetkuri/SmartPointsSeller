@@ -3,17 +3,25 @@ package com.bizzmark.seller.sellerwithoutlogin.wifidirect_new;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,6 +39,10 @@ public class DeviceListFragment extends ListFragment implements WifiP2pManager.P
     View mContentView = null;
     private WifiP2pDevice device;
 
+    LinearLayout card_bg;
+
+  //  ImageView settings;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -40,6 +52,17 @@ public class DeviceListFragment extends ListFragment implements WifiP2pManager.P
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContentView = inflater.inflate(R.layout.device_list, null);
+      //  card_bg=(LinearLayout) mContentView.findViewById(R.id.card_bg);
+//        settings=(ImageView)mContentView.findViewById(R.id.settigs);
+//        settings.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+//            }
+//        });
+//        if (getDeviceStatus(device.status).equals("Connected")){
+//            card_bg.setBackgroundColor(Color.GREEN);
+//        }
         return mContentView;
     }
 
@@ -94,18 +117,45 @@ public class DeviceListFragment extends ListFragment implements WifiP2pManager.P
                 TextView bottom = (TextView) view.findViewById(R.id.tv_device_details);
                 if (top != null) {
                     top.setText(device.deviceName);
+                    if (getDeviceStatus(device.status).equals("Connected")){
+                        //card_bg.setBackgroundColor(Color.GREEN);
+                       top.setBackgroundColor(getResources().getColor(R.color.GREEN));
+                        top.setTextColor(Color.BLACK);
+
+                    }
+                    else {
+                        top.setBackgroundColor(Color.BLUE);
+                        top.setTextColor(Color.WHITE);
+                    }
                 }
                 if (bottom != null) {
                     bottom.setText(getDeviceStatus(device.status));
+                    if (getDeviceStatus(device.status).equals("Connected")){
+                        //card_bg.setBackgroundColor(Color.GREEN);
+                        bottom.setBackgroundColor(getResources().getColor(R.color.GREEN));
+                        bottom.setTextColor(Color.BLACK);
+                    }
+                    else {
+                        bottom.setBackgroundColor(Color.BLUE);
+                        bottom.setTextColor(Color.WHITE);
+                    }
+                }
+                if (getDeviceStatus(device.status).equals("Connected")){
                 }
             }
 
             return view;
         }
+
     }
 
     public void upDateThisDevice(WifiP2pDevice device) {
+
         this.device = device;
+        TextView view = (TextView) mContentView.findViewById(R.id.my_name);
+        view.setText(device.deviceName);
+        view = (TextView) mContentView.findViewById(R.id.my_status);
+        view.setText(getDeviceStatus(device.status));
     }
 
 

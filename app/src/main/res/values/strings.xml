@@ -198,7 +198,7 @@ your express permission.
 \n\n 1. We collect this information when you sign up for a Merchant Partner Account, when you sign up one of your customers"
     </string>
     <string name="label_me">ME</string>
-    <string name="label_peers">SELECT STORE</string>
+    <string name="label_peers">Available Customers</string>
     <string name="group_owner_text">Am I the Group Owner ?</string>
     <string name="client_text">This device will act as a client. Click on Gallery button to pick a local(stored) file</string>
     <string name="empty" />
