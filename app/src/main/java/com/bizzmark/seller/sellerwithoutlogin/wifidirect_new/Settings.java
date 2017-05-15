@@ -13,11 +13,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.login.ForgetPassword;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.LastTenTransactions;
+
+import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
 
 public class Settings extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,6 +30,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
     String myNewDeviceName = "nothingNew";
     String TAGF = "SPAWRKS";
     Context mContext;
+    TextView settingHeader;
     private ImageView backbut;
 
     @Override
@@ -35,7 +39,10 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_settings);
         rename=(Button)findViewById(R.id.rename);
         resetPassword=(Button)findViewById(R.id.resetPassword);
-
+        settingHeader = (TextView) findViewById(R.id.settingHeader);
+        settingHeader.setText(storeName);
+        backbut=(ImageView)findViewById(R.id.backbut);
+        backbut.setOnClickListener(this);
         rename.setOnClickListener(this);
         resetPassword.setOnClickListener(this);
     }
@@ -43,9 +50,6 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
     private void backbut(){
         Settings.super.onBackPressed();
     }
-
-
-    //
 
     public void performMagic(String input)
     {

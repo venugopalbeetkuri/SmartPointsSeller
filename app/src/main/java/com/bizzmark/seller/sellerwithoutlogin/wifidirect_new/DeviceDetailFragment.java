@@ -237,7 +237,7 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
 
             Log.i("bizzmark", "data on post execute.Result: " + result);
 
-            Toast.makeText(getActivity(), "From customer: " + result, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "From customer: " + result, Toast.LENGTH_SHORT).show();
 
             Log.i("bizzmark","data on post executr.Result: "+result);
             if(result != null) {

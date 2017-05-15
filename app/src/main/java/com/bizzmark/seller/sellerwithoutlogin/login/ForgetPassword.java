@@ -18,16 +18,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
+
 public class ForgetPassword extends AppCompatActivity implements View.OnClickListener {
 
 
     public static final String TAG = "";
-    TextView FGUSERNAME;
+    TextView FGUSERNAME, forgetHeader;
     EditText FGEMAIL;
     Button FGSUBMIT;
-
     ImageButton FGBACK;
-
     FirebaseAuth firebaseAuth;
 
     @Override
@@ -42,14 +42,13 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
         FGSUBMIT=(Button)findViewById(R.id.btforgetsubmit);
 
         FGBACK=(ImageButton)findViewById(R.id.ibforgetback);
-
+        forgetHeader = (TextView) findViewById(R.id.forgetHeader);
+        forgetHeader.setText(storeName);
         firebaseAuth=FirebaseAuth.getInstance();
 
         FGSUBMIT.setOnClickListener(this);
 
         FGBACK.setOnClickListener(this);
-
-
     }
 
     @Override

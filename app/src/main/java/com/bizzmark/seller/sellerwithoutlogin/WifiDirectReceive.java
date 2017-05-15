@@ -2,6 +2,8 @@ package com.bizzmark.seller.sellerwithoutlogin;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,6 +26,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.telephony.TelephonyManager;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuInflater;
@@ -35,6 +39,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -44,6 +49,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
 import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
 import com.bizzmark.seller.sellerwithoutlogin.login.Login;
@@ -56,6 +67,9 @@ import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.Settings;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -71,10 +85,14 @@ public class WifiDirectReceive extends AppCompatActivity
     public ImageView imgmenu,sellerimg;
     public ImageButton action_logout;
 
-    String header_storeName;
-    TextView headerStoreName;
+    String sellerEmail = "seller@smartpoints.com";
 
-//    LinearLayout card_bg;
+    public TextView navStoreName,headerStoreName;
+    public static String storeName;
+    public String statusN, hdStoreName;
+
+    String Url = "http://35.154.104.54/smartpoints/seller-api/get-seller-name?sellerEmail="+sellerEmail;
+    private String URL_DATA=Url;
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -127,12 +145,9 @@ public class WifiDirectReceive extends AppCompatActivity
         imgmenu=(ImageView)findViewById(R.id.imgmenu);
         imgmenu.setOnClickListener(this);
 
-//        Intent intent = getIntent();
-//        header_storeName = intent.getStringExtra("header_storeName");
-//
-//        headerStoreName = (TextView)findViewById(R.id.header_storeName);
-//        headerStoreName.setText(header_storeName);
-//        card_bg=(LinearLayout)findViewById(R.id.card_bg);
+        navStoreName = (TextView) v.findViewById(R.id.nav_storeName);
+        headerStoreName =(TextView) findViewById(R.id.header_storeName);
+        loadStoreName();
 
         sellerimg=(ImageView)v.findViewById(R.id.sellerimg);
         sellerimg.setOnClickListener(this);
@@ -163,6 +178,34 @@ public class WifiDirectReceive extends AppCompatActivity
        // getIMEIstring();
 
         device_id.setText(deviceId);
+    //    navStoreName.setText(storeName);
+    }
+
+    private void loadStoreName(){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                URL_DATA, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    statusN = jsonObject.getString("status_type");
+                    storeName = jsonObject.getString("response");
+                    navStoreName.setText(storeName);
+                    headerStoreName.setText(storeName);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
     }
 
     private void runTimePermission() {
@@ -383,7 +426,7 @@ public class WifiDirectReceive extends AppCompatActivity
                     }
                 }
             }
-            Toast.makeText(getApplicationContext(),"Groups Removed Successfully ",Toast.LENGTH_LONG).show();
+       //     Toast.makeText(getApplicationContext(),"Groups Removed Successfully ",Toast.LENGTH_LONG).show();
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -467,9 +510,9 @@ public class WifiDirectReceive extends AppCompatActivity
             startActivity(i);
         }
 
-// else if (id == R.id.nav_share) {
-//            shareButtionFunctionality();
-//        }
+//         else if (id == R.id.nav_share) {
+//                    shareButtionFunctionality();
+//                }
         else if (id == R.id.nav_contact_us) {
             contactus();
         }else if (id == R.id.nav_exit){
@@ -562,12 +605,25 @@ public class WifiDirectReceive extends AppCompatActivity
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
 
-            builder1.setMessage("www.bizzmark.in\n PH:  ");
+            //builder1.setMessage("www.bizzmark.in\n PH:  ");
+            builder1.setMessage("For Qurries contact this email \n bizzmark.in@gmail.com");
             builder1.setCancelable(true);
             builder1.setIcon(R.drawable.ic_launcher);
-            builder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            builder1.setPositiveButton("SEND FEEDBACK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
+//                    dialog.cancel();
+                    Intent feedbackMail = new Intent(Intent.ACTION_SEND);
+
+                    feedbackMail.setType("text/email");
+                    feedbackMail.putExtra(Intent.EXTRA_EMAIL, new String[]{"bizzmark.in@gmail.com"});
+                    feedbackMail.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
+                    startActivity(Intent.createChooser(feedbackMail,"Send Feedback:"));
+                }
+            });
+            builder1.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
             });
@@ -577,6 +633,13 @@ public class WifiDirectReceive extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+       /* final Dialog custom = new Dialog(WifiDirectReceive.this);
+        custom.setTitle("CUSTOM DIALOG");
+        custom.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        custom.setContentView(R.layout.activity_contact_us);
+        custom.setCanceledOnTouchOutside(false);
+        custom.show();*/
     }
 
     /* method for logout*/

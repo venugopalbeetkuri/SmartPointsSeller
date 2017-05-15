@@ -29,7 +29,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:text="1200"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:id="@+id/billReport"/>
         </TableRow>
         <TableRow android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,8 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.5"
                 android:text="Date Time"
-                android:layout_marginLeft="5dp"
-                />
+                android:layout_marginLeft="5dp" />
 
             <TextView
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:layout_weight="0.5"
                 android:text="12-May-2016 02:05:00"
                 android:layout_marginLeft="5dp"
-                />
+                android:id="@+id/billDateAndTime"/>
         </TableRow>
         <TableRow android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                 android:layout_weight="0.5"
                 android:text="120"
                 android:layout_marginLeft="5dp"
-                />
+                android:id="@+id/billPoints"/>
 
         </TableRow>
         <TableRow android:layout_width="match_parent"
@@ -108,8 +108,62 @@
                 android:layout_weight="0.5"
                 android:text="8578248625962"
                 android:layout_marginLeft="5dp"
-                />
+                android:id="@+id/billDeviceId"/>
         </TableRow>
+
+        <!--<TableRow android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:weightSum="1"-->
+            <!--android:padding="2dp">-->
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:text="Store Name"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--/>-->
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:text=":"/>-->
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:text="8578248625962"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:id="@+id/storename"/>-->
+        <!--</TableRow>-->
+
+        <!--<TableRow android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:weightSum="1"-->
+            <!--android:padding="2dp">-->
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:text="Type"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--/>-->
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:text=":"/>-->
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="0.5"-->
+                <!--android:text="8578248625962"-->
+                <!--android:layout_marginLeft="5dp"-->
+                <!--android:id="@+id/type"/>-->
+        <!--</TableRow>-->
 
     </TableLayout>
     <View
@@ -117,8 +171,4 @@
         android:layout_height="1dp"
         android:background="@color/colorGrey"
         android:layout_margin="5dp"/>
-
-
-
-
 </LinearLayout>

@@ -16,6 +16,8 @@
     <color name="colorRipple">#dad3d6</color>
     <color name="card">#5cbfb7</color>
     <color name="GREEN">#33691E</color>
+    <color name="RED">#d10e0e</color>
+    <color name="BLACK">#000</color>
     <color name="colorGrey">#dadada</color>
     <color name="cardview_dark_background">#4572cc</color>
 

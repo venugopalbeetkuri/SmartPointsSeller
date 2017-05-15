@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="Smart Points Seller New"
             android:textSize="22dp"
-            android:textColor="#000"
+            android:textColor="#fff"
             android:layout_marginLeft="90dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"/>
@@ -28,7 +28,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:src="@drawable/ic_arrow_back_white_24dp"
             android:background="@color/colorPrimary"
             android:id="@+id/backbutton"
             android:layout_marginLeft="16dp"/>

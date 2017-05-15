@@ -12,6 +12,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.RedeemFragment;
@@ -19,16 +20,15 @@ import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnFragment;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ViewPageAdapter;
 import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
 
+import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
+
 public class ReportActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView backbut;
     ViewPager viewPager;
     ViewPageAdapter viewPagerAdapter;
     TabLayout tabLayout;
-
-
-
-
+    TextView reportHeader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +43,8 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         viewPagerAdapter = new ViewPageAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragments(new EarnFragment(),"EARN");
         viewPagerAdapter.addFragments(new RedeemFragment(),"REDEEM");
-
+        reportHeader = (TextView) findViewById(R.id.reportHeader);
+        reportHeader.setText(storeName);
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 

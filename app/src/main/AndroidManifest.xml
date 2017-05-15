@@ -16,7 +16,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -33,9 +33,9 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-        <activity
-            android:name=".FAQ"
-            android:screenOrientation="portrait" />
+        <!-- <activity -->
+        <!-- android:name=".FAQ" -->
+        <!-- android:screenOrientation="portrait" /> -->
         <activity
             android:name=".Terms"
             android:screenOrientation="portrait" />
@@ -77,7 +77,7 @@
             android:name=".sellerapp.ReportActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".sellerapp.LastTenTransactions" />
-        <activity android:name=".wifidirect_new.Settings"></activity>
+        <activity android:name=".wifidirect_new.Settings" />
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
@@ -27,6 +28,8 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
+
 public class Seller_Basic_Information extends AppCompatActivity implements View.OnClickListener {
 
    // private EditText store_name,branch_id,branch_name,branch_mgname,branch_address,branch_discount;
@@ -34,7 +37,7 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
     private Button seller_infosave;
     private ImageView backbut;
     String store_name;
-
+    TextView sellerInfoHeader;
     public static final String ROOT_URL="https://wwwbizzmarkin.000webhostapp.com/";
 
 
@@ -52,7 +55,8 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
         brmgrname = (EditText)findViewById(R.id.branch_mgname);
         braddress = (EditText)findViewById(R.id.branch_address);
         brdiscount = (EditText)findViewById(R.id.branch_discount);
-
+        sellerInfoHeader = (TextView) findViewById(R.id.sellerInfoHeader);
+        sellerInfoHeader.setText(storeName);
         backbut.setOnClickListener(this);
 
         seller_infosave.setOnClickListener(this);

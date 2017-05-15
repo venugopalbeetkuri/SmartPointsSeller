@@ -39,10 +39,6 @@ public class DeviceListFragment extends ListFragment implements WifiP2pManager.P
     View mContentView = null;
     private WifiP2pDevice device;
 
-    LinearLayout card_bg;
-
-  //  ImageView settings;
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -52,17 +48,6 @@ public class DeviceListFragment extends ListFragment implements WifiP2pManager.P
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContentView = inflater.inflate(R.layout.device_list, null);
-      //  card_bg=(LinearLayout) mContentView.findViewById(R.id.card_bg);
-//        settings=(ImageView)mContentView.findViewById(R.id.settigs);
-//        settings.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-//            }
-//        });
-//        if (getDeviceStatus(device.status).equals("Connected")){
-//            card_bg.setBackgroundColor(Color.GREEN);
-//        }
         return mContentView;
     }
 
@@ -118,12 +103,14 @@ public class DeviceListFragment extends ListFragment implements WifiP2pManager.P
                 if (top != null) {
                     top.setText(device.deviceName);
                     if (getDeviceStatus(device.status).equals("Connected")){
-                        //card_bg.setBackgroundColor(Color.GREEN);
                        top.setBackgroundColor(getResources().getColor(R.color.GREEN));
-                        top.setTextColor(Color.BLACK);
+                        top.setTextColor(Color.WHITE);
 
                     }
-                    else {
+                    else if(getDeviceStatus(device.status).equals("Invited")){
+                        top.setBackgroundColor(getResources().getColor(R.color.RED));
+                        top.setTextColor(Color.WHITE);
+                    }else {
                         top.setBackgroundColor(Color.BLUE);
                         top.setTextColor(Color.WHITE);
                     }
@@ -133,9 +120,12 @@ public class DeviceListFragment extends ListFragment implements WifiP2pManager.P
                     if (getDeviceStatus(device.status).equals("Connected")){
                         //card_bg.setBackgroundColor(Color.GREEN);
                         bottom.setBackgroundColor(getResources().getColor(R.color.GREEN));
-                        bottom.setTextColor(Color.BLACK);
+                        bottom.setTextColor(Color.WHITE);
                     }
-                    else {
+                    else if(getDeviceStatus(device.status).equals("Invited")){
+                        bottom.setBackgroundColor(getResources().getColor(R.color.RED));
+                        bottom.setTextColor(Color.WHITE);
+                    }else {
                         bottom.setBackgroundColor(Color.BLUE);
                         bottom.setTextColor(Color.WHITE);
                     }

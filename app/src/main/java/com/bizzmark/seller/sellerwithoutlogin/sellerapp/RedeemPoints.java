@@ -24,9 +24,11 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
+
 public class RedeemPoints extends AppCompatActivity {
 
-    TextView redeemPoints,billAmount,discountAmount,newBill;
+    TextView redeemPoints,billAmount,discountAmount,newBill, redeemHeader;
 
 //    String device_id,store_name,discount_amount,points,date_time,earn_type;
 
@@ -52,7 +54,8 @@ public class RedeemPoints extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_redeem_points);
-
+        redeemHeader = (TextView) findViewById(R.id.redeemHeader);
+        redeemHeader.setText(storeName);
         Intent intent=getIntent();
         redeemString=intent.getStringExtra("earnRedeemString");
 

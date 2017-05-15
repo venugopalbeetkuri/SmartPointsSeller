@@ -15,8 +15,9 @@
             android:layout_weight="0.5"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="@string/from_date"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:editable="true"
+            android:text="@string/from_date" />
 
         <View
             android:layout_width="1dp"
@@ -30,8 +31,9 @@
             android:layout_weight="0.5"
             android:gravity="center_horizontal"
             android:padding="10dp"
-            android:text="@string/to_date"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:editable="true"
+            android:text="@string/to_date" />
 
     </LinearLayout>
     <LinearLayout
@@ -47,19 +49,28 @@
             android:layout_marginBottom="15dp"/>
     </LinearLayout>
     
-    <ScrollView
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@+id/layout2">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<include layout="@layout/report_item" />-->
+
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/rcEarnView"
         android:layout_below="@+id/layout2">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    </android.support.v7.widget.RecyclerView>
 
-            <include layout="@layout/report_item" />
-
-        </LinearLayout>
-    </ScrollView>
 
 </RelativeLayout>

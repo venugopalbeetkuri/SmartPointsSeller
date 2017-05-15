@@ -2,6 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_report"
+            android:icon="@drawable/report"
+            android:title="Total Transaction Report" />
+
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings"/>
+
+        <item
+            android:id="@+id/nav_contact_us"
+            android:icon="@drawable/ic_smartphone_black_24dp"
+            android:title="Contact Us" />
+
         <item
             android:id="@+id/nav_terms_conditions"
             android:icon="@drawable/ic_announcement_black_24dp"
@@ -12,32 +28,22 @@
             android:title="Privacy Policy" />
 
         <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Settings"/>
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="Exit" />
 
-        <item
-            android:id="@+id/nav_report"
-            android:icon="@drawable/report"
-            android:title="Total Transaction Report"/>
 
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <!--<item-->
-                <!--android:id="@+id/nav_share"-->
-                <!--android:icon="@drawable/ic_menu_share"-->
-                <!--android:title="Share" />-->
-            <item
-                android:id="@+id/nav_contact_us"
-                android:icon="@drawable/ic_smartphone_black_24dp"
-                android:title="Contact Us" />
-            <item
-                android:id="@+id/nav_exit"
-                android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="Exit" />
-        </menu>
-    </item>
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+            <!--&lt;!&ndash;<item&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/nav_share"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:icon="@drawable/ic_menu_share"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:title="Share" />&ndash;&gt;-->
+
+
+        <!--</menu>-->
+    <!--</item>-->
 
 </menu>

@@ -46,6 +46,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     private CheckBox CBPASS;
 
+    private TextView policy,terms;
+
     //private ProgressDialog progressDialog;
 
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -71,11 +73,42 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
         CBPASS=(CheckBox)findViewById(R.id.cbpassword);
 
+        policy =(TextView)findViewById(R.id.policy);
+
+        terms = (TextView) findViewById(R.id.terms);
+
         BTLOGIN.setOnClickListener(this);
 
         TVSIGNUP.setOnClickListener(this);
 
         TVFORGET.setOnClickListener(this);
+
+        terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog custom = new Dialog(Login.this);
+                custom.setTitle("CUSTOM DIALOG");
+                custom.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                //custom.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                custom.setContentView(R.layout.activity_terms);
+                //custom.setCancelable(false);
+                custom.setCanceledOnTouchOutside(false);
+                custom.show();
+            }
+        });
+        policy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog custom = new Dialog(Login.this);
+                custom.setTitle("CUSTOM DIALOG");
+                custom.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                //custom.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                custom.setContentView(R.layout.activity_privacy_policy);
+                //custom.setCancelable(false);
+                custom.setCanceledOnTouchOutside(false);
+                custom.show();
+            }
+        });
 
 //        if(firebaseAuth.getCurrentUser() != null){
 //            //Will open Wifi direct Recive activity here
