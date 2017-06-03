@@ -3,6 +3,7 @@ package com.bizzmark.seller.sellerwithoutlogin.wifidirect_new;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.WpsInfo;
@@ -13,6 +14,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,8 +48,11 @@ import java.nio.channels.Channel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static android.R.attr.name;
 import static android.R.attr.port;
 import static android.R.attr.type;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreName;
 
 /**
  * Created by Tharun on 15-03-2017.
@@ -122,7 +127,7 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
             view.setText("No");
         }
         view = (TextView) mContentView.findViewById(R.id.tv_device_info);
-        view.setText("Group Owner IP - " + info.groupOwnerAddress.getHostAddress());
+//        view.setText("Group Owner IP - " + info.groupOwnerAddress.getHostAddress());
 
 
         // After the group negotiation, we assign the group owner as the file
@@ -245,19 +250,40 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
                 try {
                     JSONObject obj = new JSONObject(result);
                     earn_type = obj.getString("type");
+                    store_name = obj.getString("storeName");
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                if (earn_type.equals("earn")) {
-                    Intent intent = new Intent(getActivity(), EarnPoints.class);
-                    intent.putExtra("earnRedeemString", result);
-                    intent.putExtra("GroupOwnerAddress", remoteAddress);
-                    getActivity().startActivity(intent);
-                } else if (earn_type.equals("redeem")) {
-                    Intent intent = new Intent(getActivity(),RedeemPoints.class);
-                    intent.putExtra("earnRedeemString", result);
-                    intent.putExtra("GroupOwnerAddress", remoteAddress);
-                    getActivity().startActivity(intent);
+                if (store_name.equalsIgnoreCase(SELLER_STORENAE)){
+
+                    if (earn_type.equals("earn")) {
+                        Intent intent = new Intent(getActivity(), EarnPoints.class);
+                        intent.putExtra("earnRedeemString", result);
+                        intent.putExtra("GroupOwnerAddress", remoteAddress);
+                        getActivity().startActivity(intent);
+                    } else if (earn_type.equals("redeem")) {
+                        Intent intent = new Intent(getActivity(), RedeemPoints.class);
+                        intent.putExtra("earnRedeemString", result);
+                        intent.putExtra("GroupOwnerAddress", remoteAddress);
+                        getActivity().startActivity(intent);
+                    }
+                }
+                else if (!store_name.equalsIgnoreCase(SELLER_STORENAE)){
+
+                    try {
+                        new AlertDialog.Builder(getActivity())
+                                .setMessage("Custmer scanned QR code is not valid ask him/her scan again")
+                                .setCancelable(true)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).create().show();
+                    } catch (Exception e ){
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getActivity(),"Customer Scanned QR code not valid ",Toast.LENGTH_LONG).show();
                 }
             }
 

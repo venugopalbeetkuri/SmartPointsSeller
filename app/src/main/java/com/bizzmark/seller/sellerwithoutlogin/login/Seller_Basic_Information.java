@@ -14,10 +14,7 @@ import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
 import com.bizzmark.seller.sellerwithoutlogin.db.Retrofit.SellerProfile;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnPoints;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,14 +35,14 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
     private ImageView backbut;
     String store_name;
     TextView sellerInfoHeader;
-    public static final String ROOT_URL="https://wwwbizzmarkin.000webhostapp.com/";
+//    public static final String ROOT_URL="https://wwwbizzmarkin.000webhostapp.com/";
 
-
+    TextView sellerStoreName, sellerStoreId, sellerBranchName, sellerBranchId, sellerPointsPercentage, sellerPointsValue, storeEmail, storeAddress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.seller_basic_information);
-        seller_infosave=(Button)findViewById(R.id.seller_infosave);
+     /*   seller_infosave=(Button)findViewById(R.id.seller_infosave);
         backbut=(ImageView)findViewById(R.id.backbut);
 
         storename = (EditText)findViewById(R.id.store_name);
@@ -61,8 +58,16 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
 
         seller_infosave.setOnClickListener(this);
 
-        store_name = storename.getText().toString();
+        store_name = storename.getText().toString();*/
 
+        sellerStoreName = (TextView)findViewById(R.id.sellerStoreName);
+        sellerStoreId = (TextView)findViewById(R.id.sellerStoreId);
+        sellerBranchName = (TextView)findViewById(R.id.sellerBranchName);
+        sellerBranchId = (TextView)findViewById(R.id.sellerBranchId);
+        sellerPointsPercentage = (TextView)findViewById(R.id.sellerPointsPercentage);
+        sellerPointsValue = (TextView)findViewById(R.id.sellerPointsValue);
+        storeEmail = (TextView)findViewById(R.id.storeEmail);
+        storeAddress = (TextView)findViewById(R.id.storeAddress);
 
     }
 
@@ -73,7 +78,7 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
         Seller_Basic_Information.super.onBackPressed();
     }
 
-    public void saveInfo(){
+/*    public void saveInfo(){
 
         RestAdapter adapter=new RestAdapter.Builder()
                 .setEndpoint(ROOT_URL)//setting the Root URL
@@ -126,7 +131,7 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
                         Toast.makeText(Seller_Basic_Information.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 });
-    }
+    }*/
 
 
     @Override
@@ -136,7 +141,7 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
             backbut();
         }
         if (v== seller_infosave){
-            saveInfo();
+//            saveInfo();
 //            Intent intent = new Intent(getApplicationContext(), WifiDirectReceive.class);
 //            intent.putExtra("header_storeName", store_name);
 //            getApplicationContext().startActivity(intent);

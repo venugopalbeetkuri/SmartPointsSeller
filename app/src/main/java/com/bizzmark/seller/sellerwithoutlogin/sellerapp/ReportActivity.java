@@ -1,26 +1,20 @@
 package com.bizzmark.seller.sellerwithoutlogin.sellerapp;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.support.design.widget.NavigationView;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
-import com.bizzmark.seller.sellerwithoutlogin.sellerapp.RedeemFragment;
-import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnFragment;
-import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ViewPageAdapter;
-import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
+import com.bizzmark.seller.sellerwithoutlogin.Reports.Earn_Reports.EarnFragment;
+import com.bizzmark.seller.sellerwithoutlogin.Reports.Redeem_Reports.RedeemFragment;
 
 import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreName;
 
 public class ReportActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,10 +37,11 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         viewPagerAdapter = new ViewPageAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragments(new EarnFragment(),"EARN");
         viewPagerAdapter.addFragments(new RedeemFragment(),"REDEEM");
-        reportHeader = (TextView) findViewById(R.id.reportHeader);
-        reportHeader.setText(storeName);
+//        reportHeader = (TextView) findViewById(R.id.reportHeader);
+//        reportHeader.setText(sellerStoreName);
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabTextColors(Color.BLACK, Color.WHITE);
 
     }
 

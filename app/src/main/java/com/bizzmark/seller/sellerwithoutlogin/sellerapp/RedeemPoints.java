@@ -1,6 +1,11 @@
 package com.bizzmark.seller.sellerwithoutlogin.sellerapp;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,7 +13,14 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
 import com.bizzmark.seller.sellerwithoutlogin.db.AcknowledgePoints;
@@ -25,28 +37,35 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STOREID;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.accessToken;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerBranchId;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreId;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreName;
 
 public class RedeemPoints extends AppCompatActivity {
 
     TextView redeemPoints,billAmount,discountAmount,newBill, redeemHeader;
 
-//    String device_id,store_name,discount_amount,points,date_time,earn_type;
-
     String deviceid,storename,bill_amount,points_earn,datetime,earntype;
 
-    Calendar c=Calendar.getInstance();
+    /*Strings for URL storing*/
+    private String CalRedeemPointsUrl,InsertRedeemUrl;
+
+    /*Strings used in validatingRedeemPoints()*/
+    String redeemedBillamount,redeemedPoints,originalBillAmount,discountedAmount,availablePoints;
+
+    /*Strings used in validatingRedeemPoints()*/
+    String status_type, response;
 
     Intent serviceIntent;
-
-    SimpleDateFormat df=new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
     final static String Log="Seller app";
     PointsBO pointsBO=null;
     String redeemString=null;
-    String jsonAck=null;
     String remoteMacAddress=null;
-    String discount_Amount = "null";
-    String newBillAmount = "null";
 
     String acknowledgePoints;
 
@@ -55,13 +74,13 @@ public class RedeemPoints extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_redeem_points);
         redeemHeader = (TextView) findViewById(R.id.redeemHeader);
-        redeemHeader.setText(storeName);
+        redeemHeader.setText(SELLER_STORENAE);
+
         Intent intent=getIntent();
         redeemString=intent.getStringExtra("earnRedeemString");
 
         remoteMacAddress = intent.getStringExtra("remoteAddress");
 
-    //    newBillAmount=intent.getStringExtra("newBillAmount");
 
         try {
             JSONObject jsonObject = new JSONObject(redeemString);
@@ -70,7 +89,7 @@ public class RedeemPoints extends AppCompatActivity {
             earntype = jsonObject.getString("type");
             datetime = jsonObject.getString("time");
             points_earn = jsonObject.getString("points");
-            bill_amount = jsonObject.getString("disCountAmount");
+            bill_amount = jsonObject.getString("billAmount");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -84,20 +103,196 @@ public class RedeemPoints extends AppCompatActivity {
         discountAmount=(TextView)findViewById(R.id.discountAmount);
         newBill=(TextView)findViewById(R.id.newBillAmount);
 
-//        billAmount.setText(pointsBO.getBillAmount());
-//        redeemPoints.setText(pointsBO.getPoints());
-//        discountAmount.setText(pointsBO.getPoints());
-//        newBill.setText(newBillAmount);
+        validatingRedeemPoints();
 
         addListenerOnAcceptButton();
         addListenerOnCancelButton();
 
     }
+/*Validating given points from user*/
+    private void validatingRedeemPoints() {
+        CalRedeemPointsUrl = "http://35.154.104.54/smartpoints/seller-api/preview-make-redeem-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+deviceid+"&billAmount="+bill_amount+"&wishedRedeemPoints="+points_earn;
 
-    public void calNewBillAmount(){
-        String newBillAmount=null;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, CalRedeemPointsUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+
+                        try {
+                            JSONObject redeemObject = new JSONObject(s);
+                            status_type = redeemObject.getString("status_type");
+                            if (status_type.equalsIgnoreCase("success")){
+                                originalBillAmount = redeemObject.getString("bill_amount");
+                                redeemedPoints = redeemObject.getString("wishedPoints");
+                                discountedAmount = redeemObject.getString("discount");
+                                redeemedBillamount = redeemObject.getString("discountedPrice");
+                                availablePoints = redeemObject.getString("available_points");
+                                billAmount.setText(originalBillAmount);
+                                redeemPoints.setText(redeemedPoints);
+                                discountAmount.setText(discountedAmount);
+                                newBill.setText(redeemedBillamount);
+                            }else if (status_type.equalsIgnoreCase("error")){
+                                response = redeemObject.getString("response");
+                                originalBillAmount = redeemObject.getString("bill_amount");
+                                redeemedPoints = redeemObject.getString("wishedPoints");
+                                availablePoints = redeemObject.getString("available_points");
+                                billAmount.setText(originalBillAmount);
+                                redeemPoints.setText(redeemedPoints);
+                                try {
+                                    sendAcknowledgement(false);
+                                    new AlertDialog.Builder(RedeemPoints.this)
+                                            .setTitle("Error")
+                                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.cancel, null))
+                                            .setMessage("Customer do not have enough points \n please tell customer to choose lower points")
+                                            .setCancelable(true)
+                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                    finish();
+                                                }
+                                            }).create().show();
+                                }
+                                catch (Exception e ){
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    new AlertDialog.Builder(RedeemPoints.this)
+                            .setTitle("Error")
+                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
+                            .setMessage("Something Wrong with Url While Calculating Points Please retry the Transaction")
+                            .setCancelable(true)
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    validatingRedeemPoints();
+                                }
+                            })
+                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    sendAcknowledgement(false);
+                                    Intent i = new Intent(RedeemPoints.this, WifiDirectReceive.class);
+                                    startActivity(i);
+                                }
+                            }).create().show();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(),"Some Thing Went Wrong Please Try Again",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
     }
 
+    /*Inseting Data into database*/
+
+    private void insertRedeemTransToDB(){
+        validatingRedeemPoints();
+        InsertRedeemUrl = "http://35.154.104.54/smartpoints/seller-api/make-redeem-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+deviceid+"&billAmount="+originalBillAmount+"&wishedRedeemPoints="+redeemedPoints;
+
+        final StringRequest insertRequest = new StringRequest(Request.Method.GET, InsertRedeemUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            JSONObject rdobj = new JSONObject(s);
+                            status_type = rdobj.getString("status_type");
+                            if (status_type.equalsIgnoreCase("success")){
+                                sendAcknowledgement(true);
+                                try {
+                                    new AlertDialog.Builder(RedeemPoints.this)
+                                            .setTitle("Report")
+                                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.checked, null))
+                                            .setMessage("Transaction Successful \n" +
+                                                    " If Customer Won't Receive Acknowledgement show this message")
+                                            .setCancelable(true)
+                                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                    finish();
+                                                }
+                                            }).create().show();
+                                }
+                                catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(getApplicationContext(),"Record Inserted",Toast.LENGTH_LONG).show();
+                            }
+                            else if (status_type.equalsIgnoreCase("error")){
+                                response = rdobj.getString("response");
+                                sendAcknowledgement(false);
+                                try {
+                                    new AlertDialog.Builder(RedeemPoints.this)
+                                            .setTitle("Error")
+                                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.cancel, null))
+                                            .setMessage(response+"\n Transaction Canceled \n If Customer won't Receive Acknowledgment show this Message")
+                                            .setCancelable(true)
+                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    finish();
+                                                }
+                                            }).create().show();
+                                }
+                                catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    new AlertDialog.Builder(RedeemPoints.this)
+                            .setTitle("Error")
+                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
+                            .setMessage("Something went wrong with Url")
+                            .setCancelable(true)
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    insertRedeemTransToDB();
+                                }
+                            })
+                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    sendAcknowledgement(false);
+                                    finish();
+                                }
+                            }).create().show();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        RequestQueue requestqueue = Volley.newRequestQueue(getApplicationContext());
+        requestqueue.add(insertRequest);
+    }
     private void addListenerOnCancelButton() {
 
         Button redeemCancelButton=(Button)findViewById(R.id.redeemCancelButton);
@@ -122,11 +317,10 @@ public class RedeemPoints extends AppCompatActivity {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
 
                 //save to database
-             //   saveToDataBase();
-
+                insertRedeemTransToDB();
                 // Send acknowledgement to customer.
-                sendAcknowledgement(true);
-                finish();
+                //sendAcknowledgement(true);
+
             }
         });
     }
@@ -134,47 +328,41 @@ public class RedeemPoints extends AppCompatActivity {
     private void sendAcknowledgement(boolean success){
 
         RedeemAcknowledgement ack = new RedeemAcknowledgement();
-//        ack.getNewBillAmount();
-//        ack.getOldBillAmount();
+
 
         if (success){
-            // ack=new AcknowledgePoints(redeemString);
+
             String status = "success";
-//            ack = new AcknowledgePoints(status, deviceid, storename, billamount, points, type, time);
             ack.setStatus(status);
             ack.setDeviceId(deviceid);
-            ack.setStoreName(storename);
-            ack.setOldBillAmount(bill_amount);
-//            ack.setPoints(points_earn);
+            ack.setStoreName(SELLER_STORENAE);
+            ack.setOldBillAmount(originalBillAmount);
             ack.setType(earntype);
             ack.setTime(datetime);
-            ack.setDiscountAmount(discount_Amount);
-            ack.setNewBillAmount(newBillAmount);
+            ack.setDiscountAmount(discountedAmount);
+            ack.setNewBillAmount(redeemedBillamount);
+            ack.setBranchId(SELLER_BRANCHID);
+            ack.setStoreId(SELLER_STOREID);
+            ack.setPoints(redeemedPoints);
         }else {
-            //ack=new AcknowledgePoints(redeemString);
+
             String status = "failure";
-//            ack = new AcknowledgePoints(status, deviceid, storename, billamount, points, type, time);
             ack.setStatus(status);
             ack.setDeviceId(deviceid);
-            ack.setStoreName(storename);
-            ack.setOldBillAmount(bill_amount);
-//            ack.setPoints(points_earn);
+            ack.setStoreName(SELLER_STORENAE);
+            ack.setOldBillAmount(originalBillAmount);
             ack.setType(earntype);
             ack.setTime(datetime);
-            ack.setDiscountAmount(discount_Amount);
-            ack.setNewBillAmount(newBillAmount);
+            ack.setDiscountAmount(discountedAmount);
+            ack.setNewBillAmount(redeemedBillamount);
+            ack.setBranchId(SELLER_BRANCHID);
+            ack.setStoreId(SELLER_STOREID);
+            ack.setPoints(redeemedPoints);
         }
 
-//        Gson gson= Utility.getGsonObject();
-//        jsonAck=gson.toJson(ack);
         Gson gson = new Gson();
         acknowledgePoints = gson.toJson(ack);
         sendMessage();
-
-        // After sending acknowledgement move to first screen.
-
-//        Intent itt=new Intent(this, WifiDirectReceive.class);
-//        startActivity(itt);
     }
 
     private void sendMessage(){

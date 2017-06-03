@@ -13,7 +13,7 @@ public class Terms extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms);
-        backbut=(ImageView)findViewById(R.id.backbut);
+        backbut=(ImageView)findViewById(R.id.term_condition_back_arrow);
         backbut.setOnClickListener(this);
     }
 //method for backbut
