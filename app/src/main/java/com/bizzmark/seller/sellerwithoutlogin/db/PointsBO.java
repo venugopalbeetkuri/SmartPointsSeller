@@ -33,11 +33,6 @@ public class PointsBO {
         this.points = points;
         this.deviceid = deviceID;
         this.disCountAmount = disCountAmount;
-
-        //Calendar c = Calendar.getInstance();
-        //SimpleDateFormat acceptdate = new SimpleDateFormat("ddMMyyyy");
-        //String accept = acceptdate.format(time);
-
         this.time = time;
     }
 

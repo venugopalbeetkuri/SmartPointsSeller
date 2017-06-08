@@ -11,14 +11,21 @@ import com.bizzmark.seller.sellerwithoutlogin.R;
 
 import java.util.List;
 
+import static com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.LastTenTrans.oldBillAmount;
+import static com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.LastTenTrans.transType;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
+
 /**
  * Created by Tharun on 22-05-2017.
  */
 
 public class LastTenTransactionsAdapter extends RecyclerView.Adapter<LastTenTransactionsAdapter.ViewHolder> {
 
+    String newBillAmount;
     public List<LastTenTransactionsList> tenTransactionsLists;
     public Context context;
+
+    public String lastTransStoreName,lastTransNewBillAmount,lastTransType;
 
     public LastTenTransactionsAdapter(List<LastTenTransactionsList> tenTransactionsLists, Context context){
         this.tenTransactionsLists = tenTransactionsLists;
@@ -34,13 +41,16 @@ public class LastTenTransactionsAdapter extends RecyclerView.Adapter<LastTenTran
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final LastTenTransactionsList tenTransactionsList = tenTransactionsLists.get(position);
-        holder.transId.setText(tenTransactionsList.getTransId());
-        holder.lastTenTransType.setText(tenTransactionsList.getLastTenTransType());
-        holder.originalBillReport.setText(tenTransactionsList.getOriginalBillReport());
-        holder.recentTranBillpoints.setText(tenTransactionsList.getRecentTranBillpoints());
-        holder.discountedAmount.setText(tenTransactionsList.getDiscountedAmount());
-        holder.newbillamount.setText(tenTransactionsList.getNewbillamount());
-        holder.transactionAt.setText(tenTransactionsList.getTransactionAt());
+            holder.transId.setText(tenTransactionsList.getTransId());
+            holder.lastTenTransType.setText(tenTransactionsList.getLastTenTransType());
+        lastTransType = holder.lastTenTransType.getText().toString().trim();
+            holder.originalBillReport.setText(tenTransactionsList.getOriginalBillReport());
+            holder.recentTranBillpoints.setText(tenTransactionsList.getRecentTranBillpoints());
+            holder.discountedAmount.setText(tenTransactionsList.getDiscountedAmount());
+        lastTransStoreName = holder.discountedAmount.getText().toString().trim();
+            holder.newbillamount.setText(tenTransactionsList.getNewbillamount());
+        lastTransNewBillAmount = holder.newbillamount.getText().toString().trim();
+            holder.transactionAt.setText(tenTransactionsList.getTransactionAt());
     }
 
     @Override
@@ -57,6 +67,13 @@ public class LastTenTransactionsAdapter extends RecyclerView.Adapter<LastTenTran
         public TextView discountedAmount;
         public TextView newbillamount;
         public TextView transactionAt;
+
+        public TextView disableStoreName;
+        public TextView disableColon;
+        public TextView disableNewBillAmount;
+        public TextView disableNewBillColon;
+
+
         public ViewHolder(View itemView) {
             super(itemView);
             transId = (TextView) itemView.findViewById(R.id.transId);
@@ -66,6 +83,12 @@ public class LastTenTransactionsAdapter extends RecyclerView.Adapter<LastTenTran
             discountedAmount = (TextView) itemView.findViewById(R.id.discountedAmount);
             newbillamount = (TextView) itemView.findViewById(R.id.newbillamount);
             transactionAt = (TextView) itemView.findViewById(R.id.transactionAt);
+
+            disableStoreName = (TextView)itemView.findViewById(R.id.disableStoreName);
+            disableColon = (TextView)itemView.findViewById(R.id.disableColon);
+            disableNewBillAmount = (TextView)itemView.findViewById(R.id.disableNewBillAmount);
+            disableNewBillColon =(TextView)itemView.findViewById(R.id.disableNewBillColon);
+
         }
     }
 }

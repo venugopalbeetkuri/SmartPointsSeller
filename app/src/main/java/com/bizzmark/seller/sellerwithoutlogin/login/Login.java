@@ -16,6 +16,7 @@ import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -297,6 +298,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                                 progressDialog.dismiss();
                                 try {
                                     new AlertDialog.Builder(Login.this)
+                                            .setTitle("Error")
+                                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.cancel,null))
                                             .setMessage(response)
                                             .setCancelable(false)
                                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -327,7 +330,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 progressDialog.dismiss();
                 try {
                     new AlertDialog.Builder(Login.this)
-                            .setMessage("Something wrong with Url")
+                            .setTitle("Error")
+                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                            .setMessage("Something wrong with Internet Connection \n Please ensure Interner Connection")
                             .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override

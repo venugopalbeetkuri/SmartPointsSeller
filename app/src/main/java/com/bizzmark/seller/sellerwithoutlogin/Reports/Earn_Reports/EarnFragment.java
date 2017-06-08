@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,9 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.KEY_EMAIL;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_EMAILID;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.accessToken;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerEmail;
 
 /**
@@ -131,20 +130,27 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
 
                             earnFragTansLists.add(list);
                         }
-                    } else if (status_type.equalsIgnoreCase("error")){
+                    } else if (status_type.equalsIgnoreCase("error")) {
                         response = jsonObject.getString("response");
-                        new AlertDialog.Builder(getContext())
-                                .setMessage(response)
-                                .setCancelable(true)
-                                .setNegativeButton("Previous Page", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                Intent i = new Intent(getActivity(), WifiDirectReceive.class);
-                                startActivity(i);
-                            }
-                        }).create().show();
+                        try {
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("Error")
+                                    .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.information_icon,null))
+                                    .setMessage(response)
+                                    .setCancelable(true)
+                                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            Intent i = new Intent(getActivity(), WifiDirectReceive.class);
+                                            startActivity(i);
+                                        }
+                                    }).create().show();
 //                        Toast.makeText(getActivity(),response,Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     adapter = new EarnFragAdapter(earnFragTansLists,getActivity());
                     recyclerView.setAdapter(adapter);
@@ -157,25 +163,32 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
                     public void onErrorResponse(VolleyError error) {
                         progressDialog.dismiss();
 //                        progressBar1.setVisibility(View.GONE);get
-                        new AlertDialog.Builder(getContext())
-                                .setMessage("Something wrong with Url")
-                                .setCancelable(true)
-                                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        loadRecyclerViewData();
-                                    }
-                                })
-                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        Intent i = new Intent(getActivity(), WifiDirectReceive.class);
-                                        startActivity(i);
-                                    }
-                                }).create().show();
+                        try {
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("Error")
+                                    .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                                    .setMessage("Something wrong with Internet connection \n Please ensure Internet connection")
+                                    .setCancelable(true)
+                                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            loadRecyclerViewData();
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            Intent i = new Intent(getActivity(), WifiDirectReceive.class);
+                                            startActivity(i);
+                                        }
+                                    }).create().show();
 //                        Toast.makeText(getActivity(),"Some Thing Went Wrong Please Try Again",Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e ){
+                            e.printStackTrace();
+                        }
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());

@@ -22,28 +22,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.R;
+import com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.LastTenTrans;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
-import com.bizzmark.seller.sellerwithoutlogin.db.AcknowledgePoints;
 import com.bizzmark.seller.sellerwithoutlogin.db.PointsBO;
 import com.bizzmark.seller.sellerwithoutlogin.db.RedeemAcknowledgement;
-import com.bizzmark.seller.sellerwithoutlogin.util.Utility;
+
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.service.FileTransferService;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STOREID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.accessToken;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerBranchId;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreId;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreName;
 
 public class RedeemPoints extends AppCompatActivity {
 
@@ -156,7 +148,7 @@ public class RedeemPoints extends AppCompatActivity {
                                 catch (Exception e ){
                                     e.printStackTrace();
                                 }
-                                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -170,7 +162,7 @@ public class RedeemPoints extends AppCompatActivity {
                     new AlertDialog.Builder(RedeemPoints.this)
                             .setTitle("Error")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
-                            .setMessage("Something Wrong with Url While Calculating Points Please retry the Transaction")
+                            .setMessage("Something Wrong While Calculating Points \n Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
@@ -191,7 +183,7 @@ public class RedeemPoints extends AppCompatActivity {
                 } catch (Exception e){
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(),"Some Thing Went Wrong Please Try Again",Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"Some Thing Went Wrong Please Try Again",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -218,21 +210,30 @@ public class RedeemPoints extends AppCompatActivity {
                                     new AlertDialog.Builder(RedeemPoints.this)
                                             .setTitle("Report")
                                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.checked, null))
-                                            .setMessage("Transaction Successful \n" +
+                                            .setMessage("Transaction Success \n" +
                                                     " If Customer Won't Receive Acknowledgement show this message")
                                             .setCancelable(true)
-                                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     dialog.dismiss();
                                                     finish();
+                                                }
+                                            })
+                                            .setNegativeButton("View Transaction", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                    finish();
+                                                    startActivity(new Intent(RedeemPoints.this, LastTenTrans.class));
+
                                                 }
                                             }).create().show();
                                 }
                                 catch (Exception e){
                                     e.printStackTrace();
                                 }
-                                Toast.makeText(getApplicationContext(),"Record Inserted",Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(),"Record Inserted",Toast.LENGTH_LONG).show();
                             }
                             else if (status_type.equalsIgnoreCase("error")){
                                 response = rdobj.getString("response");
@@ -254,7 +255,7 @@ public class RedeemPoints extends AppCompatActivity {
                                 catch (Exception e){
                                     e.printStackTrace();
                                 }
-                                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -267,7 +268,7 @@ public class RedeemPoints extends AppCompatActivity {
                     new AlertDialog.Builder(RedeemPoints.this)
                             .setTitle("Error")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
-                            .setMessage("Something went wrong with Url")
+                            .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override

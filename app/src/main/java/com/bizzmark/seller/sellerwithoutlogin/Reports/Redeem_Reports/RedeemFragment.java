@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,21 +25,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.R;
-import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.KEY_EMAIL;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_EMAILID;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.accessToken;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerEmail;
 
 /**
  * Created by Tharun on 12-04-2017.
@@ -133,6 +128,8 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
                         response = jsonObject.getString("response");
                         try {
                             new AlertDialog.Builder(getContext())
+                                    .setTitle("Error")
+                                    .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.information_icon,null))
                                     .setMessage(response+"In Redeem")
                                     .setCancelable(true)
                                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -155,23 +152,30 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                new AlertDialog.Builder(getContext())
-                        .setMessage("Something wrong In Redeem Url")
-                        .setCancelable(true)
-                        .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                loadRecyclerViewData();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
+                try {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Error")
+                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                            .setMessage("Something wrong with redeem Url \n Please ensure Internet connection")
+                            .setCancelable(true)
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    loadRecyclerViewData();
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).create().show();
 //                Toast.makeText(getActivity(),"Something Went Wrong Please Try Again",Toast.LENGTH_LONG).show();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
