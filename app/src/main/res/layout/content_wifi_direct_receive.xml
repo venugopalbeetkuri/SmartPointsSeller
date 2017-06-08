@@ -70,6 +70,11 @@
             android:orientation="vertical"
             android:padding="5dp">
 
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/swipeLoadCusts">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -86,141 +91,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/frag_list" />
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="45dp"-->
-                    <!--android:layout_margin="5dp"-->
-                    <!--android:background="@drawable/layoutstyle">-->
 
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="154dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_margin="5dp">-->
-                    <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:textColor="#000"-->
-                    <!--android:textSize="18dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:padding="0dip"-->
-                    <!--android:text="Points given"/>-->
-
-                    <!--</LinearLayout>-->
-
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="3">-->
-                    <!--<TextView-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:textColor="#000"-->
-                    <!--android:textSize="20dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="0"-->
-                    <!--android:padding="3dip"-->
-                    <!--android:id="@+id/pointsgiven" />-->
-                    <!--<ImageView-->
-                    <!--android:layout_width="20dp"-->
-                    <!--android:layout_height="20dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--app:srcCompat="@drawable/points"-->
-                    <!--android:id="@+id/imageView3"/>-->
-                    <!--</LinearLayout>-->
-                    <!--</LinearLayout>-->
-
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="45dp"-->
-                    <!--android:layout_margin="5dp"-->
-                    <!--android:background="@drawable/layoutstyle">-->
-
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="154dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_margin="5dp">-->
-                    <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:textColor="#000"-->
-                    <!--android:textSize="18dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:padding="0dip"-->
-                    <!--android:text="Total Sale"/>-->
-                    <!--</LinearLayout>-->
-
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="3">-->
-                    <!--<TextView-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:textColor="#000"-->
-                    <!--android:textSize="20dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="0"-->
-                    <!--android:padding="3dip"-->
-                    <!--android:id="@+id/totalsale" />-->
-
-                    <!--<ImageView-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:layout_width="15dp"-->
-                    <!--android:layout_height="15dp"-->
-                    <!--app:srcCompat="@drawable/rupee"-->
-                    <!--android:id="@+id/imageView4"/>-->
-
-                    <!--</LinearLayout>-->
-                    <!--</LinearLayout>-->
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="45dp"-->
-                    <!--android:layout_margin="5dp"-->
-                    <!--android:background="@drawable/layoutstyle">-->
-
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="154dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_margin="5dp">-->
-                    <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:textColor="#000"-->
-                    <!--android:textSize="18dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:padding="0dip"-->
-                    <!--android:text="Discount given"/>-->
-                    <!--</LinearLayout>-->
-
-                    <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="3">-->
-                    <!--<TextView-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:textColor="#000"-->
-                    <!--android:textSize="20dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="0"-->
-                    <!--android:padding="3dip"-->
-                    <!--android:id="@+id/discountgiven" />-->
-
-                    <!--<ImageView-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:layout_width="15dp"-->
-                    <!--android:layout_height="15dp"-->
-                    <!--app:srcCompat="@drawable/rupee"-->
-                    <!--android:id="@+id/imageView5"/>-->
-                    <!--</LinearLayout>-->
-                    <!--</LinearLayout>-->
                 </LinearLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

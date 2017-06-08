@@ -25,5 +25,25 @@
 
     <include layout="@layout/content_wifi_direct_receive" />
 
+  <!--  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom = "true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:id="@+id/version_Name"
+        android:editable="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:id="@+id/version_Code"
+            android:editable="true" />
+</LinearLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>

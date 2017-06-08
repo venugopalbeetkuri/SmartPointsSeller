@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuth;
 
 import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
 
@@ -28,7 +28,7 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
     EditText FGEMAIL;
     Button FGSUBMIT;
     ImageButton FGBACK;
-    FirebaseAuth firebaseAuth;
+//    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
         FGBACK=(ImageButton)findViewById(R.id.ibforgetback);
         forgetHeader = (TextView) findViewById(R.id.forgetHeader);
         forgetHeader.setText(storeName);
-        firebaseAuth=FirebaseAuth.getInstance();
+//        firebaseAuth=FirebaseAuth.getInstance();
 
         FGSUBMIT.setOnClickListener(this);
 
@@ -70,7 +70,7 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(ForgetPassword.this,"Please Enter Registered Email Address",Toast.LENGTH_LONG).show();
             }else {
 
-                firebaseAuth.sendPasswordResetEmail(emailaddress)
+               /* firebaseAuth.sendPasswordResetEmail(emailaddress)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
@@ -84,7 +84,7 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
                                 }
                             }
                         });
-
+*/
             }
 
         }

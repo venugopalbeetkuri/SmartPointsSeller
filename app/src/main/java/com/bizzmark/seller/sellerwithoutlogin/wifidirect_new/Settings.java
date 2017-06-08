@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.login.ForgetPassword;
-import com.bizzmark.seller.sellerwithoutlogin.sellerapp.LastTenTransactions;
 
 import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
 
 public class Settings extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,12 +39,13 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_settings);
         rename=(Button)findViewById(R.id.rename);
         resetPassword=(Button)findViewById(R.id.resetPassword);
+        resetPassword.setEnabled(false);
         settingHeader = (TextView) findViewById(R.id.settingHeader);
-        settingHeader.setText(storeName);
+        settingHeader.setText(SELLER_STORENAE);
         backbut=(ImageView)findViewById(R.id.backbut);
         backbut.setOnClickListener(this);
         rename.setOnClickListener(this);
-        resetPassword.setOnClickListener(this);
+//        resetPassword.setOnClickListener(this);
     }
 
     private void backbut(){
@@ -118,7 +119,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
 
             else
             {
-                final AlertDialog.Builder alert = new AlertDialog.Builder(Settings.this);
+                /*final AlertDialog.Builder alert = new AlertDialog.Builder(Settings.this);
                 final EditText input = new EditText(Settings.this);
                 input.setSingleLine();
                 input.setPadding(50, 0, 50, 0);
@@ -141,7 +142,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
                 });
                 alert.setCancelable(false);
                 alert.create();
-                alert.show();
+                alert.show();*/
             }
 
         }

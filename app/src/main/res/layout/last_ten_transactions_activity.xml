@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/last_ten_transactions_activity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.bizzmark.seller.sellerwithoutlogin.sellerapp.LastTenTransactions">
+    android:layout_height="match_parent">
 
     /*header of this activity*/
 
@@ -32,11 +31,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Smart Point Seller"
+            android:text="Last Ten Transaction"
             android:textSize="22dp"
             android:textColor="#fff"
             android:layout_centerInParent="true"
-            android:editable="true"
+            android:editable="false"
             android:id="@+id/lastTransHeader"/>
 
     </RelativeLayout>
@@ -45,17 +44,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header"
+        android:id="@+id/layout2">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGrey"
+            android:layout_marginBottom="15dp"/>
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout2"
+        android:id="@+id/lastTenTranSwipe">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout2"
         android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="@color/cardview_dark_background"
-                android:text="@string/recenTransactions"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:textSize="20dp"/>
-
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
@@ -65,5 +73,7 @@
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

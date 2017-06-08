@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Smart Points Seller New"
+            android:text="Smart Points Seller"
             android:textAlignment="center"
             android:textSize="22dp"
             android:textColor="#fff"
@@ -154,16 +154,16 @@
             android:layout_alignTop="@+id/linearLayout"
             android:layout_alignStart="@+id/linearLayout">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Don't have account? SignUp here "
-                android:textAlignment="center"
-                android:textSize="18dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginTop="15dp"
-                android:id="@+id/tvsignup"
-                android:layout_gravity="center"/>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Don't have account? SignUp here "-->
+                <!--android:textAlignment="center"-->
+                <!--android:textSize="18dp"-->
+                <!--android:layout_marginLeft="0dp"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:id="@+id/tvsignup"-->
+                <!--android:layout_gravity="center"/>-->
 
             <TextView
                 android:text="By Signing up you confirm that you have read and agree to the our"

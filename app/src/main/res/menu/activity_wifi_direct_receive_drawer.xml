@@ -6,7 +6,12 @@
         <item
             android:id="@+id/nav_report"
             android:icon="@drawable/report"
-            android:title="Total Transaction Report" />
+            android:title="All Transactions" />
+
+        <item
+            android:id="@+id/nav_customerList"
+            android:icon="@drawable/house_with_spercentage_off"
+            android:title="My Customers" />
 
         <item
             android:id="@+id/nav_setting"

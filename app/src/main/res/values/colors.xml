@@ -20,7 +20,7 @@
     <color name="BLACK">#000</color>
     <color name="colorGrey">#dadada</color>
     <color name="cardview_dark_background">#4572cc</color>
-
+    <color name="colorlightAccent">#fa82aa</color>
     <color name="button_edit_profile">#FF0AAE9F</color>
 
 

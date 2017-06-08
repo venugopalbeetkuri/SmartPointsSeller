@@ -15,6 +15,9 @@ public class AcknowledgePoints {
     String deviceId;
     String discountAmount;
     String time;
+
+    String branchId;
+    String storeId;
 //    String oldBillAmount;
 //    String newBillAmount;
 
@@ -32,7 +35,9 @@ public class AcknowledgePoints {
                              String points,
                              String storeName,
                              String deviceId,
-                             String time) {
+                             String time,
+                             String branchId,
+                             String storeId) {
         this.status = status;
         this.type = type;
         this.billAmount = billAmount;
@@ -41,6 +46,8 @@ public class AcknowledgePoints {
         this.deviceId = deviceId;
 //        this.discountAmount = discountAmount;
         this.time = time;
+        this.branchId = branchId;
+        this.storeId = storeId;
     }
 
 
@@ -113,5 +120,21 @@ public class AcknowledgePoints {
     public void setEarnRedeemString(String earnRedeemString) {
 
         this.earnRedeemString=earnRedeemString;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 }

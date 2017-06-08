@@ -22,8 +22,6 @@ import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,8 +37,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private ProgressDialog progressDialog;
 
-    //defining Firebase Auth object
-    private FirebaseAuth firebaseAuth;
+//    //defining Firebase Auth object
+//    private FirebaseAuth firebaseAuth;
 
     //FirebaseUser firebaseUser;
 
@@ -49,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         //intializing Views
-        BTREGISTER=(Button)findViewById(R.id.btregister);
+       /* BTREGISTER=(Button)findViewById(R.id.btregister);
 
         ETEMAIL=(EditText)findViewById(R.id.etnewusername);
 
@@ -91,11 +89,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             finish();
             startActivity(new Intent(getApplicationContext(), WifiDirectReceive.class));
 
-        }
+        }*/
 
     }
 
-    private void registerUser() {
+    /*private void registerUser() {
         //getting email and passwords from Edittext fields
         String email = ETEMAIL.getText().toString().trim();
         String password = ETPASSWORD.getText().toString().trim();
@@ -161,21 +159,21 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         } else {
             Toast.makeText(getApplicationContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
 
         if(view == BTREGISTER){
             // Calling registeruser() method
-            registerUser();
+           // registerUser();
         }
 
         if(view == TVSIGNIN){
-            startActivity(new Intent(this, Login.class));
+           // startActivity(new Intent(this, Login.class));
         }
         if(view == BACKBUTTON){
-            startActivity(new Intent(this,Login.class));
+           // startActivity(new Intent(this,Login.class));
         }
 
     }

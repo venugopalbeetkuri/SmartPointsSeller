@@ -1,31 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:orientation="vertical" android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--&lt;!&ndash;Header aligned at top&ndash;&gt;-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:id="@+id/header"-->
+            <!--android:layout_weight="0.54"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentLeft="true">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@drawable/ic_arrow_back_white_24dp"-->
+                <!--android:layout_marginLeft="13dp"-->
+                <!--android:id="@+id/backbut"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_alignParentLeft="true"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_marginStart="13dp" />-->
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Privacy Policy"-->
+            <!--android:textSize="22dp"-->
+            <!--android:textColor="#fff"-->
+            <!--android:layout_centerInParent="true"/>-->
+
+    <!--</RelativeLayout>-->
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_below="@+id/header">-->
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:padding="10dp"-->
+            <!--android:text="@string/policyContents"-->
+            <!--android:textColor="@color/colorPrimaryDark"-->
+            <!--android:textSize="10dp"/>-->
+    <!--</ScrollView>-->
+<!--</RelativeLayout>--><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!--Header aligned at top-->
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/header"
-            android:layout_weight="0.54"
-            android:background="@color/colorPrimary"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/header"
+        android:layout_weight="0.54"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_arrow_back_white_24dp"
-                android:layout_marginLeft="13dp"
-                android:id="@+id/backbut"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="13dp" />
-            <TextView
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow_back_white_24dp"
+            android:layout_marginLeft="13dp"
+            android:id="@+id/backbut"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="13dp" />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Privacy Policy"
@@ -44,6 +91,7 @@
             android:padding="10dp"
             android:text="@string/policyContents"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="10dp"/>
+            android:textSize="15dp"
+            />
     </ScrollView>
 </RelativeLayout>

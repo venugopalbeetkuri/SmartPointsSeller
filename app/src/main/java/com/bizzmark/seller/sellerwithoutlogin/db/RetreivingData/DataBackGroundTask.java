@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnFragment;
+import com.bizzmark.seller.sellerwithoutlogin.Reports.Earn_Reports.EarnFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;

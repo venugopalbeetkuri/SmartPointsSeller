@@ -11,12 +11,14 @@ public class RedeemAcknowledgement {
     String type;
   //  String billAmount;
     String storeName;
-//    String points;
+    String points;
     String deviceId;
     String discountAmount;
     String time;
     String oldBillAmount;
     String newBillAmount;
+    String branchId;
+    String storeId;
 
     public RedeemAcknowledgement() {
     }
@@ -33,7 +35,10 @@ public class RedeemAcknowledgement {
                                  String storeName,
                                  String deviceId,
                                  String discountAmount,
-                                 String time) {
+                                 String time,
+                                 String branchId,
+                                 String storeId,
+                                 String points) {
         this.status = status;
         this.type = type;
         this.oldBillAmount = oldBillAmount;
@@ -42,7 +47,18 @@ public class RedeemAcknowledgement {
         this.deviceId = deviceId;
         this.discountAmount = discountAmount;
         this.time = time;
+        this.branchId = branchId;
+        this.storeId = storeId;
+        this.points = points;
 
+    }
+
+    public String getPoints() {
+        return points;
+    }
+
+    public void setPoints(String points) {
+        this.points = points;
     }
 
     public String getStatus() {
@@ -135,4 +151,19 @@ public class RedeemAcknowledgement {
         this.earnRedeemString=earnRedeemString;
     }
 
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
 }

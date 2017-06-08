@@ -1,8 +1,10 @@
 package com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.service;
 
+import android.app.AlertDialog;
 import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -33,6 +35,13 @@ public class FileTransferService extends IntentService {
     public static final String EXTRAS_GROUP_OWNER_PORT = "go_port";
 
     public static final String MESSAGE = "message";
+
+//    Context context;
+       final Context context = this;
+
+   /* public FileTransferService(Context context){
+        this.context = context;
+    }*/
 
     private static FileTransferService instance = null;
 
@@ -76,10 +85,26 @@ public class FileTransferService extends IntentService {
 //                outputStream.flush();
 
 
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
 
                 Log.e("bizzmark", e.getMessage());
                 showToast("Error opening client socket. Ask seller to refresh.");
+                try {
+                    new AlertDialog.Builder(context)
+                            .setMessage("Customer has NOT RECEIVED ACKNOWLEDGEMENT but Transaction SUCCESSFULLY SAVED")
+                            .setCancelable(true)
+                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+
+                                }
+                            }).create().show();
+                }catch (Exception exce){
+                    exce.printStackTrace();
+                }
 
             } finally {
 

@@ -192,28 +192,6 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <Button
-                android:layout_width="145dp"
-                android:layout_height="50dp"
-                android:text="saveToDB"
-                android:textColor="#FFF"
-                android:background="@drawable/acceptbuttonshape"
-                android:id="@+id/savetoDB"
-                android:textSize="20dp"
-                android:textStyle="bold|italic"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
-
-
-        </RelativeLayout>
-        <!--</ScrollView>-->
 
     </LinearLayout>
 

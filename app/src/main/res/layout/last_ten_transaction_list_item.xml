@@ -6,12 +6,13 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp">
+        android:padding="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -20,32 +21,39 @@
                 <TableRow android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="1"
-                    android:padding="2dp">
+                    android:padding="2dp"
+                    android:background="@color/BLACK">
 
                     <TextView
-                        android:layout_height="wrap_content"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:text="Bill Amount"
+                        android:text="Transaction ID"
                         android:layout_marginLeft="5dp"
-                        android:textColor="@color/BLACK"/>
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18dp"/>
 
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text=":"
-                        android:textColor="@color/BLACK"/>
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18dp"/>
 
                     <TextView
                         android:layout_height="wrap_content"
-                        android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:text="1200"
+                        android:width="0dp"
                         android:layout_marginLeft="5dp"
-                        android:id="@+id/billReport"
-                        android:textColor="@color/BLACK"/>
+                        android:id="@+id/transId"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="18dp"
+                        android:editable="true" />
+
                 </TableRow>
-                <TableRow android:layout_width="match_parent"
+
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="1"
                     android:padding="2dp">
@@ -68,12 +76,49 @@
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:text="12-May-2016 02:05:00"
                         android:layout_marginLeft="5dp"
-                        android:id="@+id/billDateAndTime"
-                        android:textColor="@color/BLACK"/>
+                        android:id="@+id/lastTenTransType"
+                        android:textColor="@color/BLACK"
+                        android:editable="true" />
+
                 </TableRow>
-                <TableRow android:layout_width="match_parent"
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:text="Bill Amount"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/BLACK"
+                        android:textSize="16dp"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text=":"
+                        android:textColor="@color/BLACK"
+                        android:textSize="16dp"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/originalBillReport"
+                        android:textColor="@color/BLACK"
+                        android:textSize="16dp"
+                        android:editable="true" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="1"
                     android:padding="2dp">
@@ -84,83 +129,30 @@
                         android:layout_weight="0.5"
                         android:text="Points"
                         android:layout_marginLeft="5dp"
-                        android:textColor="@color/BLACK"/>
+                        android:textColor="@color/BLACK"
+                        android:textSize="16dp"/>
 
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text=":"
-                        android:textColor="@color/BLACK" />
+                        android:textColor="@color/BLACK"
+                        android:textSize="16dp"/>
 
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:text="120"
                         android:layout_marginLeft="5dp"
-                        android:id="@+id/billPoints"
-                        android:textColor="@color/BLACK"/>
+                        android:id="@+id/recentTranBillpoints"
+                        android:textColor="@color/BLACK"
+                        android:textSize="16dp"
+                        android:editable="true" />
 
                 </TableRow>
-                <TableRow android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:padding="2dp">
 
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:text="Date And Time"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="@color/BLACK" />
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/BLACK"/>
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:text="8578248625962"
-                        android:layout_marginLeft="5dp"
-                        android:id="@+id/billDeviceId"
-                        android:textColor="@color/BLACK"/>
-                </TableRow>
-
-                <TableRow android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:padding="2dp">
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:text="Device Id"
-                        android:layout_marginLeft="5dp"
-                        android:textColor="@color/BLACK" />
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text=":"
-                        android:textColor="@color/BLACK"/>
-
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:text="8578248625962"
-                        android:layout_marginLeft="5dp"
-                        android:id="@+id/storename"
-                        android:textColor="@color/BLACK"/>
-                </TableRow>
-
-                <TableRow android:layout_width="match_parent"
+                <TableRow
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="1"
                     android:padding="2dp">
@@ -171,26 +163,93 @@
                         android:layout_weight="0.5"
                         android:text="Store Name"
                         android:layout_marginLeft="5dp"
-                        android:textColor="@color/BLACK" />
+                        android:textColor="@color/BLACK"/>
 
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text=":"
-                        android:textColor="@color/BLACK" />
+                        android:textColor="@color/BLACK"/>
 
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:text="8578248625962"
                         android:layout_marginLeft="5dp"
-                        android:id="@+id/type"
-                        android:textColor="@color/BLACK"/>
+                        android:id="@+id/discountedAmount"
+                        android:textColor="@color/BLACK"
+                        android:editable="true" />
+
                 </TableRow>
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:text="New Bill Amount"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/BLACK"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text=":"
+                        android:textColor="@color/BLACK"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/newbillamount"
+                        android:textColor="@color/BLACK"
+                        android:editable="true" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="1"
+                    android:padding="2dp">
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:text="Date And Time"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/BLACK"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:text=":"
+                        android:textColor="@color/BLACK"/>
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/transactionAt"
+                        android:textColor="@color/BLACK"
+                        android:editable="true" />
+                </TableRow>
             </TableLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorlightAccent"
+        android:layout_margin="3dp"/>
 
 </LinearLayout>

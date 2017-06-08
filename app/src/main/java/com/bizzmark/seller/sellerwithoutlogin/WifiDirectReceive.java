@@ -1,17 +1,13 @@
 package com.bizzmark.seller.sellerwithoutlogin;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -19,15 +15,11 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.telephony.TelephonyManager;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuInflater;
@@ -39,44 +31,31 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.bizzmark.seller.sellerwithoutlogin.db.SellerBasicInformation;
-import com.bizzmark.seller.sellerwithoutlogin.db.StoreBO;
+import com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.LastTenTrans;
+import com.bizzmark.seller.sellerwithoutlogin.My_Customers.MyCustomers;
 import com.bizzmark.seller.sellerwithoutlogin.login.Login;
 import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
-import com.bizzmark.seller.sellerwithoutlogin.sellerapp.LastTenTransactions;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.Settings;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
-import static android.graphics.Color.GREEN;
+import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_customerList;
+//import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_customerList;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.accessToken;
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreName;
 
 public class WifiDirectReceive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, WifiP2pManager.ChannelListener, DeviceListFragment.DeviceActionListener {
@@ -85,20 +64,14 @@ public class WifiDirectReceive extends AppCompatActivity
     public ImageView imgmenu,sellerimg;
     public ImageButton action_logout;
 
-    String sellerEmail = "seller@smartpoints.com";
 
-    public TextView navStoreName,headerStoreName;
+    public TextView navStoreName,headerStoreName,versionName, versionCode;
     public static String storeName;
-    public String statusN, hdStoreName;
-
-    String Url = "http://35.154.104.54/smartpoints/seller-api/get-seller-name?sellerEmail="+sellerEmail;
-    private String URL_DATA=Url;
-
-    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public String statusN;
 
     public static final int REQUEST_READ_PERMISSION = 1;
 
-
+    SwipeRefreshLayout refreshLayout;
     public static final String TAG = "smartpointseller";
     private boolean isWifiP2pEnabled = false;
     private WifiP2pManager manager;
@@ -109,6 +82,8 @@ public class WifiDirectReceive extends AppCompatActivity
 
     private Button btnRefresh,report;
     //Textview variable  for displaying device id
+    public String version_Name;
+    public int version_Code;
     TextView device_id;
     String deviceId;
     public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled){
@@ -120,13 +95,6 @@ public class WifiDirectReceive extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_direct_receive);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        if (firebaseAuth.getCurrentUser() == null){
-            finish();
-            Intent i = new Intent(this,Login.class);
-            startActivity(i);
-        }
 
         // for enable wifi
         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -147,13 +115,31 @@ public class WifiDirectReceive extends AppCompatActivity
 
         navStoreName = (TextView) v.findViewById(R.id.nav_storeName);
         headerStoreName =(TextView) findViewById(R.id.header_storeName);
-        loadStoreName();
+
+        headerStoreName.setText(SELLER_STORENAE);
+        navStoreName.setText(SELLER_STORENAE);
 
         sellerimg=(ImageView)v.findViewById(R.id.sellerimg);
         sellerimg.setOnClickListener(this);
 
+        version_Name = BuildConfig.VERSION_NAME;
+        version_Code = BuildConfig.VERSION_CODE;
+
+       /* versionName = (TextView)v.findViewById(R.id.version_Name);
+        versionName.setText(version_Name);
+        versionCode = (TextView)v.findViewById(R.id.version_Code);
+        versionCode.setText(version_Code);*/
         btnRefresh=(Button)findViewById(R.id.btnRefresh);
         btnRefresh.setOnClickListener(this);
+
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLoadCusts);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(false);
+                discoverPeers();
+            }
+        });
 
         action_logout=(ImageButton)findViewById(R.id.action_logout);
         action_logout.setOnClickListener(this);
@@ -173,53 +159,23 @@ public class WifiDirectReceive extends AppCompatActivity
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel =  manager.initialize(this,getMainLooper(),null);
         discoverPeers();
-
         runTimePermission();
-       // getIMEIstring();
-
         device_id.setText(deviceId);
-    //    navStoreName.setText(storeName);
     }
 
-    private void loadStoreName(){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                URL_DATA, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    statusN = jsonObject.getString("status_type");
-                    storeName = jsonObject.getString("response");
-                    navStoreName.setText(storeName);
-                    headerStoreName.setText(storeName);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestQueue.add(stringRequest);
-    }
-
+/*getting runtime permission*/
     private void runTimePermission() {
-            // runtime permission getting imi-string
-            boolean hasPermissionLocation = (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
-            if (!hasPermissionLocation) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        REQUEST_READ_PERMISSION);
-            } else {
-                // getting device id
-                deviceId = getIMEIstring();
-            }
+        // runtime permission getting imi-string
+        boolean hasPermissionLocation = (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED);
+        if (!hasPermissionLocation) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    REQUEST_READ_PERMISSION);
+        } else {
+            // getting device id
+            deviceId = getIMEIstring();
+        }
     }
 
     /*getting device Id*/
@@ -245,7 +201,6 @@ public class WifiDirectReceive extends AppCompatActivity
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
                     Toast.makeText(context,"Permission granted.",Toast.LENGTH_LONG).show();
-//                    runTimePermission();
                     getIMEIstring();
                     discoverPeers();
                 }else {
@@ -317,14 +272,11 @@ public class WifiDirectReceive extends AppCompatActivity
 
     @Override
     public void connect(WifiP2pConfig config) {
-
-
         manager.connect(channel, config, new WifiP2pManager.ActionListener() {
 
             @Override
             public void onSuccess() {
                 // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-//                card_bg.setBackgroundColor(GREEN);
             }
 
             @Override
@@ -426,8 +378,6 @@ public class WifiDirectReceive extends AppCompatActivity
                     }
                 }
             }
-       //     Toast.makeText(getApplicationContext(),"Groups Removed Successfully ",Toast.LENGTH_LONG).show();
-
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -476,7 +426,6 @@ public class WifiDirectReceive extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-         //   logout();
             return true;
         }
 
@@ -489,33 +438,24 @@ public class WifiDirectReceive extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-//        if (id == R.id.nav_faq) {
-//            Intent i = new Intent(getApplicationContext(), FAQ.class);
-//            startActivity(i);
-//        }
         if (id == R.id.nav_report){
             Intent i=new Intent(WifiDirectReceive.this, ReportActivity.class);
             startActivity(i);
-        }
-        else if (id == R.id.nav_terms_conditions) {
+        } else if (id == R.id.nav_terms_conditions) {
             Intent i = new Intent(getApplication(), Terms.class);
             startActivity(i);
         } else if (id == R.id.nav_privacy_policy) {
             Intent i=new Intent(getApplicationContext(),PrivacyPolicy.class);
             startActivity(i);
-        }
-
-        else if (id == R.id.nav_setting){
+        } else if (id == nav_customerList){
+            Intent intent = new Intent(getApplicationContext(), MyCustomers.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_setting){
             Intent i = new Intent(getApplicationContext(), Settings.class);
             startActivity(i);
-        }
-
-//         else if (id == R.id.nav_share) {
-//                    shareButtionFunctionality();
-//                }
-        else if (id == R.id.nav_contact_us) {
+        } else if (id == R.id.nav_contact_us) {
             contactus();
-        }else if (id == R.id.nav_exit){
+        } else if (id == R.id.nav_exit){
             exit();
         }
 
@@ -546,31 +486,11 @@ public class WifiDirectReceive extends AppCompatActivity
             startActivity(i);
         }
         if(v == report){
-
-            Intent intent = new Intent(this,LastTenTransactions.class);
+            Intent intent = new Intent(this,LastTenTrans.class);
             startActivity(intent);
         }
 
     }
-
-    /*Share button functionality*/
-//    public  void shareButtionFunctionality(){
-//
-//        try {
-//
-//            ApplicationInfo app=getApplicationContext().getApplicationInfo();
-//            String filepath = app.sourceDir;
-//            Intent intent=new Intent(Intent.ACTION_SEND);
-//            intent.setType("*/*");
-//            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filepath)));
-//            startActivity(Intent.createChooser(intent,"Share app"));
-//            Toast.makeText(getApplicationContext(),"Share the Seller App . . .", Toast.LENGTH_LONG).show();
-//
-//        }catch (Exception e){
-//
-//            e.printStackTrace();
-//        }
-//    }
 
     /*method for slide menu button*/
     public void slidemenu(){
@@ -591,7 +511,6 @@ public class WifiDirectReceive extends AppCompatActivity
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-                        //StopConnect();
                     }
                 });
         AlertDialog alert = builder.create();
@@ -605,20 +524,15 @@ public class WifiDirectReceive extends AppCompatActivity
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
 
-            //builder1.setMessage("www.bizzmark.in\n PH:  ");
+
             builder1.setMessage("For Qurries contact this email \n bizzmark.in@gmail.com");
             builder1.setCancelable(true);
             builder1.setIcon(R.drawable.ic_launcher);
             builder1.setPositiveButton("SEND FEEDBACK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
-//                    dialog.cancel();
-                    Intent feedbackMail = new Intent(Intent.ACTION_SEND);
-
-                    feedbackMail.setType("text/email");
-                    feedbackMail.putExtra(Intent.EXTRA_EMAIL, new String[]{"bizzmark.in@gmail.com"});
-                    feedbackMail.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
-                    startActivity(Intent.createChooser(feedbackMail,"Send Feedback:"));
+                    dialog.dismiss();
+                    startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:bizzmark.in@gmail.com")));
                 }
             });
             builder1.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -633,25 +547,22 @@ public class WifiDirectReceive extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-       /* final Dialog custom = new Dialog(WifiDirectReceive.this);
-        custom.setTitle("CUSTOM DIALOG");
-        custom.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        custom.setContentView(R.layout.activity_contact_us);
-        custom.setCanceledOnTouchOutside(false);
-        custom.show();*/
     }
 
     /* method for logout*/
     public void logout(){
-        FirebaseUser user=firebaseAuth.getCurrentUser();
+//        FirebaseUser user=firebaseAuth.getCurrentUser();
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setMessage("Are you sure to logout")
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        firebaseAuth.signOut();
+//                        accessToken=null;
+                        SharedPreferences preferences = getSharedPreferences("STORE_DETAILS",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        editor.commit();
                         finish();
                         Intent i=new Intent(WifiDirectReceive.this,Login.class);
                         startActivity(i);
@@ -662,6 +573,7 @@ public class WifiDirectReceive extends AppCompatActivity
                 dialog.dismiss();
             }
         }).create().show();
+
     }
 
 }

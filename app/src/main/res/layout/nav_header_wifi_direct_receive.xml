@@ -18,26 +18,44 @@
         android:layout_height="71dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         app:srcCompat="@drawable/ic_launcher" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Smart Points Seller"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layoutStoreName"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Store Name :"
+            android:layout_weight="0.5"/>
+
+
+        <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+            android:layout_weight="0.5"
         android:id="@+id/nav_storeName"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:editable="true" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/textView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="www.bizzmark.com" />-->
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_weight="0.5">
 
         <TextView
             android:layout_width="0dp"
@@ -49,8 +67,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.75"
-            android:id="@+id/device_id"/>
+            android:id="@+id/device_id"
+            android:editable="true" />
 
     </LinearLayout>
 
+</LinearLayout>
 </LinearLayout>
