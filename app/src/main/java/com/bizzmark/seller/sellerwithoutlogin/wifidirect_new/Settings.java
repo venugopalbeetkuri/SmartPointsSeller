@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.login.ForgetPassword;
 
-import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
 
 public class Settings extends AppCompatActivity implements View.OnClickListener {
@@ -90,7 +89,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
                 {
                     String resultString = "Changed to " + myNewDeviceName;
                     Log.e("SECRETAPI", resultString);
-                    Toast.makeText(getApplicationContext(), resultString, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), resultString, Toast.LENGTH_LONG).show();
                 }
 
                 @Override
@@ -98,7 +97,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
                 {
                     String resultString = "Fail reason: " + String.valueOf(reason);
                     Log.e("SECRETAPI",resultString);
-                    Toast.makeText(getApplicationContext(), resultString, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), resultString, Toast.LENGTH_LONG).show();
                 }
             };
             //  Now we use the reflection API to call a method we normally wouldnt have access to.

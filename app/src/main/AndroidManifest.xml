@@ -13,7 +13,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -39,19 +40,19 @@
         <activity
             android:name=".Terms"
             android:screenOrientation="portrait"
-            android:theme = "@style/Theme.AppCompat.Light.Dialog"/>
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".PrivacyPolicy"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".login.Login"
             android:screenOrientation="portrait">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".sellerapp.EarnPoints"
@@ -81,8 +82,18 @@
         <activity
             android:name=".Reports.Last_Ten_Transactions.LastTenTrans"
             android:screenOrientation="portrait" />
-        <activity android:name=".wifidirect_new.Settings" />
-        <activity android:name=".My_Customers.MyCustomers"></activity>
+        <activity android:name=".wifidirect_new.Settings"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".My_Customers.MyCustomers"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Splash.Splash"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

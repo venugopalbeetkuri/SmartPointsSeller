@@ -20,37 +20,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.R;
+import com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.LastTenTrans;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
 import com.bizzmark.seller.sellerwithoutlogin.db.AcknowledgePoints;
-import com.bizzmark.seller.sellerwithoutlogin.db.AsyncTask.DataBaseBackgroundTask;
+
 import com.bizzmark.seller.sellerwithoutlogin.db.PointsBO;
-import com.bizzmark.seller.sellerwithoutlogin.db.Retrofit.InsertData;
-import com.bizzmark.seller.sellerwithoutlogin.util.Utility;
+
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.service.FileTransferService;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
-import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STOREID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.accessToken;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerBranchId;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreId;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreName;
 
 public class EarnPoints extends AppCompatActivity {
 
@@ -172,7 +156,7 @@ public class EarnPoints extends AppCompatActivity {
                     new AlertDialog.Builder(EarnPoints.this)
                             .setTitle("Error")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
-                            .setMessage("Something went wrong with Url")
+                            .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
@@ -195,7 +179,7 @@ public class EarnPoints extends AppCompatActivity {
                 catch (Exception e){
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -223,18 +207,26 @@ public class EarnPoints extends AppCompatActivity {
                                     .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.checked, null))
                                     .setMessage("Transaction Success \n if Customer Won't Receive Acknowledgement show this message")
                                     .setCancelable(true)
-                                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
                                             finish();
+                                        }
+                                    })
+                                    .setNegativeButton("View Transaction", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                            finish();
+                                            startActivity(new Intent(EarnPoints.this, LastTenTrans.class));
                                         }
                                     }).create().show();
                         }
                         catch (Exception e){
                             e.printStackTrace();
                         }
-                        Toast.makeText(getApplicationContext(),"Record Inserted",Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),"Record Inserted",Toast.LENGTH_LONG).show();
                     }
                     else if (status_type.equalsIgnoreCase("error")){
                         response = object.getString("response");
@@ -256,7 +248,7 @@ public class EarnPoints extends AppCompatActivity {
                         catch (Exception e){
                             e.printStackTrace();
                         }
-                        Toast.makeText(getApplicationContext(),"Failed to Inserting",Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(),"Failed to Inserting",Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -269,7 +261,7 @@ public class EarnPoints extends AppCompatActivity {
                     new AlertDialog.Builder(EarnPoints.this)
                             .setTitle("Error")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
-                            .setMessage("Something went wrong with Url")
+                            .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
@@ -325,24 +317,7 @@ public class EarnPoints extends AppCompatActivity {
                 insertEarnTransToDB();
 
          // Send acknowledgement to client.
-           /*     sendAcknowledgement(true);
-                try {
-                    new AlertDialog.Builder(EarnPoints.this)
-                            .setTitle("Report")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.checked, null))
-                            .setMessage("Transaction Successful \n if Customer Won't Receive Acknowledgement show this message")
-                            .setCancelable(true)
-                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    finish();
-                                }
-                            }).create().show();
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }*/
+           /*     sendAcknowledgement(true);*/
 //                finish();
             }
         });

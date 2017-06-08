@@ -13,9 +13,6 @@ import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.Reports.Earn_Reports.EarnFragment;
 import com.bizzmark.seller.sellerwithoutlogin.Reports.Redeem_Reports.RedeemFragment;
 
-import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreName;
-
 public class ReportActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView backbut;

@@ -283,7 +283,7 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
                     } catch (Exception e ){
                         e.printStackTrace();
                     }
-                    Toast.makeText(getActivity(),"Customer Scanned QR code not valid ",Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getActivity(),"Customer Scanned QR code not valid ",Toast.LENGTH_LONG).show();
                 }
             }
 

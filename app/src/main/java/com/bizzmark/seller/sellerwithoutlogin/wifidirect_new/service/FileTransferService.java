@@ -89,7 +89,7 @@ public class FileTransferService extends IntentService {
             catch (IOException e) {
 
                 Log.e("bizzmark", e.getMessage());
-                showToast("Error opening client socket. Ask seller to refresh.");
+//                showToast("Error opening client socket. Ask seller to refresh.");
                 try {
                     new AlertDialog.Builder(context)
                             .setMessage("Customer has NOT RECEIVED ACKNOWLEDGEMENT but Transaction SUCCESSFULLY SAVED")
@@ -145,7 +145,7 @@ public class FileTransferService extends IntentService {
                         new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+//                                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                             }
                         });
     }

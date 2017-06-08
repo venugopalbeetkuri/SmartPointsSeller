@@ -163,13 +163,17 @@
                         android:layout_weight="0.5"
                         android:text="Store Name"
                         android:layout_marginLeft="5dp"
-                        android:textColor="@color/BLACK"/>
+                        android:textColor="@color/BLACK"
+                        android:id="@+id/disableStoreName"
+                        android:editable="true"/>
 
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text=":"
-                        android:textColor="@color/BLACK"/>
+                        android:id="@+id/disableColon"
+                        android:textColor="@color/BLACK"
+                        android:editable="true"/>
 
                     <TextView
                         android:layout_height="wrap_content"
@@ -194,12 +198,16 @@
                         android:layout_weight="0.5"
                         android:text="New Bill Amount"
                         android:layout_marginLeft="5dp"
-                        android:textColor="@color/BLACK"/>
+                        android:textColor="@color/BLACK"
+                        android:id="@+id/disableNewBillAmount"
+                        android:editable="true"/>
 
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
                         android:text=":"
+                        android:editable="true"
+                        android:id="@+id/disableNewBillColon"
                         android:textColor="@color/BLACK"/>
 
                     <TextView
@@ -251,5 +259,6 @@
         android:layout_height="0dp"
         android:background="@color/colorlightAccent"
         android:layout_margin="3dp"/>
+
 
 </LinearLayout>

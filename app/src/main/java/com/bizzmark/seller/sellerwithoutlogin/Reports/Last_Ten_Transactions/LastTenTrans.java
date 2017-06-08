@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.R;
-import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,10 +32,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.KEY_EMAIL;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_EMAILID;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.accessToken;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerEmail;
 
 /**
  * Created by Tharun on 22-05-2017.
@@ -48,7 +45,8 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
     LinearLayout linear1;
     Button retry;
     SwipeRefreshLayout lastTenTranSwipe;
-    String transType, status_type, response;
+    String  status_type, response;
+    public static String transType, oldBillAmount;
     String Url="http://35.154.104.54/smartpoints/seller-api/last-10-transactions?sellerEmail="+SELLER_EMAILID;
     private final String URL_DATA=Url;
     private List<LastTenTransactionsList> tenTransactionsLists;
@@ -92,6 +90,8 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
                         JSONArray array = jsonObject.getJSONArray("response");
                         for (int i = 0; i < array.length(); i++) {
                             JSONObject object = array.getJSONObject(i);
+                            transType = object.getString("type");
+                            oldBillAmount = object.getString("original_bill_amount");
                             LastTenTransactionsList list = new LastTenTransactionsList(
                                     object.getString("transaction_id"),
                                     object.getString("type"),
@@ -99,25 +99,31 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
                                     object.getString("points"),
                                     object.getString("store_name"),
                                     object.getString("discounted_bill_amount"),
-                                    object.getString("transacted_at")
-                            );
-
+                                    object.getString("transacted_at"));
                             tenTransactionsLists.add(list);
                         }
-                    } else if (status_type.equalsIgnoreCase("error")){
+                    } else if (status_type.equalsIgnoreCase("error")) {
                         progressDialog.dismiss();
-                        new AlertDialog.Builder(LastTenTrans.this)
-                                .setMessage(response)
-                                .setCancelable(true)
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        Intent i = new Intent(LastTenTrans.this,WifiDirectReceive.class);
-                                        startActivity(i);
-                                    }
-                                }).create().show();
+                        try {
+                            new AlertDialog.Builder(LastTenTrans.this)
+                                    .setTitle("Error")
+                                    .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.information_icon, null))
+                                    .setMessage(response)
+                                    .setCancelable(true)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+//                                            Intent i = new Intent(LastTenTrans.this, WifiDirectReceive.class);
+//                                            startActivity(i);
+                                            finish();
+                                        }
+                                    }).create().show();
 //                        Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     adapter = new LastTenTransactionsAdapter(tenTransactionsLists,getApplicationContext());
                     recyclerView.setAdapter(adapter);
@@ -129,25 +135,32 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                AlertDialog.Builder alert = new AlertDialog.Builder(getApplicationContext());
-                alert.setMessage("Something wrong with Url");
-                alert.setCancelable(true);
-                alert.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        loadTenTransactions();
-                    }
-                });
-                alert.setNegativeButton("Previous Page", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        Intent intent = new Intent(getApplicationContext(),WifiDirectReceive.class);
-                        startActivity(intent);
-                    }
-                }).create().show();
-                Toast.makeText(getApplicationContext(),"Some Thing Went Wrong Please Try Again",Toast.LENGTH_LONG).show();
+
+                try {
+                    new AlertDialog.Builder(LastTenTrans.this)
+                            .setTitle("Error")
+                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                            .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
+                            .setCancelable(true)
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    loadTenTransactions();
+                                }
+                            })
+                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            }).create().show();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+//                Toast.makeText(getApplicationContext(),"Some Thing Went Wrong Please Try Again",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -164,5 +177,11 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
         if (v == backbut){
             backbut();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

@@ -8,22 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
-import com.bizzmark.seller.sellerwithoutlogin.db.Retrofit.SellerProfile;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnPoints;
-
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.storeName;
 
@@ -42,10 +30,10 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.seller_basic_information);
-     /*   seller_infosave=(Button)findViewById(R.id.seller_infosave);
+     /*   seller_infosave=(Button)findViewById(R.id.seller_infosave);*/
         backbut=(ImageView)findViewById(R.id.backbut);
 
-        storename = (EditText)findViewById(R.id.store_name);
+       /* storename = (EditText)findViewById(R.id.store_name);
         email = (EditText)findViewById(R.id.email);
         brid = (EditText)findViewById(R.id.branch_uid);
         brname = (EditText)findViewById(R.id.branch_name);
@@ -53,10 +41,10 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
         braddress = (EditText)findViewById(R.id.branch_address);
         brdiscount = (EditText)findViewById(R.id.branch_discount);
         sellerInfoHeader = (TextView) findViewById(R.id.sellerInfoHeader);
-        sellerInfoHeader.setText(storeName);
+        sellerInfoHeader.setText(storeName);*/
         backbut.setOnClickListener(this);
 
-        seller_infosave.setOnClickListener(this);
+/*        seller_infosave.setOnClickListener(this);
 
         store_name = storename.getText().toString();*/
 
@@ -140,13 +128,13 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
         if (v== backbut){
             backbut();
         }
-        if (v== seller_infosave){
+     /*   if (v== seller_infosave){
 //            saveInfo();
 //            Intent intent = new Intent(getApplicationContext(), WifiDirectReceive.class);
 //            intent.putExtra("header_storeName", store_name);
 //            getApplicationContext().startActivity(intent);
             finish();
-        }
+        }*/
 
     }
 }

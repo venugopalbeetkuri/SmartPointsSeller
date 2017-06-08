@@ -52,10 +52,7 @@ import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.W
 import java.lang.reflect.Method;
 
 import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_customerList;
-//import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_customerList;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.accessToken;
-import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerStoreName;
 
 public class WifiDirectReceive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, WifiP2pManager.ChannelListener, DeviceListFragment.DeviceActionListener {
@@ -125,10 +122,12 @@ public class WifiDirectReceive extends AppCompatActivity
         version_Name = BuildConfig.VERSION_NAME;
         version_Code = BuildConfig.VERSION_CODE;
 
-       /* versionName = (TextView)v.findViewById(R.id.version_Name);
+        versionName = (TextView)findViewById(R.id.version_Name);
         versionName.setText(version_Name);
-        versionCode = (TextView)v.findViewById(R.id.version_Code);
-        versionCode.setText(version_Code);*/
+        versionName.setEnabled(true);
+//        versionCode = (TextView)findViewById(R.id.version_Code);
+//        versionCode.setText(version_Code);
+//        versionCode.setEnabled(true);
         btnRefresh=(Button)findViewById(R.id.btnRefresh);
         btnRefresh.setOnClickListener(this);
 
@@ -136,6 +135,8 @@ public class WifiDirectReceive extends AppCompatActivity
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                wifi.setWifiEnabled(true);
                 refreshLayout.setRefreshing(false);
                 discoverPeers();
             }
@@ -204,7 +205,7 @@ public class WifiDirectReceive extends AppCompatActivity
                     getIMEIstring();
                     discoverPeers();
                 }else {
-                    Toast.makeText(context,"The app was not allowed to get your phone state. Hence, it cannot function properly. Please consider granting it this permission",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"The app was not allowed to get your phone state. Hence, it cannot run. Please consider granting it this permission",Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -214,8 +215,8 @@ public class WifiDirectReceive extends AppCompatActivity
 
     public void discoverPeers(){
         if (!isWifiP2pEnabled){
-            Toast.makeText(this, "Enable P2P from action bar button above or system settings",
-                    Toast.LENGTH_SHORT).show();
+      //      Toast.makeText(this, "Enable P2P from action bar button above or system settings",
+        //            Toast.LENGTH_SHORT).show();
         }
 
         DeviceListFragment deviceListFragment = (DeviceListFragment) getFragmentManager()
@@ -224,13 +225,13 @@ public class WifiDirectReceive extends AppCompatActivity
         manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                Toast.makeText(WifiDirectReceive.this, "Discovery initiated", Toast.LENGTH_SHORT).show();
+          //      Toast.makeText(WifiDirectReceive.this, "Discovery initiated", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int reason) {
-                Toast.makeText(WifiDirectReceive.this, "Discovery failed :" + reason,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(WifiDirectReceive.this, "Discovery failed :" + reason,
+//                        Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -281,8 +282,8 @@ public class WifiDirectReceive extends AppCompatActivity
 
             @Override
             public void onFailure(int reason) {
-                Toast.makeText(WifiDirectReceive.this, "Connect failed. Retry.",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(WifiDirectReceive.this, "Connect failed. Retry.",
+//                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -315,14 +316,14 @@ public class WifiDirectReceive extends AppCompatActivity
 
         // we will try once more
         if (manager != null && !retryChannel) {
-            Toast.makeText(this, "Channel lost. Trying again", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Channel lost. Trying again", Toast.LENGTH_LONG).show();
             resetData();
             retryChannel = true;
             manager.initialize(this, getMainLooper(), this);
         } else {
-            Toast.makeText(this,
-                    "Severe! Channel is probably lost premanently. Try Disable/Re-Enable P2P.",
-                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,
+//                    "Severe! Channel is probably lost premanently. Try Disable/Re-Enable P2P.",
+//                    Toast.LENGTH_LONG).show();
         }
 
     }
@@ -348,15 +349,15 @@ public class WifiDirectReceive extends AppCompatActivity
 
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(WifiDirectReceive.this, "Aborting connection",
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(WifiDirectReceive.this, "Aborting connection",
+//                                Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(int reasonCode) {
-                        Toast.makeText(WifiDirectReceive.this,
-                                "Connect abort request failed. Reason Code: " + reasonCode,
-                                Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(WifiDirectReceive.this,
+//                                "Connect abort request failed. Reason Code: " + reasonCode,
+//                                Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -470,6 +471,8 @@ public class WifiDirectReceive extends AppCompatActivity
         if (v == btnRefresh){
             Animation rotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.buttonrotate);
             rotation.start();
+            WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            wifi.setWifiEnabled(true);
             btnRefresh.startAnimation(rotation);
             deletePersistentGroups();
             disconnect();
