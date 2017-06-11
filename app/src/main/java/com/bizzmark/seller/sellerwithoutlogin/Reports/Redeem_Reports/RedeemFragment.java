@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_EMAILID;
 
 /**
@@ -44,7 +45,9 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    String Url = "http://35.154.104.54/smartpoints/seller-api/redeem-transactions-with-search?sellerEmail="+SELLER_EMAILID;
+//    String Url = "http://35.154.104.54/smartpoints/seller-api/redeem-transactions-with-search?sellerEmail="+SELLER_EMAILID;
+
+    String Url = "http://35.154.104.54/smartpoints/seller-api/branch-redeem-transactions-with-search?branchId="+SELLER_BRANCHID;
     private String URL_DATA=Url;
 
     String transType, status_type, response;
@@ -117,7 +120,7 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
                                     o.getString("transaction_id"),
                                     o.getString("original_bill_amount"),
                                     o.getString("points"),
-                                    o.getString("store_name"),
+                                    o.getString("discount"),
                                     o.getString("discounted_bill_amount"),
                                     o.getString("transacted_at")
                             );
@@ -221,7 +224,7 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
         }
     }
     public void dateFilter(){
-        String dateFilterUrl ="http://35.154.104.54/smartpoints/seller-api/redeem-transactions-with-search?sellerEmail="+SELLER_EMAILID+"&fromDate="+fromDate+"&toDate="+toDate;
+        String dateFilterUrl ="http://35.154.104.54/smartpoints/seller-api/branch-redeem-transactions-with-search?branchId="+SELLER_BRANCHID+"&fromDate="+fromDate+"&toDate="+toDate;
         URL_DATA = dateFilterUrl;
         loadRecyclerViewData();
     }

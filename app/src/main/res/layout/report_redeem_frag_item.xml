@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="0.5"
-                        android:text="Store Name"
+                        android:text="Discounted Amount"
                         android:layout_marginLeft="5dp"
                         android:textColor="@color/BLACK"/>
 

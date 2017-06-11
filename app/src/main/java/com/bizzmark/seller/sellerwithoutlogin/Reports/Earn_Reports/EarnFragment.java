@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_EMAILID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.sellerEmail;
 
@@ -54,7 +55,9 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
     SwipeRefreshLayout earnFragSwipe;
     int pageR, limitInt,n=1;
     String limit, page;
-    String Url = "http://35.154.104.54/smartpoints/seller-api/earn-transactions-with-search?sellerEmail="+SELLER_EMAILID;
+//    String Url = "http://35.154.104.54/smartpoints/seller-api/earn-transactions-with-search?sellerEmail="+SELLER_EMAILID;
+
+    String Url = "http://35.154.104.54/smartpoints/seller-api/branch-earn-transactions?branchId="+SELLER_BRANCHID;
     private String URL_DATA=Url;
 
     private List<EarnFragTansList> earnFragTansLists;
@@ -237,7 +240,8 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
     }
 
     public void dateFilter(){
-        String dateFilterUrl ="http://35.154.104.54/smartpoints/seller-api/earn-transactions-with-search?sellerEmail="+SELLER_EMAILID+"&fromDate="+fromDate+"&toDate="+toDate;
+//        String dateFilterUrl ="http://35.154.104.54/smartpoints/seller-api/earn-transactions-with-search?sellerEmail="+SELLER_EMAILID+"&fromDate="+fromDate+"&toDate="+toDate;
+        String dateFilterUrl ="http://35.154.104.54/smartpoints/seller-api/branch-earn-transactions-with-search?branchId="+SELLER_BRANCHID+"&fromDate="+fromDate+"&toDate="+toDate;
         URL_DATA = dateFilterUrl;
 
         loadRecyclerViewData();

@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_EMAILID;
 
 /**
@@ -47,7 +48,7 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
     SwipeRefreshLayout lastTenTranSwipe;
     String  status_type, response;
     public static String transType, oldBillAmount;
-    String Url="http://35.154.104.54/smartpoints/seller-api/last-10-transactions?sellerEmail="+SELLER_EMAILID;
+    String Url="http://35.154.104.54/smartpoints/seller-api/last-10-branch-transactions?branchId="+SELLER_BRANCHID;
     private final String URL_DATA=Url;
     private List<LastTenTransactionsList> tenTransactionsLists;
 
@@ -77,6 +78,7 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Data");
         progressDialog.show();
+        tenTransactionsLists.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 URL_DATA, new Response.Listener<String>() {
             @Override
@@ -97,7 +99,7 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
                                     object.getString("type"),
                                     object.getString("original_bill_amount"),
                                     object.getString("points"),
-                                    object.getString("store_name"),
+                                    object.getString("discount"),
                                     object.getString("discounted_bill_amount"),
                                     object.getString("transacted_at"));
                             tenTransactionsLists.add(list);

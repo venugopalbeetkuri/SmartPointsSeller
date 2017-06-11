@@ -52,6 +52,9 @@ public class RedeemPoints extends AppCompatActivity {
     /*Strings used in validatingRedeemPoints()*/
     String status_type, response;
 
+    /*String for transId*/
+    String transId;
+
     Intent serviceIntent;
 
     final static String Log="Seller app";
@@ -101,7 +104,7 @@ public class RedeemPoints extends AppCompatActivity {
         addListenerOnCancelButton();
 
     }
-/*Validating given points from user*/
+    /*Validating given points from user*/
     private void validatingRedeemPoints() {
         CalRedeemPointsUrl = "http://35.154.104.54/smartpoints/seller-api/preview-make-redeem-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+deviceid+"&billAmount="+bill_amount+"&wishedRedeemPoints="+points_earn;
 
@@ -192,7 +195,6 @@ public class RedeemPoints extends AppCompatActivity {
     }
 
     /*Inseting Data into database*/
-
     private void insertRedeemTransToDB(){
         validatingRedeemPoints();
         InsertRedeemUrl = "http://35.154.104.54/smartpoints/seller-api/make-redeem-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+deviceid+"&billAmount="+originalBillAmount+"&wishedRedeemPoints="+redeemedPoints;
@@ -205,6 +207,7 @@ public class RedeemPoints extends AppCompatActivity {
                             JSONObject rdobj = new JSONObject(s);
                             status_type = rdobj.getString("status_type");
                             if (status_type.equalsIgnoreCase("success")){
+                                transId = rdobj.getString("transaction_id");
                                 sendAcknowledgement(true);
                                 try {
                                     new AlertDialog.Builder(RedeemPoints.this)
@@ -345,6 +348,7 @@ public class RedeemPoints extends AppCompatActivity {
             ack.setBranchId(SELLER_BRANCHID);
             ack.setStoreId(SELLER_STOREID);
             ack.setPoints(redeemedPoints);
+            ack.setTransId(transId);
         }else {
 
             String status = "failure";
@@ -359,6 +363,7 @@ public class RedeemPoints extends AppCompatActivity {
             ack.setBranchId(SELLER_BRANCHID);
             ack.setStoreId(SELLER_STOREID);
             ack.setPoints(redeemedPoints);
+            ack.setTransId(transId);
         }
 
         Gson gson = new Gson();

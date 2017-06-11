@@ -15,6 +15,7 @@ public class AcknowledgePoints {
     String deviceId;
     String discountAmount;
     String time;
+    String transId;
 
     String branchId;
     String storeId;
@@ -37,7 +38,8 @@ public class AcknowledgePoints {
                              String deviceId,
                              String time,
                              String branchId,
-                             String storeId) {
+                             String storeId,
+                             String transId) {
         this.status = status;
         this.type = type;
         this.billAmount = billAmount;
@@ -48,10 +50,16 @@ public class AcknowledgePoints {
         this.time = time;
         this.branchId = branchId;
         this.storeId = storeId;
+        this.transId = transId;
     }
 
+    public String getTransId() {
+        return transId;
+    }
 
-
+    public void setTransId(String transId) {
+        this.transId = transId;
+    }
 
     public String getStatus() {
         return status;

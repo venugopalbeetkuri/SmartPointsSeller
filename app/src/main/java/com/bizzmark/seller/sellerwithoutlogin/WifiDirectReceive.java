@@ -42,7 +42,7 @@ import android.widget.Toast;
 import com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.LastTenTrans;
 import com.bizzmark.seller.sellerwithoutlogin.My_Customers.MyCustomers;
 import com.bizzmark.seller.sellerwithoutlogin.login.Login;
-import com.bizzmark.seller.sellerwithoutlogin.login.Seller_Basic_Information;
+import com.bizzmark.seller.sellerwithoutlogin.sellerInfo.Seller_Basic_Information;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;

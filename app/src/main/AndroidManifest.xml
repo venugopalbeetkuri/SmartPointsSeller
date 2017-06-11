@@ -48,11 +48,14 @@
         <activity
             android:name=".login.Login"
             android:screenOrientation="portrait">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".sellerapp.EarnPoints"
@@ -68,7 +71,7 @@
 
         <!-- <activity android:name=".sellerapp.ReportActivity" /> -->
         <activity
-            android:name=".login.Seller_Basic_Information"
+            android:name=".sellerInfo.Seller_Basic_Information"
             android:screenOrientation="portrait" />
         <activity
             android:name=".login.RegisterActivity"
@@ -82,11 +85,14 @@
         <activity
             android:name=".Reports.Last_Ten_Transactions.LastTenTrans"
             android:screenOrientation="portrait" />
-        <activity android:name=".wifidirect_new.Settings"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".My_Customers.MyCustomers"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Splash.Splash"
+        <activity
+            android:name=".wifidirect_new.Settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".My_Customers.MyCustomers"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Splash.Splash"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -94,6 +100,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".login.Gmail" />
+        <activity android:name=".sellerapp.RedeemRewards"></activity>
     </application>
 
 </manifest>

@@ -48,10 +48,13 @@ public class EarnPoints extends AppCompatActivity {
     public int i=0;
 
     Button earnAcceptButton;
-/*String Used in jsonobject to separete data */
+    /*String Used in jsonobject to separete data */
     String device_id,store_name,bill_amount,date_time,earn_type;
-/*Strings used in calculatingEarnPoints()*/
+    /*Strings used in calculatingEarnPoints()*/
     String billamount,points;
+
+    /*String for transaction Id*/
+    String transId;
 
     /*Strings used in insertEarnTransToDB()*/
     String status_type, response;
@@ -105,7 +108,7 @@ public class EarnPoints extends AppCompatActivity {
 
     }
 
-/*Calucating points for given bill amount*/
+    /*Calucating points for given bill amount*/
     public void calculatingEarnPoints(){
         CalPointsUrl = "http://35.154.104.54/smartpoints/seller-api/preview-make-earn-transaction?storeId="+SELLER_STOREID+"&customerDeviceId="+device_id+"&billAmount="+bill_amount;
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -186,7 +189,7 @@ public class EarnPoints extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-/*Inseting Data into database*/
+    /*Inseting Data into database*/
     public void insertEarnTransToDB(){
         calculatingEarnPoints();
         InsertUrl = "http://35.154.104.54/smartpoints/seller-api/make-earn-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+device_id+"&billAmount="+billamount;
@@ -200,6 +203,7 @@ public class EarnPoints extends AppCompatActivity {
 
                     //earned_points = object.getString("earned_points");
                     if (status_type.equalsIgnoreCase("success") ){
+                        transId = object.getString("transaction_id");
                         sendAcknowledgement(true);
                         try {
                             new AlertDialog.Builder(EarnPoints.this)
@@ -289,7 +293,7 @@ public class EarnPoints extends AppCompatActivity {
         requestQueue.add(insertRequest);
     }
 
-/*enbling button function to cancel the transaction*/
+    /*enbling button function to cancel the transaction*/
     private void addListenerOnCancelButton() {
         Button earnCancelButton = (Button) findViewById(R.id.earnCancelButton);
         earnCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -305,7 +309,7 @@ public class EarnPoints extends AppCompatActivity {
 
     }
 
-/* Enabling button fuction to accept the transaction*/
+    /* Enabling button fuction to accept the transaction*/
     private void addListenerOnAcceptButton() {
         earnAcceptButton=(Button)findViewById(R.id.earnAcceptButton);
         earnAcceptButton.setOnClickListener(new View.OnClickListener() {
@@ -323,7 +327,7 @@ public class EarnPoints extends AppCompatActivity {
         });
     }
 
-/*Method for Intializing Acknowledgement to send customer*/
+    /*Method for Intializing Acknowledgement to send customer*/
     private void sendAcknowledgement(boolean success){
           AcknowledgePoints ack = new AcknowledgePoints();
         if(success) {
@@ -337,6 +341,7 @@ public class EarnPoints extends AppCompatActivity {
             ack.setTime(date_time);
             ack.setBranchId(SELLER_BRANCHID);
             ack.setStoreId(SELLER_STOREID);
+            ack.setTransId(transId);
         } else {
             String status = "failure";
             ack.setStatus(status);
@@ -348,6 +353,7 @@ public class EarnPoints extends AppCompatActivity {
             ack.setTime(date_time);
             ack.setBranchId(SELLER_BRANCHID);
             ack.setStoreId(SELLER_STOREID);
+            ack.setTransId(transId);
         }
 
         Gson gson = new Gson();
@@ -357,7 +363,7 @@ public class EarnPoints extends AppCompatActivity {
         sendMessage();
     }
 
-/*Method fro sendMessage() used to sending ack message to customer*/
+    /*Method fro sendMessage() used to sending ack message to customer*/
     private void sendMessage(){
         try {
             boolean instance=FileTransferService.isInstanceCreated();

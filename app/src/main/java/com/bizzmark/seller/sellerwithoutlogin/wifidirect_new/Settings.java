@@ -38,13 +38,13 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_settings);
         rename=(Button)findViewById(R.id.rename);
         resetPassword=(Button)findViewById(R.id.resetPassword);
-        resetPassword.setEnabled(false);
+        resetPassword.setEnabled(true);
         settingHeader = (TextView) findViewById(R.id.settingHeader);
         settingHeader.setText(SELLER_STORENAE);
         backbut=(ImageView)findViewById(R.id.backbut);
         backbut.setOnClickListener(this);
         rename.setOnClickListener(this);
-//        resetPassword.setOnClickListener(this);
+        resetPassword.setOnClickListener(this);
     }
 
     private void backbut(){

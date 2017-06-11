@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_redeem_rewards"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bizzmark.seller.sellerwithoutlogin.sellerapp.RedeemRewards">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/header"
+        android:layout_weight="0.54"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Smart Points Seller"
+            android:textSize="22dp"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            android:editable="true"
+            android:id="@+id/redeemHeader"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:padding="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_margin="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:padding="3dp"
+            android:text="REEDEEM REWARDS"
+            android:textColor="#3F51B5"
+            android:textStyle="bold"
+            android:textSize="25dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:text="Redeemed Points"
+                        android:textSize="20dp"
+                        android:textColor="@color/BLACK"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:padding="3dip"
+                        android:gravity="left"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.40"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:padding="3dip"
+                        android:gravity="right"
+                        android:id="@+id/rewardRedeemedPoints"
+                        android:textColor="@color/BLACK"/>
+
+                    <ImageView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.10"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:gravity="left"
+                        app:srcCompat="@drawable/points" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:text="Redeemed Reward"
+                        android:textSize="20dp"
+                        android:textColor="@color/BLACK"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:padding="3dip"
+                        android:gravity="left"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="0.40"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:padding="3dip"
+                        android:gravity="right"
+                        android:id="@+id/rewardRedeemedReward"
+                        android:textColor="@color/BLACK"/>
+
+                    <ImageView
+                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.10"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp"
+                        android:gravity="left"
+                        android:src="@drawable/medal"/>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:padding="30dp">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_weight="0.5"
+                        android:elevation="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_marginRight="30dp"
+                        android:text="Cancel"
+                        android:textColor="#FFF"
+                        android:textStyle="bold|italic"
+                        android:textSize="25dp"
+                        android:background="@drawable/cancelbuttonshape"
+                        android:id="@+id/rewardRedeemCancelButton"/>
+
+                    <Button
+                        android:layout_weight="0.5"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="Accept"
+                        android:textColor="#FFF"
+                        android:textStyle="bold|italic"
+                        android:textSize="25dp"
+                        android:background="@drawable/acceptbuttonshape"
+                        android:id="@+id/rewardRedeemAcceptButton"/>
+
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
