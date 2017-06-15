@@ -34,6 +34,10 @@
           <option name="url" value="https://github.com/googlesamples/google-services.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/manasranjan931/SmartPointSApril2017.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="E:\APK\My_Project\GihubRepository" />
