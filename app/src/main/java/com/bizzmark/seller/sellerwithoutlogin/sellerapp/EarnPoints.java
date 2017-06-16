@@ -157,9 +157,9 @@ public class EarnPoints extends AppCompatActivity {
 
                 try {
                     new AlertDialog.Builder(EarnPoints.this)
-                            .setTitle("Error")
+                            .setTitle("Something Wrong While Calculating Points")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
-                            .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
+                            .setMessage("Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
@@ -204,12 +204,13 @@ public class EarnPoints extends AppCompatActivity {
                     //earned_points = object.getString("earned_points");
                     if (status_type.equalsIgnoreCase("success") ){
                         transId = object.getString("transaction_id");
+//                        earnAcceptButton.setVisibility(View.GONE);
                         sendAcknowledgement(true);
                         try {
                             new AlertDialog.Builder(EarnPoints.this)
-                                    .setTitle("Report")
+                                    .setTitle("Transaction Successful")
                                     .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.checked, null))
-                                    .setMessage("Transaction Success \n if Customer Won't Receive Acknowledgement show this message")
+                                    .setMessage("If the Customer has not Received Acknowledgement please show him this message")
                                     .setCancelable(true)
                                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
@@ -237,9 +238,9 @@ public class EarnPoints extends AppCompatActivity {
                         sendAcknowledgement(false);
                         try {
                             new AlertDialog.Builder(EarnPoints.this)
-                                    .setTitle("Error")
+                                    .setTitle("Transaction Canceled")
                                     .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.cancel, null))
-                                    .setMessage(response+"\n Transaction Canceled \n If Customer won't Receive Acknowledgment show this Message")
+                                    .setMessage(response+"\n If Customer won't Receive Acknowledgment show this Message")
                                     .setCancelable(true)
                                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
@@ -316,7 +317,7 @@ public class EarnPoints extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
-
+                earnAcceptButton.setVisibility(View.GONE);
                 /*saving to database*/
                 insertEarnTransToDB();
 

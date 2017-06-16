@@ -136,9 +136,9 @@ public class RedeemPoints extends AppCompatActivity {
                                 try {
                                     sendAcknowledgement(false);
                                     new AlertDialog.Builder(RedeemPoints.this)
-                                            .setTitle("Error")
+                                            .setTitle("Customer do not have enough points")
                                             .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.cancel, null))
-                                            .setMessage("Customer do not have enough points \n please tell customer to choose lower points")
+                                            .setMessage("Please tell customer to choose lower points")
                                             .setCancelable(true)
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                 @Override
@@ -163,9 +163,9 @@ public class RedeemPoints extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 try {
                     new AlertDialog.Builder(RedeemPoints.this)
-                            .setTitle("Error")
+                            .setTitle("Something Wrong While Calculating Points")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
-                            .setMessage("Something Wrong While Calculating Points \n Please ensure Internet connection")
+                            .setMessage("Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
@@ -211,10 +211,9 @@ public class RedeemPoints extends AppCompatActivity {
                                 sendAcknowledgement(true);
                                 try {
                                     new AlertDialog.Builder(RedeemPoints.this)
-                                            .setTitle("Report")
+                                            .setTitle("Transaction Successful")
                                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.checked, null))
-                                            .setMessage("Transaction Success \n" +
-                                                    " If Customer Won't Receive Acknowledgement show this message")
+                                            .setMessage(" If yhe Customer has not Received Acknowledgement please show this message")
                                             .setCancelable(true)
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                 @Override
@@ -243,9 +242,9 @@ public class RedeemPoints extends AppCompatActivity {
                                 sendAcknowledgement(false);
                                 try {
                                     new AlertDialog.Builder(RedeemPoints.this)
-                                            .setTitle("Error")
+                                            .setTitle("Transaction Canceled")
                                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.cancel, null))
-                                            .setMessage(response+"\n Transaction Canceled \n If Customer won't Receive Acknowledgment show this Message")
+                                            .setMessage(response+"\nIf the Customer has not Received Acknowledgment show this Message")
                                             .setCancelable(true)
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                 @Override
@@ -312,7 +311,7 @@ public class RedeemPoints extends AppCompatActivity {
 
     private void addListenerOnAcceptButton() {
 
-        Button earnButton=(Button)findViewById(R.id.redeemButton);
+        final Button earnButton=(Button)findViewById(R.id.redeemButton);
 
         earnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,6 +319,7 @@ public class RedeemPoints extends AppCompatActivity {
 
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
 
+                earnButton.setVisibility(View.GONE);
                 //save to database
                 insertRedeemTransToDB();
                 // Send acknowledgement to customer.

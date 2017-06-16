@@ -100,7 +100,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.Gmail" />
         <activity android:name=".sellerapp.RedeemRewards"></activity>
     </application>
 
