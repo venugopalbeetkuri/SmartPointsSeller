@@ -108,9 +108,8 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
                         progressDialog.dismiss();
                         try {
                             new AlertDialog.Builder(LastTenTrans.this)
-                                    .setTitle("Error")
+                                    .setTitle(response)
                                     .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.information_icon, null))
-                                    .setMessage(response)
                                     .setCancelable(true)
                                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override

@@ -108,6 +108,12 @@ public class EarnPoints extends AppCompatActivity {
 
     }
 
+    /*back method*/
+    private void backbut(){
+        EarnPoints.super.onBackPressed();
+    }
+
+
     /*Calucating points for given bill amount*/
     public void calculatingEarnPoints(){
         CalPointsUrl = "http://35.154.104.54/smartpoints/seller-api/preview-make-earn-transaction?storeId="+SELLER_STOREID+"&customerDeviceId="+device_id+"&billAmount="+bill_amount;
@@ -137,9 +143,9 @@ public class EarnPoints extends AppCompatActivity {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
-
-                                            Intent i =new Intent(EarnPoints.this, WifiDirectReceive.class);
-                                            startActivity(i);
+                                            finish();
+//                                            Intent i =new Intent(EarnPoints.this, WifiDirectReceive.class);
+//                                            startActivity(i);
                                         }
                                     }).create().show();
                         }
@@ -165,7 +171,6 @@ public class EarnPoints extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-
                                     calculatingEarnPoints();
                                 }
                             })
@@ -174,8 +179,9 @@ public class EarnPoints extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                     sendAcknowledgement(false);
-                                    Intent i = new Intent(EarnPoints.this,WifiDirectReceive.class);
-                                    startActivity(i);
+//                                    Intent i = new Intent(EarnPoints.this,WifiDirectReceive.class);
+//                                    startActivity(i);
+                                    finish();
                                 }
                             }).create().show();
                 }
@@ -211,7 +217,7 @@ public class EarnPoints extends AppCompatActivity {
                                     .setTitle("Transaction Successful")
                                     .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.checked, null))
                                     .setMessage("If the Customer has not Received Acknowledgement please show him this message")
-                                    .setCancelable(true)
+                                    .setCancelable(false)
                                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -227,10 +233,12 @@ public class EarnPoints extends AppCompatActivity {
                                             startActivity(new Intent(EarnPoints.this, LastTenTrans.class));
                                         }
                                     }).create().show();
+                           // finish();
                         }
                         catch (Exception e){
                             e.printStackTrace();
                         }
+
 //                        Toast.makeText(getApplicationContext(),"Record Inserted",Toast.LENGTH_LONG).show();
                     }
                     else if (status_type.equalsIgnoreCase("error")){
@@ -313,11 +321,13 @@ public class EarnPoints extends AppCompatActivity {
     /* Enabling button fuction to accept the transaction*/
     private void addListenerOnAcceptButton() {
         earnAcceptButton=(Button)findViewById(R.id.earnAcceptButton);
+        final Button earnCancelButton = (Button) findViewById(R.id.earnCancelButton);
         earnAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
                 earnAcceptButton.setVisibility(View.GONE);
+                earnCancelButton.setVisibility(View.GONE);
                 /*saving to database*/
                 insertEarnTransToDB();
 
@@ -387,5 +397,11 @@ public class EarnPoints extends AppCompatActivity {
             th.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

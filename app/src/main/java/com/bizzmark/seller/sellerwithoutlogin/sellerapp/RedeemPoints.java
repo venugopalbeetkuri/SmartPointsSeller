@@ -179,8 +179,9 @@ public class RedeemPoints extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                     sendAcknowledgement(false);
-                                    Intent i = new Intent(RedeemPoints.this, WifiDirectReceive.class);
-                                    startActivity(i);
+//                                    Intent i = new Intent(RedeemPoints.this, WifiDirectReceive.class);
+//                                    startActivity(i);
+                                    finish();
                                 }
                             }).create().show();
                 } catch (Exception e){
@@ -214,7 +215,7 @@ public class RedeemPoints extends AppCompatActivity {
                                             .setTitle("Transaction Successful")
                                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.checked, null))
                                             .setMessage(" If yhe Customer has not Received Acknowledgement please show this message")
-                                            .setCancelable(true)
+                                            .setCancelable(false)
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -312,6 +313,7 @@ public class RedeemPoints extends AppCompatActivity {
     private void addListenerOnAcceptButton() {
 
         final Button earnButton=(Button)findViewById(R.id.redeemButton);
+        final Button redeemCancelButton=(Button)findViewById(R.id.redeemCancelButton);
 
         earnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,6 +322,7 @@ public class RedeemPoints extends AppCompatActivity {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
 
                 earnButton.setVisibility(View.GONE);
+                redeemCancelButton.setVisibility(View.GONE);
                 //save to database
                 insertRedeemTransToDB();
                 // Send acknowledgement to customer.
