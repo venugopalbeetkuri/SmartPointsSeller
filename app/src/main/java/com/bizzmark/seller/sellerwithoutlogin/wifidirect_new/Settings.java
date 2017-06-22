@@ -118,7 +118,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
 
             else
             {
-                /*final AlertDialog.Builder alert = new AlertDialog.Builder(Settings.this);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(Settings.this);
                 final EditText input = new EditText(Settings.this);
                 input.setSingleLine();
                 input.setPadding(50, 0, 50, 0);
@@ -141,7 +141,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
                 });
                 alert.setCancelable(false);
                 alert.create();
-                alert.show();*/
+                alert.show();
             }
 
         }

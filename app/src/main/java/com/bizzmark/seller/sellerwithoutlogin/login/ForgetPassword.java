@@ -54,9 +54,9 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
     }
 
     public void backBut(){
-//        ForgetPassword.super.onBackPressed();
+        ForgetPassword.super.onBackPressed();
         finish();
-        startActivity(new Intent(ForgetPassword.this,Login.class));
+//        startActivity(new Intent(ForgetPassword.this,Login.class));
     }
 
     private void resetPassword(){
@@ -105,17 +105,10 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.dismiss();
                                                 finish();
-                                                startActivity(new Intent(ForgetPassword.this,Login.class));
+//                                                startActivity(new Intent(ForgetPassword.this,Login.class));
                                             }
                                         })
-                                        .setNegativeButton("Goto Gmail", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                finish();
-                                                startActivity(new Intent(ForgetPassword.this,Gmail.class));
-                                            }
-                                        }).create().show();
+                                        .create().show();
                             }
                             catch (Exception e){
                                 e.printStackTrace();
@@ -194,10 +187,10 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    public void onBackPressed() {
+//    @Override
+//    public void onBackPressed() {
 //        super.onBackPressed();
-        finish();
-        startActivity(new Intent(ForgetPassword.this,Login.class));
-    }
+//        finish();
+////        startActivity(new Intent(ForgetPassword.this,Login.class));
+//    }
 }

@@ -380,7 +380,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
         if(view == TVFORGET){
             //Closing Current Task
-            finish();
+//            finish();
             //Goto Forget password class
             startActivity(new Intent(this, ForgetPassword.class));
 

@@ -131,9 +131,8 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
                         response = jsonObject.getString("response");
                         try {
                             new AlertDialog.Builder(getContext())
-                                    .setTitle("Error")
+                                    .setTitle(response+"In Redeem")
                                     .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.information_icon,null))
-                                    .setMessage(response+"In Redeem")
                                     .setCancelable(true)
                                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override

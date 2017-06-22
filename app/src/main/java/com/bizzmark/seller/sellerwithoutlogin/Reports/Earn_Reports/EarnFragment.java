@@ -137,16 +137,16 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
                         response = jsonObject.getString("response");
                         try {
                             new AlertDialog.Builder(getContext())
-                                    .setTitle("Error")
+                                    .setTitle(response)
                                     .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.information_icon,null))
-                                    .setMessage(response)
                                     .setCancelable(true)
                                     .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
-                                            Intent i = new Intent(getActivity(), WifiDirectReceive.class);
-                                            startActivity(i);
+                                            getActivity().finish();
+//                                            Intent i = new Intent(getActivity(), WifiDirectReceive.class);
+//                                            startActivity(i);
                                         }
                                     }).create().show();
 //                        Toast.makeText(getActivity(),response,Toast.LENGTH_LONG).show();
@@ -183,8 +183,9 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
-                                            Intent i = new Intent(getActivity(), WifiDirectReceive.class);
-                                            startActivity(i);
+//                                            Intent i = new Intent(getActivity(), WifiDirectReceive.class);
+//                                            startActivity(i);
+                                            getActivity().finish();
                                         }
                                     }).create().show();
 //                        Toast.makeText(getActivity(),"Some Thing Went Wrong Please Try Again",Toast.LENGTH_LONG).show();
