@@ -42,6 +42,10 @@
           <option name="url" value="https://github.com/fbsamples/360-video-player-for-android.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/youtube/api-samples.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="E:\APK\My_Project\GihubRepository" />
