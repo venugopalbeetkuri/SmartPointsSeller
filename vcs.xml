@@ -46,8 +46,12 @@
           <option name="url" value="https://github.com/youtube/api-samples.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/firebase/quickstart-android.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="E:\APK\My_Project\GihubRepository" />
+    <option name="cloneParentDir" value="D:\APK\My_Project\GihubRepository" />
   </component>
 </application>
