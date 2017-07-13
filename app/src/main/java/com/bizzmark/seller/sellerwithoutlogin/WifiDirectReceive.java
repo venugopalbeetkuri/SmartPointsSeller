@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -39,6 +41,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bizzmark.seller.sellerwithoutlogin.Notifications.Notifications;
 import com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.LastTenTrans;
 import com.bizzmark.seller.sellerwithoutlogin.My_Customers.MyCustomers;
 import com.bizzmark.seller.sellerwithoutlogin.login.Login;
@@ -49,9 +52,11 @@ import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.Settings;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_customerList;
+//import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_notifications;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
 
 public class WifiDirectReceive extends AppCompatActivity
@@ -59,7 +64,7 @@ public class WifiDirectReceive extends AppCompatActivity
 
     final Context context = this;
     public ImageView imgmenu,sellerimg;
-    public ImageButton action_logout;
+    public ImageButton action_logout, action_Share;
 
 
     public TextView navStoreName,headerStoreName,versionName, versionCode;
@@ -94,7 +99,7 @@ public class WifiDirectReceive extends AppCompatActivity
         setContentView(R.layout.activity_wifi_direct_receive);
 
         // for enable wifi
-        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         wifi.setWifiEnabled(true);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -122,7 +127,7 @@ public class WifiDirectReceive extends AppCompatActivity
         version_Name = BuildConfig.VERSION_NAME;
         version_Code = BuildConfig.VERSION_CODE;
 
-        versionName = (TextView)findViewById(R.id.version_Name);
+        versionName = (TextView)v.findViewById(R.id.version_Name);
         versionName.setText(version_Name);
         versionName.setEnabled(true);
 //        versionCode = (TextView)findViewById(R.id.version_Code);
@@ -135,15 +140,18 @@ public class WifiDirectReceive extends AppCompatActivity
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 wifi.setWifiEnabled(true);
                 refreshLayout.setRefreshing(false);
                 discoverPeers();
             }
         });
 
-        action_logout=(ImageButton)findViewById(R.id.action_logout);
-        action_logout.setOnClickListener(this);
+//        action_logout=(ImageButton)findViewById(R.id.action_logout);
+//        action_logout.setOnClickListener(this);
+
+        action_Share = (ImageButton)findViewById(R.id.action_Share);
+        action_Share.setOnClickListener(this);
 
         report=(Button)findViewById(R.id.report);
         report.setOnClickListener(this);
@@ -162,8 +170,43 @@ public class WifiDirectReceive extends AppCompatActivity
         discoverPeers();
         runTimePermission();
         device_id.setText(deviceId);
+//        shareSmartPoints();
+    }
+/*Method for getting SmartPointS package*/
+
+    public void shareSmartPoints(){
+        PackageManager packageManager = getApplicationContext().getPackageManager();
+        PackageInfo packageInfo;
+        ApplicationInfo applicationInfo = null;
+
+        try {
+
+            packageInfo = packageManager.getPackageInfo("in.bizzmark.smartpoints_user", 0);
+            applicationInfo = packageInfo.applicationInfo;
+            shareAppByBluetooth(applicationInfo);
+        }
+        catch (PackageManager.NameNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
+/*Metjod for Share SmartPoints Apk Using Bluetooth*/
+
+    private void shareAppByBluetooth(ApplicationInfo applicationInfo){
+        try {
+            String filePath =  applicationInfo.sourceDir;
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("*/*");
+            /*Using only bluetooth to send application*/
+            intent.setPackage("com.android.bluetooth");
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+            startActivity(Intent.createChooser(intent,"Share app"));
+            Toast.makeText(getApplicationContext(),"Share SmartPoints app",Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 /*getting runtime permission*/
     private void runTimePermission() {
         // runtime permission getting imi-string
@@ -448,7 +491,12 @@ public class WifiDirectReceive extends AppCompatActivity
         } else if (id == R.id.nav_privacy_policy) {
             Intent i=new Intent(getApplicationContext(),PrivacyPolicy.class);
             startActivity(i);
-        } else if (id == nav_customerList){
+        }
+//        else if (id == nav_notifications){
+//            Intent intent = new Intent(getApplicationContext(), Notifications.class);
+//            startActivity(intent);
+//        }
+        else if (id == nav_customerList){
             Intent intent = new Intent(getApplicationContext(), MyCustomers.class);
             startActivity(intent);
         } else if (id == R.id.nav_setting){
@@ -458,6 +506,8 @@ public class WifiDirectReceive extends AppCompatActivity
             contactus();
         } else if (id == R.id.nav_exit){
             exit();
+        } else if (id == R.id.nav_logOut){
+            logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -471,16 +521,16 @@ public class WifiDirectReceive extends AppCompatActivity
         if (v == btnRefresh){
             Animation rotation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.buttonrotate);
             rotation.start();
-            WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             wifi.setWifiEnabled(true);
             btnRefresh.startAnimation(rotation);
             deletePersistentGroups();
             disconnect();
             discoverPeers();
         }
-        if (v==action_logout){
-            logout();
-        }
+//        if (v==action_logout){
+//            logout();
+//        }
         if (v == imgmenu){
             slidemenu();
         }
@@ -491,6 +541,11 @@ public class WifiDirectReceive extends AppCompatActivity
         if(v == report){
             Intent intent = new Intent(this,LastTenTrans.class);
             startActivity(intent);
+        }
+
+        if (v == action_Share){
+            shareSmartPoints();
+//            shareAppByBluetooth();
         }
 
     }

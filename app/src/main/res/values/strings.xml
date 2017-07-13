@@ -251,7 +251,7 @@
 
     // Strings for Privacy policy
 
- <string name="policyContents">"\n<b>PRIVACY POLICY FOR MERCHANTS</b>
+    <string name="policyContents">"\n<b>PRIVACY POLICY FOR MERCHANTS</b>
 \n\n As a smartpoints Merchant, you agree to post a privacy policy on your storefront that complies with the laws applicable to your business. You also agree to obtain consent from your customers for the use and access of their Personal Information
 \n\n What information do we collect from Merchants and why?
 \n\n1. We collect your name, company name, address, email address, phone number(s) .
@@ -311,5 +311,8 @@
     <string name="group_owner_text">Am I the Group Owner ?</string>
     <string name="client_text">This device will act as a client. Click on Gallery button to pick a local(stored) file</string>
     <string name="empty" />
+    <string name="notificationHint">E.g: New Offer at Shree Kirana Stores, Rs.20 Off on 5LTR Saffola, 12 more offers</string>
+    <string name="sendNotification"> Send Notification </string>
+    <string name="selectCustomer"> Select Customer</string>
 
 </resources>

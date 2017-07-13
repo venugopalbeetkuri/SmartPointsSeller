@@ -64,6 +64,9 @@ public class EarnPoints extends AppCompatActivity {
     /*Strings for URL storing*/
     private String CalPointsUrl,InsertUrl;
 
+    /*string for ack response*/
+    public String ackResponse;
+
     /*This string for storing data received from customer and used at onCreate()*/
     String earnString = null;
 
@@ -132,13 +135,14 @@ public class EarnPoints extends AppCompatActivity {
                     }
                     else if (calStatusType.equalsIgnoreCase("error")){
                         calResponse = jsonObject.getString("response");
+                        ackResponse = calResponse;
                         sendAcknowledgement(false);
                         try{
                             new AlertDialog.Builder(EarnPoints.this)
                                     .setTitle("Error")
                                     .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.cancel, null))
                                     .setMessage(calResponse)
-                                    .setCancelable(true)
+                                    .setCancelable(false)
                                     .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -166,7 +170,7 @@ public class EarnPoints extends AppCompatActivity {
                             .setTitle("Something Wrong While Calculating Points")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
                             .setMessage("Please ensure Internet connection")
-                            .setCancelable(true)
+                            .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -243,13 +247,14 @@ public class EarnPoints extends AppCompatActivity {
                     }
                     else if (status_type.equalsIgnoreCase("error")){
                         response = object.getString("response");
+                        ackResponse = response;
                         sendAcknowledgement(false);
                         try {
                             new AlertDialog.Builder(EarnPoints.this)
                                     .setTitle("Transaction Canceled")
                                     .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.cancel, null))
                                     .setMessage(response+"\n If Customer won't Receive Acknowledgment show this Message")
-                                    .setCancelable(true)
+                                    .setCancelable(false)
                                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -275,7 +280,7 @@ public class EarnPoints extends AppCompatActivity {
                             .setTitle("Error")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
                             .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
-                            .setCancelable(true)
+                            .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -353,6 +358,7 @@ public class EarnPoints extends AppCompatActivity {
             ack.setBranchId(SELLER_BRANCHID);
             ack.setStoreId(SELLER_STOREID);
             ack.setTransId(transId);
+            ack.setResponse(ackResponse);
         } else {
             String status = "failure";
             ack.setStatus(status);
@@ -365,6 +371,7 @@ public class EarnPoints extends AppCompatActivity {
             ack.setBranchId(SELLER_BRANCHID);
             ack.setStoreId(SELLER_STOREID);
             ack.setTransId(transId);
+            ack.setResponse(ackResponse);
         }
 
         Gson gson = new Gson();

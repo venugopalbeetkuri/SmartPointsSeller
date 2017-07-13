@@ -55,6 +55,9 @@ public class RedeemPoints extends AppCompatActivity {
     /*String for transId*/
     String transId;
 
+    /*String for response*/
+    public String ackResponse;
+
     Intent serviceIntent;
 
     final static String Log="Seller app";
@@ -128,6 +131,7 @@ public class RedeemPoints extends AppCompatActivity {
                                 newBill.setText(redeemedBillamount);
                             }else if (status_type.equalsIgnoreCase("error")){
                                 response = redeemObject.getString("response");
+                                ackResponse = response;
                                 originalBillAmount = redeemObject.getString("bill_amount");
                                 redeemedPoints = redeemObject.getString("wishedPoints");
                                 availablePoints = redeemObject.getString("available_points");
@@ -136,10 +140,10 @@ public class RedeemPoints extends AppCompatActivity {
                                 try {
                                     sendAcknowledgement(false);
                                     new AlertDialog.Builder(RedeemPoints.this)
-                                            .setTitle("Customer do not have enough points")
+                                            .setTitle("Invalid Transaction")
                                             .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.cancel, null))
-                                            .setMessage("Please tell customer to choose lower points")
-                                            .setCancelable(true)
+                                            .setMessage(response)
+                                            .setCancelable(false)
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -165,8 +169,8 @@ public class RedeemPoints extends AppCompatActivity {
                     new AlertDialog.Builder(RedeemPoints.this)
                             .setTitle("Something Wrong While Calculating Points")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
-                            .setMessage("Please ensure Internet connection")
-                            .setCancelable(true)
+                            .setMessage("Please Check your Internet connection or It is an server problem please try again")
+                            .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -240,13 +244,14 @@ public class RedeemPoints extends AppCompatActivity {
                             }
                             else if (status_type.equalsIgnoreCase("error")){
                                 response = rdobj.getString("response");
+                                ackResponse = response;
                                 sendAcknowledgement(false);
                                 try {
                                     new AlertDialog.Builder(RedeemPoints.this)
                                             .setTitle("Transaction Canceled")
                                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.cancel, null))
                                             .setMessage(response+"\nIf the Customer has not Received Acknowledgment show this Message")
-                                            .setCancelable(true)
+                                            .setCancelable(false)
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
@@ -272,7 +277,7 @@ public class RedeemPoints extends AppCompatActivity {
                             .setTitle("Error")
                             .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
                             .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
-                            .setCancelable(true)
+                            .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -352,6 +357,7 @@ public class RedeemPoints extends AppCompatActivity {
             ack.setStoreId(SELLER_STOREID);
             ack.setPoints(redeemedPoints);
             ack.setTransId(transId);
+            ack.setResponse(ackResponse);
         }else {
 
             String status = "failure";
@@ -367,6 +373,7 @@ public class RedeemPoints extends AppCompatActivity {
             ack.setStoreId(SELLER_STOREID);
             ack.setPoints(redeemedPoints);
             ack.setTransId(transId);
+            ack.setResponse(ackResponse);
         }
 
         Gson gson = new Gson();

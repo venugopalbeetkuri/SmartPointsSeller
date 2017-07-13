@@ -189,7 +189,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-                        finish();
                     }
                 }).setCancelable(false).create().show();
     }

@@ -19,6 +19,7 @@ public class AcknowledgePoints {
 
     String branchId;
     String storeId;
+    String response;
 //    String oldBillAmount;
 //    String newBillAmount;
 
@@ -39,7 +40,8 @@ public class AcknowledgePoints {
                              String time,
                              String branchId,
                              String storeId,
-                             String transId) {
+                             String transId,
+                             String response) {
         this.status = status;
         this.type = type;
         this.billAmount = billAmount;
@@ -51,6 +53,15 @@ public class AcknowledgePoints {
         this.branchId = branchId;
         this.storeId = storeId;
         this.transId = transId;
+        this.response = response;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
     }
 
     public String getTransId() {

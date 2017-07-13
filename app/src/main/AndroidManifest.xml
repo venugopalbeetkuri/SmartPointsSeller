@@ -99,7 +99,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sellerapp.RedeemRewards"></activity>
+        <activity android:name=".sellerapp.RedeemRewards" />
+        <activity android:name=".Notifications.Notifications"></activity>
     </application>
 
 </manifest>

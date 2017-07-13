@@ -20,6 +20,7 @@ public class RedeemAcknowledgement {
     String branchId;
     String storeId;
     String transId;
+    String response;
 
     public RedeemAcknowledgement() {
     }
@@ -40,7 +41,8 @@ public class RedeemAcknowledgement {
                                  String branchId,
                                  String storeId,
                                  String points,
-                                 String transId) {
+                                 String transId,
+                                 String response) {
         this.status = status;
         this.type = type;
         this.oldBillAmount = oldBillAmount;
@@ -53,6 +55,15 @@ public class RedeemAcknowledgement {
         this.storeId = storeId;
         this.points = points;
         this.transId = transId;
+        this.response = response;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
     }
 
     public String getTransId() {

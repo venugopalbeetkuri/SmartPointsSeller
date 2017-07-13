@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bizzmark.seller.sellerwithoutlogin.Notifications.Notifications">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/header"
+        android:layout_weight="0.54"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow_back_white_24dp"
+            android:layout_marginLeft="13dp"
+            android:id="@+id/backbut"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="13dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Notifications"
+            android:textSize="22dp"
+            android:textColor="#fff"
+            android:layout_centerInParent="true"
+            android:editable="false"
+            android:id="@+id/lastTransHeader"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:id="@+id/notificationMessage">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_weight="0.5"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="Type Here*"
+                    android:textColor="@color/BLACK"
+                    android:textSize="18dp"
+                    android:padding="5dp"
+                    android:layout_marginLeft="5dp"/>
+
+                <TextView
+                    android:layout_weight="0.5"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:text="0"
+                    android:id="@+id/txtCount"
+                    android:textColor="@color/BLACK"
+                    android:textSize="18dp"
+                    android:padding="5dp"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:editable="true"/>
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="/"
+                    android:textColor="@color/BLACK"
+                    android:textSize="18dp"
+                    android:padding="2dp" />
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="180"
+                    android:textColor="@color/BLACK"
+                    android:textSize="18dp"
+                    android:padding="2dp"/>
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="(Chars)"
+                    android:textColor="@color/BLACK"
+                    android:textSize="18dp"
+                    android:padding="2dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:weightSum="1"
+                android:padding="5dp"
+                android:layout_margin="5dp">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:lines="5"
+                    android:padding="5dp"
+                    android:id="@+id/txtNotification"
+                    android:layout_gravity="start"
+                    android:gravity="start"
+                    android:hint="@string/notificationHint"
+                    android:maxLength="180"
+                    android:background="@drawable/loginbox"/>
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notificationMessage"
+        android:gravity="center"
+        android:padding="8dp"
+        android:id="@+id/notificationButtons">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_gravity="center"
+            android:background="@color/limeGreen"
+            android:textColor="@color/colorWhite"
+            android:id="@+id/sendNotification"
+            android:text="@string/sendNotification" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notificationButtons"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:id="@+id/notificationChoice">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="or"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textSize="18dp"
+            android:textColor="@color/BLACK"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notificationChoice"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:id="@+id/notificationMembers">
+
+        <Spinner
+            android:id="@+id/typeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:prompt="@string/selectCustomer"/>
+    </LinearLayout>
+</RelativeLayout>

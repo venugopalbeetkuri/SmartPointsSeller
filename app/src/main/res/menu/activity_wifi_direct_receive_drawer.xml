@@ -13,6 +13,11 @@
             android:icon="@drawable/house_with_spercentage_off"
             android:title="My Customers" />
 
+        <!--<item-->
+            <!--android:id="@+id/nav_notifications"-->
+            <!--android:icon="@drawable/notification"-->
+            <!--android:title="Create Notifications" />-->
+
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_menu_manage"
@@ -36,6 +41,11 @@
             android:id="@+id/nav_exit"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:title="Exit" />
+
+        <item
+            android:id="@+id/nav_logOut"
+            android:icon="@drawable/ic_power_settings_new_white_24px"
+            android:title="Log Out" />
 
 
     </group>
