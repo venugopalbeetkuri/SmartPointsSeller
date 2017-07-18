@@ -13,10 +13,10 @@
             android:icon="@drawable/house_with_spercentage_off"
             android:title="My Customers" />
 
-        <!--<item-->
-            <!--android:id="@+id/nav_notifications"-->
-            <!--android:icon="@drawable/notification"-->
-            <!--android:title="Create Notifications" />-->
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/notification"
+            android:title="Send Notifications" />
 
         <item
             android:id="@+id/nav_setting"

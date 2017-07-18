@@ -251,39 +251,46 @@ public class DeviceDetailFragment extends Fragment implements WifiP2pManager.Con
                     JSONObject obj = new JSONObject(result);
                     earn_type = obj.getString("type");
                     store_name = obj.getString("storeName");
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (store_name.equalsIgnoreCase(SELLER_STORENAE)){
+                try {
+                    if (store_name.equalsIgnoreCase(SELLER_STORENAE)) {
+                        try {
+                            if (earn_type.equals("earn")) {
+                                Intent intent = new Intent(getActivity(), EarnPoints.class);
+                                intent.putExtra("earnRedeemString", result);
+                                intent.putExtra("GroupOwnerAddress", remoteAddress);
+                                getActivity().startActivity(intent);
+                            } else if (earn_type.equals("redeem")) {
+                                Intent intent = new Intent(getActivity(), RedeemPoints.class);
+                                intent.putExtra("earnRedeemString", result);
+                                intent.putExtra("GroupOwnerAddress", remoteAddress);
+                                getActivity().startActivity(intent);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else if (!store_name.equalsIgnoreCase(SELLER_STORENAE)) {
 
-                    if (earn_type.equals("earn")) {
-                        Intent intent = new Intent(getActivity(), EarnPoints.class);
-                        intent.putExtra("earnRedeemString", result);
-                        intent.putExtra("GroupOwnerAddress", remoteAddress);
-                        getActivity().startActivity(intent);
-                    } else if (earn_type.equals("redeem")) {
-                        Intent intent = new Intent(getActivity(), RedeemPoints.class);
-                        intent.putExtra("earnRedeemString", result);
-                        intent.putExtra("GroupOwnerAddress", remoteAddress);
-                        getActivity().startActivity(intent);
+                        try {
+                            new AlertDialog.Builder(getActivity())
+                                    .setMessage("Custmer scanned QR code is not valid ask him/her scan again")
+                                    .setCancelable(true)
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).create().show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+//                    Toast.makeText(getActivity(),"Customer Scanned QR code not valid ",Toast.LENGTH_LONG).show();
                     }
                 }
-                else if (!store_name.equalsIgnoreCase(SELLER_STORENAE)){
-
-                    try {
-                        new AlertDialog.Builder(getActivity())
-                                .setMessage("Custmer scanned QR code is not valid ask him/her scan again")
-                                .setCancelable(true)
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).create().show();
-                    } catch (Exception e ){
-                        e.printStackTrace();
-                    }
-//                    Toast.makeText(getActivity(),"Customer Scanned QR code not valid ",Toast.LENGTH_LONG).show();
+                catch (Exception e){
+                    e.printStackTrace();
                 }
             }
 

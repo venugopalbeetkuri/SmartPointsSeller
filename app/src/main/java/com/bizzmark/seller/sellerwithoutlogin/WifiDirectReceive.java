@@ -57,6 +57,7 @@ import java.lang.reflect.Method;
 
 import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_customerList;
 //import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_notifications;
+import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_notifications;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
 
 public class WifiDirectReceive extends AppCompatActivity
@@ -118,9 +119,38 @@ public class WifiDirectReceive extends AppCompatActivity
         navStoreName = (TextView) v.findViewById(R.id.nav_storeName);
         headerStoreName =(TextView) findViewById(R.id.header_storeName);
 
-        headerStoreName.setText(SELLER_STORENAE);
-        navStoreName.setText(SELLER_STORENAE);
-
+        try {
+            if (SELLER_STORENAE.isEmpty()){
+                try {
+                    new AlertDialog.Builder(WifiDirectReceive.this)
+                            .setTitle("Session Expired")
+                            .setMessage("Login Again")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SharedPreferences preferences = getSharedPreferences("STORE_DETAILS",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = preferences.edit();
+                                    editor.clear();
+                                    editor.commit();
+                                    finish();
+                                    Intent i=new Intent(WifiDirectReceive.this,Login.class);
+                                    startActivity(i);
+                                }
+                            }).create().show();
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            else {
+                headerStoreName.setText(SELLER_STORENAE);
+                navStoreName.setText(SELLER_STORENAE);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
         sellerimg=(ImageView)v.findViewById(R.id.sellerimg);
         sellerimg.setOnClickListener(this);
 
@@ -136,16 +166,16 @@ public class WifiDirectReceive extends AppCompatActivity
         btnRefresh=(Button)findViewById(R.id.btnRefresh);
         btnRefresh.setOnClickListener(this);
 
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLoadCusts);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                wifi.setWifiEnabled(true);
-                refreshLayout.setRefreshing(false);
-                discoverPeers();
-            }
-        });
+//        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLoadCusts);
+//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+//                wifi.setWifiEnabled(true);
+//                refreshLayout.setRefreshing(false);
+//                discoverPeers();
+//            }
+//        });
 
 //        action_logout=(ImageButton)findViewById(R.id.action_logout);
 //        action_logout.setOnClickListener(this);
@@ -167,6 +197,7 @@ public class WifiDirectReceive extends AppCompatActivity
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel =  manager.initialize(this,getMainLooper(),null);
+//        cancelConnect();
         discoverPeers();
         runTimePermission();
         device_id.setText(deviceId);
@@ -280,11 +311,35 @@ public class WifiDirectReceive extends AppCompatActivity
         });
     }
 
+    /*Cancel Invitation*/
+    public void cancelConnect(){
+        if (manager != null){
+            manager.cancelConnect(channel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onFailure(int reason) {
+
+                }
+            });
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         receiver = new WifiBroadCastReceiver(manager,channel,this);
         registerReceiver(receiver,intentFilter);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        cancelConnect();
+        discoverPeers();
     }
 
     @Override
@@ -492,10 +547,10 @@ public class WifiDirectReceive extends AppCompatActivity
             Intent i=new Intent(getApplicationContext(),PrivacyPolicy.class);
             startActivity(i);
         }
-//        else if (id == nav_notifications){
-//            Intent intent = new Intent(getApplicationContext(), Notifications.class);
-//            startActivity(intent);
-//        }
+        else if (id == nav_notifications){
+            Intent intent = new Intent(getApplicationContext(), Notifications.class);
+            startActivity(intent);
+        }
         else if (id == nav_customerList){
             Intent intent = new Intent(getApplicationContext(), MyCustomers.class);
             startActivity(intent);
@@ -524,6 +579,7 @@ public class WifiDirectReceive extends AppCompatActivity
             WifiManager wifi = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             wifi.setWifiEnabled(true);
             btnRefresh.startAnimation(rotation);
+            cancelConnect();
             deletePersistentGroups();
             disconnect();
             discoverPeers();

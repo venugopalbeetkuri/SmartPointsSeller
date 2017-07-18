@@ -70,10 +70,10 @@
             android:orientation="vertical"
             android:padding="5dp">
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/swipeLoadCusts">
+            <!--<android.support.v4.widget.SwipeRefreshLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:id="@+id/swipeLoadCusts">-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                         android:id="@+id/frag_list" />
 
                 </LinearLayout>
-            </android.support.v4.widget.SwipeRefreshLayout>
+            <!--</android.support.v4.widget.SwipeRefreshLayout>-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
