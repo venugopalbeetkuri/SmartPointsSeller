@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -46,6 +47,7 @@ import com.bizzmark.seller.sellerwithoutlogin.PrivacyPolicy;
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.Terms;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
+import com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.Settings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -58,7 +60,7 @@ import java.util.Map;
 
 import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.REQUEST_READ_PERMISSION;
 
-public class Login extends AppCompatActivity implements View.OnClickListener{
+public class Login extends AppCompatActivity implements View.OnClickListener {
 
     private EditText ETUSERNAME;
     private EditText ETPASSWORD;
@@ -81,26 +83,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     public static String sellerPassword;
 
     /*String getting from loginphp*/
-    public static String accessToken=null;
+    public static String accessToken = null;
     public static String userType;
     public static String sellerName;
     public static String sellerMobile;
     public static String sellerStoreName;
     public static String sellerStoreId;
     public static String sellerBranchId;
-    String statusType,response;
+    String statusType, response;
 
-    public static String ACCESS_TOKEN,SELLER_EMAILID,SELLER_PASSWORD,SELLER_BRANCHID,SELLER_STOREID,SELLER_STORENAE;
+    public static String ACCESS_TOKEN, SELLER_EMAILID, SELLER_PASSWORD, SELLER_BRANCHID, SELLER_STOREID, SELLER_STORENAE;
 
-    String AccessToken, SellerEmailId, SellerPassword, SellerBranchId, SellerStoreId,SellerStoreName;
+    String AccessToken, SellerEmailId, SellerPassword, SellerBranchId, SellerStoreId, SellerStoreName;
 
 
     /*URL for Login*/
-    public static final String loginURL="http://35.154.104.54/smartpoints/api/login";
 
     private CheckBox CBPASS;
 
-    private TextView policy,terms;
+    private TextView policy, terms;
 
     ConnectivityManager cm;
     NetworkInfo info;
@@ -110,17 +111,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ETUSERNAME=(EditText)findViewById(R.id.etusername);
+        ETUSERNAME = (EditText) findViewById(R.id.etusername);
 
-        ETPASSWORD=(EditText)findViewById(R.id.etpassword);
+        ETPASSWORD = (EditText) findViewById(R.id.etpassword);
 
-        BTLOGIN=(Button)findViewById(R.id.btlogin);
+        BTLOGIN = (Button) findViewById(R.id.btlogin);
 
-        TVFORGET=(TextView)findViewById(R.id.tvforget);
+        TVFORGET = (TextView) findViewById(R.id.tvforget);
 
-        CBPASS=(CheckBox)findViewById(R.id.cbpassword);
+        CBPASS = (CheckBox) findViewById(R.id.cbpassword);
 
-        policy =(TextView)findViewById(R.id.policy);
+        policy = (TextView) findViewById(R.id.policy);
 
         terms = (TextView) findViewById(R.id.terms);
 
@@ -147,7 +148,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         CBPASS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     ETPASSWORD.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 } else {
                     ETPASSWORD.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -157,25 +158,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         checkInternet();
     }
 
-/*method for checking internet is available or not*/
+    /*method for checking internet is available or not*/
     private void checkInternet() {
-        cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+        cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         info = cm.getActiveNetworkInfo();
-        if (info == null){
+        if (info == null) {
             alertDialog();
             // setContentView(R.layout.internet_layout);
             // finish();
-        }else {
-            SharedPreferences sharedPreferences = getApplication().getSharedPreferences("STORE_DETAILS",Context.MODE_PRIVATE);
-            ACCESS_TOKEN = sharedPreferences.getString("Access_Token",AccessToken);
-            SELLER_EMAILID = sharedPreferences.getString("Seller_Email",SellerEmailId);
-            SELLER_PASSWORD = sharedPreferences.getString("Seller_Password",SellerPassword);
-            SELLER_BRANCHID = sharedPreferences.getString("Seller_Branchid",SellerBranchId);
-            SELLER_STOREID = sharedPreferences.getString("Seller_StoreId",SellerStoreId);
-            SELLER_STORENAE = sharedPreferences.getString("Seller_StoreName",SellerStoreName);
-            if (ACCESS_TOKEN!=null){
+        } else {
+            SharedPreferences sharedPreferences = getApplication().getSharedPreferences("STORE_DETAILS", Context.MODE_PRIVATE);
+            ACCESS_TOKEN = sharedPreferences.getString("Access_Token", AccessToken);
+            SELLER_EMAILID = sharedPreferences.getString("Seller_Email", SellerEmailId);
+            SELLER_PASSWORD = sharedPreferences.getString("Seller_Password", SellerPassword);
+            SELLER_BRANCHID = sharedPreferences.getString("Seller_Branchid", SellerBranchId);
+            SELLER_STOREID = sharedPreferences.getString("Seller_StoreId", SellerStoreId);
+            SELLER_STORENAE = sharedPreferences.getString("Seller_StoreName", SellerStoreName);
+            if (ACCESS_TOKEN != null) {
                 finish();
-                Intent i = new Intent(this,WifiDirectReceive.class);
+                Intent i = new Intent(this, WifiDirectReceive.class);
                 startActivity(i);
             }
         }
@@ -192,6 +193,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                     }
                 }).setCancelable(false).create().show();
     }
+
     /*getting runtime permission*/
     private void runTimePermission() {
         // runtime permission getting imi-string
@@ -212,6 +214,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         try {
             TelephonyManager telephonyManager = (TelephonyManager) this
                     .getSystemService(Context.TELEPHONY_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return null;
+            }
             sellerDeviceId = telephonyManager.getDeviceId();
         }catch (Throwable throwable){
             throwable.printStackTrace();
@@ -247,7 +259,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         runTimePermission();
 
         gettingMailAndPassword();
-        StringRequest loginRequest = new StringRequest(Request.Method.POST, loginURL,
+        StringRequest loginRequest = new StringRequest(Request.Method.POST, UrlUtils.LOGIN,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {
@@ -330,7 +342,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 try {
                     new AlertDialog.Builder(Login.this)
                             .setTitle("Error")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
                             .setMessage("Something wrong with Internet Connection \n Please ensure Interner Connection")
                             .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -360,6 +372,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        loginRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(loginRequest);
 
     }

@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
+import com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,7 +59,7 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
     String limit, page;
 //    String Url = "http://35.154.104.54/smartpoints/seller-api/earn-transactions-with-search?sellerEmail="+SELLER_EMAILID;
 
-    String Url = "http://35.154.104.54/smartpoints/seller-api/branch-earn-transactions?branchId="+SELLER_BRANCHID;
+    String Url = UrlUtils.BRANCH_EARN_TRANSACTIONS+SELLER_BRANCHID;
     private String URL_DATA=Url;
 
     private List<EarnFragTansList> earnFragTansLists;
@@ -169,7 +171,7 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
                         try {
                             new AlertDialog.Builder(getContext())
                                     .setTitle("Error")
-                                    .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                                    //.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
                                     .setMessage("Something wrong with Internet connection \n Please ensure Internet connection")
                                     .setCancelable(true)
                                     .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -196,6 +198,10 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
 //        n=n+1;
     }
@@ -242,7 +248,7 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
 
     public void dateFilter(){
 //        String dateFilterUrl ="http://35.154.104.54/smartpoints/seller-api/earn-transactions-with-search?sellerEmail="+SELLER_EMAILID+"&fromDate="+fromDate+"&toDate="+toDate;
-        String dateFilterUrl ="http://35.154.104.54/smartpoints/seller-api/branch-earn-transactions-with-search?branchId="+SELLER_BRANCHID+"&fromDate="+fromDate+"&toDate="+toDate;
+        String dateFilterUrl ="http://bizzmark.in/smartpoints/seller-api/branch-earn-transactions-with-search?branchId="+SELLER_BRANCHID+"&fromDate="+fromDate+"&toDate="+toDate;
         URL_DATA = dateFilterUrl;
 
         loadRecyclerViewData();
@@ -255,7 +261,7 @@ public class EarnFragment extends Fragment implements View.OnClickListener {
         for (int j=1; j<=120; j++){
             earnFragTansLists.clear();
             page = String.valueOf(j);
-            String pageLimit ="http://35.154.104.54/smartpoints/seller-api/earn-transactions-with-search?sellerEmail="+sellerEmail+"&page="+page+"&limit="+limit;
+            String pageLimit ="http://bizzmark.in/smartpoints/seller-api/earn-transactions-with-search?sellerEmail="+sellerEmail+"&page="+page+"&limit="+limit;
             URL_DATA = pageLimit;
             loadRecyclerViewData();
         }

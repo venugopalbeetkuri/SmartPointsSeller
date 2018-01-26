@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.R;
+import com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 //import com.google.firebase.auth.FirebaseAuth;
@@ -79,7 +81,7 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
             }
         }
         else {
-            ForgetPassURL = "http://35.154.104.54/smartpoints/api/request-password-reset?userEmail="+emailAddress;
+            ForgetPassURL = UrlUtils.FORGOT_PASSWORD+emailAddress;
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Loading");
             progressDialog.show();
@@ -145,7 +147,7 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
                     try {
                         new AlertDialog.Builder(ForgetPassword.this)
                                 .setTitle("Error")
-                                .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error, null))
+                               // .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error, null))
                                 .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
                                 .setCancelable(true)
                                 .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -171,6 +173,10 @@ public class ForgetPassword extends AppCompatActivity implements View.OnClickLis
                 }
             });
             RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            passwordRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    300000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(passwordRequest);
         }
     }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
+import static com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils.BRANCH_BASIC_INFO;
 
 public class Seller_Basic_Information extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,7 +39,7 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
     private RecyclerView.Adapter adapter;
     SwipeRefreshLayout sellerInfoSwipe;
     String statusType,response;
-    String InfoUrl = "http://35.154.104.54/smartpoints/seller-api/branch-basic-info?branchId="+SELLER_BRANCHID;
+    String InfoUrl = BRANCH_BASIC_INFO+SELLER_BRANCHID;
     private final String URL_DATA = InfoUrl;
     private List<SellerInfoList> sellerInfoLists;
     @Override
@@ -131,7 +133,7 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
                 try {
                     new AlertDialog.Builder(Seller_Basic_Information.this)
                             .setTitle("Error")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error, null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error, null))
                             .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -156,6 +158,10 @@ public class Seller_Basic_Information extends AppCompatActivity implements View.
         });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        getSellerInfo.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(getSellerInfo);
     }
 

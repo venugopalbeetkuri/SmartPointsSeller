@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_EMAILID;
+import static com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils.LAST_10_BRANCH_TRANS;
 
 /**
  * Created by Tharun on 22-05-2017.
@@ -48,7 +50,7 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
     SwipeRefreshLayout lastTenTranSwipe;
     String  status_type, response;
     public static String transType, oldBillAmount;
-    String Url="http://35.154.104.54/smartpoints/seller-api/last-10-branch-transactions?branchId="+SELLER_BRANCHID;
+    String Url=LAST_10_BRANCH_TRANS+SELLER_BRANCHID;
     private final String URL_DATA=Url;
     private List<LastTenTransactionsList> tenTransactionsLists;
 
@@ -140,7 +142,7 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
                 try {
                     new AlertDialog.Builder(LastTenTrans.this)
                             .setTitle("Error")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
                             .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -166,6 +168,10 @@ public class LastTenTrans extends AppCompatActivity implements View.OnClickListe
         });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 

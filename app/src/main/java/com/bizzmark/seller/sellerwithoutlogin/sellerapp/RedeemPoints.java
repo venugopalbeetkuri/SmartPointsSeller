@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -109,7 +110,7 @@ public class RedeemPoints extends AppCompatActivity {
     }
     /*Validating given points from user*/
     private void validatingRedeemPoints() {
-        CalRedeemPointsUrl = "http://35.154.104.54/smartpoints/seller-api/preview-make-redeem-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+deviceid+"&billAmount="+bill_amount+"&wishedRedeemPoints="+points_earn;
+        CalRedeemPointsUrl = "http://bizzmark.in/smartpoints/seller-api/preview-make-redeem-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+deviceid+"&billAmount="+bill_amount+"&wishedRedeemPoints="+points_earn;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, CalRedeemPointsUrl,
                 new Response.Listener<String>() {
@@ -168,7 +169,7 @@ public class RedeemPoints extends AppCompatActivity {
                 try {
                     new AlertDialog.Builder(RedeemPoints.this)
                             .setTitle("Something Wrong While Calculating Points")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
                             .setMessage("Please Check your Internet connection or It is an server problem please try again")
                             .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -196,13 +197,17 @@ public class RedeemPoints extends AppCompatActivity {
         });
 
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
     /*Inseting Data into database*/
     private void insertRedeemTransToDB(){
         validatingRedeemPoints();
-        InsertRedeemUrl = "http://35.154.104.54/smartpoints/seller-api/make-redeem-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+deviceid+"&billAmount="+originalBillAmount+"&wishedRedeemPoints="+redeemedPoints;
+        InsertRedeemUrl = "http://bizzmark.in/smartpoints/seller-api/make-redeem-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+deviceid+"&billAmount="+originalBillAmount+"&wishedRedeemPoints="+redeemedPoints;
 
         final StringRequest insertRequest = new StringRequest(Request.Method.GET, InsertRedeemUrl,
                 new Response.Listener<String>() {
@@ -275,7 +280,7 @@ public class RedeemPoints extends AppCompatActivity {
                 try {
                     new AlertDialog.Builder(RedeemPoints.this)
                             .setTitle("Error")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
                             .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
                             .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -300,6 +305,10 @@ public class RedeemPoints extends AppCompatActivity {
             }
         });
         RequestQueue requestqueue = Volley.newRequestQueue(getApplicationContext());
+        insertRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestqueue.add(insertRequest);
     }
     private void addListenerOnCancelButton() {

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_EMAILID;
+import static com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils.BRANCH_REDEEM_TRAN;
 
 /**
  * Created by Tharun on 12-04-2017.
@@ -47,7 +49,7 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
     private RecyclerView.Adapter adapter;
 //    String Url = "http://35.154.104.54/smartpoints/seller-api/redeem-transactions-with-search?sellerEmail="+SELLER_EMAILID;
 
-    String Url = "http://35.154.104.54/smartpoints/seller-api/branch-redeem-transactions-with-search?branchId="+SELLER_BRANCHID;
+    String Url = BRANCH_REDEEM_TRAN+SELLER_BRANCHID;
     private String URL_DATA=Url;
 
     String transType, status_type, response;
@@ -157,7 +159,7 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
                 try {
                     new AlertDialog.Builder(getContext())
                             .setTitle("Error")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
                             .setMessage("Something wrong with redeem Url \n Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -181,6 +183,10 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
@@ -223,7 +229,7 @@ public class RedeemFragment extends Fragment implements View.OnClickListener {
         }
     }
     public void dateFilter(){
-        String dateFilterUrl ="http://35.154.104.54/smartpoints/seller-api/branch-redeem-transactions-with-search?branchId="+SELLER_BRANCHID+"&fromDate="+fromDate+"&toDate="+toDate;
+        String dateFilterUrl ="http://bizzmark.in/smartpoints/seller-api/branch-redeem-transactions-with-search?branchId="+SELLER_BRANCHID+"&fromDate="+fromDate+"&toDate="+toDate;
         URL_DATA = dateFilterUrl;
         loadRecyclerViewData();
     }

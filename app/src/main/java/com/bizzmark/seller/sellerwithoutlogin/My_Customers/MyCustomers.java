@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.R;
 import com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive;
+import com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +39,7 @@ public class MyCustomers extends AppCompatActivity implements View.OnClickListen
     private RecyclerView roView;
     private RecyclerView.Adapter adapter;
     SwipeRefreshLayout myCustswipe;
-    String CUSTOMER_LIST_URL ="http://35.154.104.54/smartpoints/seller-api/visited-customers-count?branchId="+SELLER_BRANCHID;
+    String CUSTOMER_LIST_URL = UrlUtils.CUSTOMER_LIST_URL+SELLER_BRANCHID;
     private final String URL_DATA = CUSTOMER_LIST_URL;
     private List<MyCustomersList> myCustomersLists;
     String statusType,response;
@@ -124,7 +126,7 @@ public class MyCustomers extends AppCompatActivity implements View.OnClickListen
                 try {
                     new AlertDialog.Builder(MyCustomers.this)
                             .setTitle("Error")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.error,null))
                             .setMessage("Something wrong with Internet connetion \n Please ensure Internet connection")
                             .setCancelable(true)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -149,6 +151,10 @@ public class MyCustomers extends AppCompatActivity implements View.OnClickListen
         });
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        loadList.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(loadList);
     }
 

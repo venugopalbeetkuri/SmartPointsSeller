@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -119,7 +120,7 @@ public class EarnPoints extends AppCompatActivity {
 
     /*Calucating points for given bill amount*/
     public void calculatingEarnPoints(){
-        CalPointsUrl = "http://35.154.104.54/smartpoints/seller-api/preview-make-earn-transaction?storeId="+SELLER_STOREID+"&customerDeviceId="+device_id+"&billAmount="+bill_amount;
+        CalPointsUrl = "http://bizzmark.in/smartpoints/seller-api/preview-make-earn-transaction?storeId="+SELLER_STOREID+"&customerDeviceId="+device_id+"&billAmount="+bill_amount;
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 CalPointsUrl, new com.android.volley.Response.Listener<String>() {
             @Override
@@ -168,7 +169,7 @@ public class EarnPoints extends AppCompatActivity {
                 try {
                     new AlertDialog.Builder(EarnPoints.this)
                             .setTitle("Something Wrong While Calculating Points")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
                             .setMessage("Please ensure Internet connection")
                             .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -202,7 +203,7 @@ public class EarnPoints extends AppCompatActivity {
     /*Inseting Data into database*/
     public void insertEarnTransToDB(){
         calculatingEarnPoints();
-        InsertUrl = "http://35.154.104.54/smartpoints/seller-api/make-earn-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+device_id+"&billAmount="+billamount;
+        InsertUrl = "http://bizzmark.in/smartpoints/seller-api/make-earn-transaction?branchId="+SELLER_BRANCHID+"&customerDeviceId="+device_id+"&billAmount="+billamount;
         StringRequest insertRequest = new StringRequest(Request.Method.GET,
                 InsertUrl, new com.android.volley.Response.Listener<String>() {
             @Override
@@ -278,7 +279,7 @@ public class EarnPoints extends AppCompatActivity {
                 try {
                     new AlertDialog.Builder(EarnPoints.this)
                             .setTitle("Error")
-                            .setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
+                            //.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.error, null))
                             .setMessage("Something went wrong with Internet connection \n Please ensure Internet connection")
                             .setCancelable(false)
                             .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
@@ -304,6 +305,10 @@ public class EarnPoints extends AppCompatActivity {
             }
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        insertRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(insertRequest);
     }
 
