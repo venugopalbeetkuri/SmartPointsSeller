@@ -13,5 +13,5 @@ public class UrlUtils {
     public static String LAST_10_BRANCH_TRANS="http://bizzmark.in/smartpoints/seller-api/last-10-branch-transactions?branchId=";
     public static String BRANCH_REDEEM_TRAN="http://bizzmark.in/smartpoints/seller-api/branch-redeem-transactions-with-search?branchId=";
     public static String BRANCH_BASIC_INFO="http://bizzmark.in/smartpoints/seller-api/branch-basic-info?branchId=";
-
+    public static final String  SEND_DEVICE_TOKEN = "http://bizzmark.in/smartpoints/api/insertdevicetoken";
 }

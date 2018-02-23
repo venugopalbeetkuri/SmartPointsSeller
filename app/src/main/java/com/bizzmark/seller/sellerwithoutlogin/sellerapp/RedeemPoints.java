@@ -83,12 +83,18 @@ public class RedeemPoints extends AppCompatActivity {
 
         try {
             JSONObject jsonObject = new JSONObject(redeemString);
-            deviceid = jsonObject.getString("deviceId");
-            storename = jsonObject.getString("storeName");
-            earntype = jsonObject.getString("type");
-            datetime = jsonObject.getString("time");
-            points_earn = jsonObject.getString("points");
-            bill_amount = jsonObject.getString("billAmount");
+            deviceid = jsonObject.optString("deviceId");
+            storename = jsonObject.optString("storeName");
+            earntype = jsonObject.optString("type");
+            datetime = jsonObject.optString("time");
+            points_earn = jsonObject.optString("points");
+            bill_amount = jsonObject.optString("billAmount");
+            if(jsonObject.has("branchId"))
+                SELLER_BRANCHID=jsonObject.optString("branchId");
+            if(deviceid==null || deviceid.equals(""))
+                deviceid = jsonObject.optString("customerDeviceId");
+            if(points_earn==null || points_earn.equals(""))
+                points_earn = jsonObject.optString("wishedRedeemPoints");
         } catch (JSONException e) {
             e.printStackTrace();
         }

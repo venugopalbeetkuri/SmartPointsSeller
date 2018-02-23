@@ -41,6 +41,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bizzmark.seller.sellerwithoutlogin.Notifications.Notifications;
 import com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.LastTenTrans;
 import com.bizzmark.seller.sellerwithoutlogin.My_Customers.MyCustomers;
@@ -51,14 +59,18 @@ import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragmen
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.Settings;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_customerList;
 //import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_notifications;
 import static com.bizzmark.seller.sellerwithoutlogin.R.id.nav_notifications;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
+import static com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils.SEND_DEVICE_TOKEN;
 
 public class WifiDirectReceive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, WifiP2pManager.ChannelListener, DeviceListFragment.DeviceActionListener {
@@ -201,8 +213,54 @@ public class WifiDirectReceive extends AppCompatActivity
         discoverPeers();
         runTimePermission();
         device_id.setText(deviceId);
+
+        getDeviceID();
+
+
 //        shareSmartPoints();
     }
+
+    private void getDeviceID() {
+        if (FirebaseInstanceId.getInstance().getToken() != null) {
+            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+            Log.v("GCMID", deviceToken);
+            sendDeviceToken(deviceToken);
+        }
+    }
+
+    private void sendDeviceToken(final String deviceToken) {
+        deviceId = getIMEIstring();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, SEND_DEVICE_TOKEN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(WifiDirectReceive.this, "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
+                //etPassword.setText("");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("deviceId", deviceId);
+                parameters.put("devicetoken", deviceToken);
+                return parameters;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+
+    }
+
+
 /*Method for getting SmartPointS package*/
 
     public void shareSmartPoints(){

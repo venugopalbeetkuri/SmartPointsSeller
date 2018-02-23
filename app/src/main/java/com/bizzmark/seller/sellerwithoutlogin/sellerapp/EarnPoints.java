@@ -94,11 +94,11 @@ public class EarnPoints extends AppCompatActivity {
         /*creating Json object for converting bundle to individual strings*/
         try{
             JSONObject obj= new JSONObject(earnString);
-            device_id =obj.getString("deviceId");
-            earn_type=obj.getString("type");
-            bill_amount=obj.getString("billAmount");
-            store_name=obj.getString("storeName");
-            date_time=obj.getString("time");
+            device_id =obj.optString("deviceId");
+            earn_type=obj.optString("type");
+            bill_amount=obj.optString("billAmount");
+            store_name=obj.optString("storeName");
+            date_time=obj.optString("time");
         }catch (Exception e){
             e.printStackTrace();
         }
