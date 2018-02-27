@@ -51,6 +51,7 @@ import com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.Settings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +60,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.bizzmark.seller.sellerwithoutlogin.WifiDirectReceive.REQUEST_READ_PERMISSION;
+import static com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils.SEND_DEVICE_TOKEN;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -176,6 +178,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             SELLER_STORENAE = sharedPreferences.getString("Seller_StoreName", SellerStoreName);
             if (ACCESS_TOKEN != null) {
                 finish();
+                getDeviceID();
                 Intent i = new Intent(this, WifiDirectReceive.class);
                 startActivity(i);
             }
@@ -301,6 +304,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 progressDialog.dismiss();
                                 finish();
 //                                sharedPreference();
+                                getDeviceID();
                                 Intent intent = new Intent(Login.this,WifiDirectReceive.class);
                                 startActivity(intent);
                             }
@@ -377,6 +381,47 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(loginRequest);
+
+    }
+
+
+    private void getDeviceID() {
+        if (FirebaseInstanceId.getInstance().getToken() != null) {
+            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+            Log.v("GCMID", deviceToken);
+            sendDeviceToken(deviceToken);
+        }
+    }
+
+    private void sendDeviceToken(final String deviceToken) {
+        getIMEIstring();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, SEND_DEVICE_TOKEN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+              //  Toast.makeText(NavigationActivity.this, "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
+                //etPassword.setText("");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("deviceId", sellerDeviceId);
+                parameters.put("devicetoken", deviceToken);
+                return parameters;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
 
     }
 
