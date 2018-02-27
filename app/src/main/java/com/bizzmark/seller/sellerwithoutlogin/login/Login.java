@@ -276,9 +276,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 userType = loginObj.getString("usertype");
                                 sellerName = loginObj.getString("name");
                                 sellerMobile = loginObj.getString("mobile");
-                                sellerStoreName = loginObj.getString("store_name");
-                                sellerStoreId = loginObj.getString("store_id");
-                                sellerBranchId = loginObj.getString("branch_id");
+                                sellerStoreName = loginObj.optString("store_name");
+                                sellerStoreId = loginObj.optString("store_id");
+                                sellerBranchId = loginObj.optString("branch_id");
                                 SharedPreferences.Editor editor = getApplication().getSharedPreferences("STORE_DETAILS",Context.MODE_PRIVATE).edit();
                                 editor.putString("Access_Token",accessToken);
                                 editor.putString("Seller_Email",sellerEmail);
@@ -302,11 +302,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 SELLER_STOREID = sharedPreferences.getString("Seller_StoreId",SellerStoreId);
                                 SELLER_STORENAE = sharedPreferences.getString("Seller_StoreName",SellerStoreName);
                                 progressDialog.dismiss();
-                                finish();
+
 //                                sharedPreference();
                                 getDeviceID();
+                                if(!sellerStoreName.isEmpty()){
                                 Intent intent = new Intent(Login.this,WifiDirectReceive.class);
                                 startActivity(intent);
+                                finish();
+                                }else {
+                                    Toast.makeText(getApplicationContext(),"You need to login to customer application",Toast.LENGTH_SHORT).show();
+                                }
                             }
                             else if (statusType.equalsIgnoreCase("error")) {
                                 response = loginObj.getString("response");
@@ -413,6 +418,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("deviceId", sellerDeviceId);
                 parameters.put("devicetoken", deviceToken);
+                parameters.put("usertype", "seller");
                 return parameters;
             }
         };

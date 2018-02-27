@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +68,7 @@ public class RedeemPoints extends AppCompatActivity {
     String remoteMacAddress=null;
 
     String acknowledgePoints;
+    boolean isFromNotification=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class RedeemPoints extends AppCompatActivity {
         redeemString=intent.getStringExtra("earnRedeemString");
 
         remoteMacAddress = intent.getStringExtra("remoteAddress");
+        isFromNotification=intent.getBooleanExtra("FromNotification",false);
 
 
         try {
@@ -89,10 +92,6 @@ public class RedeemPoints extends AppCompatActivity {
             datetime = jsonObject.optString("time");
             points_earn = jsonObject.optString("points");
             bill_amount = jsonObject.optString("billAmount");
-            if(jsonObject.has("branchId"))
-                SELLER_BRANCHID=jsonObject.optString("branchId");
-            if(deviceid==null || deviceid.equals(""))
-                deviceid = jsonObject.optString("customerDeviceId");
             if(points_earn==null || points_earn.equals(""))
                 points_earn = jsonObject.optString("wishedRedeemPoints");
         } catch (JSONException e) {
@@ -102,6 +101,10 @@ public class RedeemPoints extends AppCompatActivity {
         Gson gson=new Gson();
 
         pointsBO=gson.fromJson(redeemString,PointsBO.class);
+
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("STORE_DETAILS", Context.MODE_PRIVATE);
+        SELLER_STOREID = sharedPreferences.getString("Seller_StoreId", null);
+        SELLER_BRANCHID = sharedPreferences.getString("Seller_Branchid", null);
 
         billAmount=(TextView)findViewById(R.id.billAmount);
         redeemPoints=(TextView)findViewById(R.id.redeemPoints);
@@ -145,7 +148,8 @@ public class RedeemPoints extends AppCompatActivity {
                                 billAmount.setText(originalBillAmount);
                                 redeemPoints.setText(redeemedPoints);
                                 try {
-                                    sendAcknowledgement(false);
+                                    if(!isFromNotification)
+                                        sendAcknowledgement(false);
                                     new AlertDialog.Builder(RedeemPoints.this)
                                             .setTitle("Invalid Transaction")
                                             .setIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.cancel, null))
@@ -189,7 +193,8 @@ public class RedeemPoints extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    sendAcknowledgement(false);
+                                    if(!isFromNotification)
+                                        sendAcknowledgement(false);
 //                                    Intent i = new Intent(RedeemPoints.this, WifiDirectReceive.class);
 //                                    startActivity(i);
                                     finish();
@@ -224,7 +229,8 @@ public class RedeemPoints extends AppCompatActivity {
                             status_type = rdobj.getString("status_type");
                             if (status_type.equalsIgnoreCase("success")){
                                 transId = rdobj.getString("transaction_id");
-                                sendAcknowledgement(true);
+                                if(!isFromNotification)
+                                    sendAcknowledgement(true);
                                 try {
                                     new AlertDialog.Builder(RedeemPoints.this)
                                             .setTitle("Transaction Successful")
@@ -256,7 +262,8 @@ public class RedeemPoints extends AppCompatActivity {
                             else if (status_type.equalsIgnoreCase("error")){
                                 response = rdobj.getString("response");
                                 ackResponse = response;
-                                sendAcknowledgement(false);
+                                if(!isFromNotification)
+                                    sendAcknowledgement(false);
                                 try {
                                     new AlertDialog.Builder(RedeemPoints.this)
                                             .setTitle("Transaction Canceled")
@@ -300,7 +307,8 @@ public class RedeemPoints extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    sendAcknowledgement(false);
+                                    if(!isFromNotification)
+                                        sendAcknowledgement(false);
                                     finish();
                                 }
                             }).create().show();
@@ -324,7 +332,8 @@ public class RedeemPoints extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
-                sendAcknowledgement(false);
+                if(!isFromNotification)
+                    sendAcknowledgement(false);
                 finish();
             }
         });

@@ -68,9 +68,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if(type.equals("redeem")){
                 intent = new Intent(this, RedeemPoints.class);
                 intent.putExtra("earnRedeemString", obj.toString());
+                intent.putExtra("FromNotification",true);
             }else{
                 intent = new Intent(this, EarnPoints.class);
                 intent.putExtra("earnRedeemString", obj.toString());
+                intent.putExtra("FromNotification",true);
             }
            // Intent intent = new Intent(this, Splash.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

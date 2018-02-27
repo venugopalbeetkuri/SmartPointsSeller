@@ -248,6 +248,7 @@ public class WifiDirectReceive extends AppCompatActivity
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("deviceId", deviceId);
                 parameters.put("devicetoken", deviceToken);
+                parameters.put("usertype", "seller");
                 return parameters;
             }
         };

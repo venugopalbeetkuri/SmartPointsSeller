@@ -2,8 +2,10 @@ package com.bizzmark.seller.sellerwithoutlogin.sellerapp;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -73,6 +75,8 @@ public class EarnPoints extends AppCompatActivity {
 
     /*String used for storing Customer Remote Address and used at onCreate()*/
     String remoteMacAddress = null;
+    String storeId;
+    boolean isFromNotification=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +90,7 @@ public class EarnPoints extends AppCompatActivity {
         Intent intent = getIntent();
         earnString = intent.getStringExtra("earnRedeemString");
         remoteMacAddress = intent.getStringExtra("remoteAddress");
-
+        isFromNotification=intent.getBooleanExtra("FromNotification",false);
         /* Creating Gson for External Use*/
         Gson gson = new Gson();
         pointsBO = gson.fromJson(earnString, PointsBO.class);
@@ -102,6 +106,10 @@ public class EarnPoints extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences("STORE_DETAILS", Context.MODE_PRIVATE);
+        SELLER_STOREID = sharedPreferences.getString("Seller_StoreId", null);
+        SELLER_BRANCHID = sharedPreferences.getString("Seller_Branchid", null);
+
 
         earnPoints=(TextView)findViewById(R.id.earnPoints);
         billAmount = (TextView) findViewById(R.id.billamount);
@@ -137,7 +145,8 @@ public class EarnPoints extends AppCompatActivity {
                     else if (calStatusType.equalsIgnoreCase("error")){
                         calResponse = jsonObject.getString("response");
                         ackResponse = calResponse;
-                        sendAcknowledgement(false);
+                        if(!isFromNotification)
+                            sendAcknowledgement(false);
                         try{
                             new AlertDialog.Builder(EarnPoints.this)
                                     .setTitle("Error")
@@ -183,7 +192,8 @@ public class EarnPoints extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    sendAcknowledgement(false);
+                                    if(!isFromNotification)
+                                        sendAcknowledgement(false);
 //                                    Intent i = new Intent(EarnPoints.this,WifiDirectReceive.class);
 //                                    startActivity(i);
                                     finish();
@@ -216,7 +226,8 @@ public class EarnPoints extends AppCompatActivity {
                     if (status_type.equalsIgnoreCase("success") ){
                         transId = object.getString("transaction_id");
 //                        earnAcceptButton.setVisibility(View.GONE);
-                        sendAcknowledgement(true);
+                        if(!isFromNotification)
+                            sendAcknowledgement(true);
                         try {
                             new AlertDialog.Builder(EarnPoints.this)
                                     .setTitle("Transaction Successful")
@@ -249,7 +260,8 @@ public class EarnPoints extends AppCompatActivity {
                     else if (status_type.equalsIgnoreCase("error")){
                         response = object.getString("response");
                         ackResponse = response;
-                        sendAcknowledgement(false);
+                        if(!isFromNotification)
+                            sendAcknowledgement(false);
                         try {
                             new AlertDialog.Builder(EarnPoints.this)
                                     .setTitle("Transaction Canceled")
@@ -293,7 +305,8 @@ public class EarnPoints extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    sendAcknowledgement(false);
+                                    if(!isFromNotification)
+                                        sendAcknowledgement(false);
                                     finish();
                                 }
                             }).create().show();
@@ -321,7 +334,8 @@ public class EarnPoints extends AppCompatActivity {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
 
                 // Send acknowledgement to client.
-                sendAcknowledgement(false);
+                if(!isFromNotification)
+                    sendAcknowledgement(false);
                 finish();
             }
         });

@@ -178,7 +178,8 @@ public class DeviceListFragment extends ListFragment implements WifiP2pManager.P
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle("Press back to cancel");
         progressDialog.setMessage("finding Customers");
-        progressDialog.show();
+        if(progressDialog!=null)
+            progressDialog.show();
     }
 
 
