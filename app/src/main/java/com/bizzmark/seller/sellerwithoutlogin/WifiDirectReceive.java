@@ -1,6 +1,7 @@
 package com.bizzmark.seller.sellerwithoutlogin;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
@@ -54,12 +56,17 @@ import com.bizzmark.seller.sellerwithoutlogin.Reports.Last_Ten_Transactions.Last
 import com.bizzmark.seller.sellerwithoutlogin.My_Customers.MyCustomers;
 import com.bizzmark.seller.sellerwithoutlogin.login.Login;
 import com.bizzmark.seller.sellerwithoutlogin.sellerInfo.Seller_Basic_Information;
+import com.bizzmark.seller.sellerwithoutlogin.sellerapp.EarnPoints;
+import com.bizzmark.seller.sellerwithoutlogin.sellerapp.RedeemPoints;
 import com.bizzmark.seller.sellerwithoutlogin.sellerapp.ReportActivity;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceDetailFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.DeviceListFragment;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.Settings;
 import com.bizzmark.seller.sellerwithoutlogin.wifidirect_new.broadcastreceiver.WifiBroadCastReceiver;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -76,11 +83,11 @@ public class WifiDirectReceive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, WifiP2pManager.ChannelListener, DeviceListFragment.DeviceActionListener {
 
     final Context context = this;
-    public ImageView imgmenu,sellerimg;
+    public ImageView imgmenu, sellerimg;
     public ImageButton action_logout, action_Share;
 
 
-    public TextView navStoreName,headerStoreName,versionName, versionCode;
+    public TextView navStoreName, headerStoreName, versionName, versionCode;
     public static String storeName;
     public String statusN;
 
@@ -95,13 +102,14 @@ public class WifiDirectReceive extends AppCompatActivity
     private WifiP2pManager.Channel channel;
     private BroadcastReceiver receiver = null;
 
-    private Button btnRefresh,report;
+    private Button btnRefresh, report;
     //Textview variable  for displaying device id
     public String version_Name;
     public int version_Code;
     TextView device_id;
     String deviceId;
-    public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled){
+
+    public void setIsWifiP2pEnabled(boolean isWifiP2pEnabled) {
         this.isWifiP2pEnabled = isWifiP2pEnabled;
     }
 
@@ -125,14 +133,14 @@ public class WifiDirectReceive extends AppCompatActivity
         View v = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
-        imgmenu=(ImageView)findViewById(R.id.imgmenu);
+        imgmenu = (ImageView) findViewById(R.id.imgmenu);
         imgmenu.setOnClickListener(this);
 
         navStoreName = (TextView) v.findViewById(R.id.nav_storeName);
-        headerStoreName =(TextView) findViewById(R.id.header_storeName);
+        headerStoreName = (TextView) findViewById(R.id.header_storeName);
 
         try {
-            if (SELLER_STORENAE.isEmpty()){
+            if (SELLER_STORENAE.isEmpty()) {
                 try {
                     new AlertDialog.Builder(WifiDirectReceive.this)
                             .setTitle("Session Expired")
@@ -141,41 +149,38 @@ public class WifiDirectReceive extends AppCompatActivity
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    SharedPreferences preferences = getSharedPreferences("STORE_DETAILS",Context.MODE_PRIVATE);
+                                    SharedPreferences preferences = getSharedPreferences("STORE_DETAILS", Context.MODE_PRIVATE);
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.clear();
                                     editor.commit();
                                     finish();
-                                    Intent i=new Intent(WifiDirectReceive.this,Login.class);
+                                    Intent i = new Intent(WifiDirectReceive.this, Login.class);
                                     startActivity(i);
                                 }
                             }).create().show();
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 headerStoreName.setText(SELLER_STORENAE);
                 navStoreName.setText(SELLER_STORENAE);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        sellerimg=(ImageView)v.findViewById(R.id.sellerimg);
+        sellerimg = (ImageView) v.findViewById(R.id.sellerimg);
         sellerimg.setOnClickListener(this);
 
         version_Name = BuildConfig.VERSION_NAME;
         version_Code = BuildConfig.VERSION_CODE;
 
-        versionName = (TextView)v.findViewById(R.id.version_Name);
+        versionName = (TextView) v.findViewById(R.id.version_Name);
         versionName.setText(version_Name);
         versionName.setEnabled(true);
 //        versionCode = (TextView)findViewById(R.id.version_Code);
 //        versionCode.setText(version_Code);
 //        versionCode.setEnabled(true);
-        btnRefresh=(Button)findViewById(R.id.btnRefresh);
+        btnRefresh = (Button) findViewById(R.id.btnRefresh);
         btnRefresh.setOnClickListener(this);
 
 //        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeLoadCusts);
@@ -192,13 +197,13 @@ public class WifiDirectReceive extends AppCompatActivity
 //        action_logout=(ImageButton)findViewById(R.id.action_logout);
 //        action_logout.setOnClickListener(this);
 
-        action_Share = (ImageButton)findViewById(R.id.action_Share);
+        action_Share = (ImageButton) findViewById(R.id.action_Share);
         action_Share.setOnClickListener(this);
 
-        report=(Button)findViewById(R.id.report);
+        report = (Button) findViewById(R.id.report);
         report.setOnClickListener(this);
 
-        device_id=(TextView)v.findViewById(R.id.device_id);
+        device_id = (TextView) v.findViewById(R.id.device_id);
 
         /* add necessary intent values to be matched.*/
 
@@ -208,14 +213,14 @@ public class WifiDirectReceive extends AppCompatActivity
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
         manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        channel =  manager.initialize(this,getMainLooper(),null);
+        channel = manager.initialize(this, getMainLooper(), null);
 //        cancelConnect();
         discoverPeers();
         runTimePermission();
         device_id.setText(deviceId);
 
         getDeviceID();
-
+        LocalBroadcastManager.getInstance(this).registerReceiver(mNotificationReceiver, new IntentFilter("some_custom_id"));
 
 //        shareSmartPoints();
     }
@@ -242,7 +247,7 @@ public class WifiDirectReceive extends AppCompatActivity
                 Toast.makeText(WifiDirectReceive.this, "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
                 //etPassword.setText("");
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
@@ -261,10 +266,59 @@ public class WifiDirectReceive extends AppCompatActivity
 
     }
 
+    protected BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
+            String earnString = intent.getStringExtra("data");
+            try {
+                JSONObject obj= new JSONObject(earnString);
+                String message;
+                String  billAmount = obj.optString("billAmount");
+                String title;
+                String type= obj.getString("type");
+
+                message="Customer is requesting "+type+" For the bill amount "+billAmount;
+                title=type+" Request";
+                final Intent i;
+                if(type!=null && type.equals("redeem")){
+                    i = new Intent(context, RedeemPoints.class);
+                    i.putExtra("earnRedeemString", obj.toString());
+                    i.putExtra("FromNotification",true);
+                }else{
+                    i = new Intent(context, EarnPoints.class);
+                    i.putExtra("earnRedeemString", obj.toString());
+                    i.putExtra("FromNotification",true);
+                }
+
+
+                AlertDialog.Builder dialogue=new AlertDialog.Builder(WifiDirectReceive.this);
+                dialogue.setMessage(message);
+                dialogue.setTitle(title);
+                dialogue.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(i);
+                    }
+                });
+                dialogue.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                dialogue.show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    };
 /*Method for getting SmartPointS package*/
 
-    public void shareSmartPoints(){
+    public void shareSmartPoints() {
         PackageManager packageManager = getApplicationContext().getPackageManager();
         PackageInfo packageInfo;
         ApplicationInfo applicationInfo = null;
@@ -274,30 +328,29 @@ public class WifiDirectReceive extends AppCompatActivity
             packageInfo = packageManager.getPackageInfo("in.bizzmark.smartpoints_user", 0);
             applicationInfo = packageInfo.applicationInfo;
             shareAppByBluetooth(applicationInfo);
-        }
-        catch (PackageManager.NameNotFoundException e){
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
     }
 
 /*Metjod for Share SmartPoints Apk Using Bluetooth*/
 
-    private void shareAppByBluetooth(ApplicationInfo applicationInfo){
+    private void shareAppByBluetooth(ApplicationInfo applicationInfo) {
         try {
-            String filePath =  applicationInfo.sourceDir;
+            String filePath = applicationInfo.sourceDir;
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("*/*");
             /*Using only bluetooth to send application*/
             intent.setPackage("com.android.bluetooth");
             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
-            startActivity(Intent.createChooser(intent,"Share app"));
-            Toast.makeText(getApplicationContext(),"Share SmartPoints app",Toast.LENGTH_LONG).show();
-        }
-        catch (Exception e){
+            startActivity(Intent.createChooser(intent, "Share app"));
+            Toast.makeText(getApplicationContext(), "Share SmartPoints app", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-/*getting runtime permission*/
+
+    /*getting runtime permission*/
     private void runTimePermission() {
         // runtime permission getting imi-string
         boolean hasPermissionLocation = (ContextCompat.checkSelfPermission(this,
@@ -318,6 +371,16 @@ public class WifiDirectReceive extends AppCompatActivity
         try {
             TelephonyManager telephonyManager = (TelephonyManager) this
                     .getSystemService(Context.TELEPHONY_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return null;
+            }
             deviceId = telephonyManager.getDeviceId();
         }catch (Throwable throwable){
             throwable.printStackTrace();
@@ -748,5 +811,9 @@ public class WifiDirectReceive extends AppCompatActivity
         }).create().show();
 
     }
-
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mNotificationReceiver);
+        super.onDestroy();
+    }
 }

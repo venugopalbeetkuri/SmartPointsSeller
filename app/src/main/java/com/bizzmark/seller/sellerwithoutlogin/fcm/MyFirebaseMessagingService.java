@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.bizzmark.seller.sellerwithoutlogin.R;
@@ -50,8 +51,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if(Utility.isAppIsInBackground(this))
                     sendNotification(obj);
                 else{
+                    Intent i = new Intent("some_custom_id");
+                    i.putExtra("data", obj.toString());
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(i);
                    // Log.v("Testing","App is in foreground");
-                    String message;
+                    /*String message;
                     String  billAmount = obj.optString("billAmount");
                     String title;
                     String type= null;
@@ -89,7 +93,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             dialog.cancel();
                         }
                     });
-                    dialogue.show();
+                    dialogue.show();*/
                 }
         } else {
             Log.e(TAG, "Push Failure:: ");
