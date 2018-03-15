@@ -312,8 +312,6 @@ public class WifiDirectReceive extends AppCompatActivity
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
         }
     };
 /*Method for getting SmartPointS package*/

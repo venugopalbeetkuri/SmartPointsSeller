@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STOREID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
+import static com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils.CANCEL_TRANSACTION;
 
 public class EarnPoints extends AppCompatActivity {
 
@@ -325,6 +326,41 @@ public class EarnPoints extends AppCompatActivity {
         requestQueue.add(insertRequest);
     }
 
+    public void cancelTransaction(){
+
+        String cancelURl = CANCEL_TRANSACTION+device_id;
+        StringRequest insertRequest = new StringRequest(Request.Method.GET,
+                cancelURl, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject object = new JSONObject(s);
+                    status_type = object.getString("status_type");
+
+                    //earned_points = object.getString("earned_points");
+                    if (status_type.equalsIgnoreCase("success") ){
+                        Toast.makeText(getApplicationContext(),"Notification sent to customer",Toast.LENGTH_SHORT).show();
+                    }
+                    else if (status_type.equalsIgnoreCase("error")){
+                        Toast.makeText(getApplicationContext(),"Please try again",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        insertRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(insertRequest);
+    }
+
+
     /*enbling button function to cancel the transaction*/
     private void addListenerOnCancelButton() {
         Button earnCancelButton = (Button) findViewById(R.id.earnCancelButton);
@@ -336,6 +372,9 @@ public class EarnPoints extends AppCompatActivity {
                 // Send acknowledgement to client.
                 if(!isFromNotification)
                     sendAcknowledgement(false);
+                else
+                    cancelTransaction();
+
                 finish();
             }
         });

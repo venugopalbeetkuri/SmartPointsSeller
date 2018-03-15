@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_BRANCHID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STOREID;
 import static com.bizzmark.seller.sellerwithoutlogin.login.Login.SELLER_STORENAE;
+import static com.bizzmark.seller.sellerwithoutlogin.util.UrlUtils.CANCEL_TRANSACTION;
 
 public class RedeemPoints extends AppCompatActivity {
 
@@ -325,6 +326,41 @@ public class RedeemPoints extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestqueue.add(insertRequest);
     }
+    public void cancelTransaction(){
+
+        String cancelURl = CANCEL_TRANSACTION+deviceid;
+        StringRequest insertRequest = new StringRequest(Request.Method.GET,
+                cancelURl, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject object = new JSONObject(s);
+                    status_type = object.getString("status_type");
+
+                    //earned_points = object.getString("earned_points");
+                    if (status_type.equalsIgnoreCase("success") ){
+                        Toast.makeText(getApplicationContext(),"Notification sent to customer",Toast.LENGTH_SHORT).show();
+                    }
+                    else if (status_type.equalsIgnoreCase("error")){
+                        Toast.makeText(getApplicationContext(),"Please try again",Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        insertRequest.setRetryPolicy(new DefaultRetryPolicy(
+                300000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(insertRequest);
+    }
+
+
     private void addListenerOnCancelButton() {
 
         Button redeemCancelButton=(Button)findViewById(R.id.redeemCancelButton);
@@ -334,6 +370,8 @@ public class RedeemPoints extends AppCompatActivity {
                 arg0.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation));
                 if(!isFromNotification)
                     sendAcknowledgement(false);
+                else
+                    cancelTransaction();
                 finish();
             }
         });
@@ -352,9 +390,9 @@ public class RedeemPoints extends AppCompatActivity {
 
                 earnButton.setVisibility(View.GONE);
                 redeemCancelButton.setVisibility(View.GONE);
-                //save to database
+                  //save to database
                 insertRedeemTransToDB();
-                // Send acknowledgement to customer.
+                 //Send acknowledgement to customer.
                 //sendAcknowledgement(true);
 
             }
